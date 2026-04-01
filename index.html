@@ -4,8 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Catálogo KRAKEN - Cloud UI Final</title>
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <!-- html2pdf Library -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     
     <script>
@@ -77,6 +80,7 @@
 </head>
 <body class="bg-gray-50 text-gray-900 font-sans antialiased relative selection:bg-accent selection:text-white">
 
+    <!-- Navbar -->
     <nav class="glass-nav text-white p-4 sticky top-0 z-50 shadow-lg border-b border-gray-800 flex justify-between items-center transition-all wood-texture">
         <div>
             <h1 class="text-2xl font-black tracking-widest cursor-pointer hover:text-accent transition" onclick="window.scrollTo(0,0)">KRAKEN <span class="text-accent text-lg">LIQUIDACIÓN</span></h1>
@@ -99,6 +103,7 @@
         </div>
     </nav>
 
+    <!-- Header Promocional -->
     <header class="bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-nyxLight via-nyx to-black text-white p-8 md:p-12 text-center border-b-4 border-accent relative overflow-hidden shadow-2xl">
         <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/wood-pattern.png')] opacity-40 mix-blend-overlay"></div>
         <div class="relative z-10 max-w-3xl mx-auto">
@@ -112,15 +117,20 @@
         </div>
     </header>
 
+    <!-- Main Content -->
     <main class="max-w-[90rem] mx-auto p-4 md:p-8 mb-12 min-h-[50vh]">
         <div id="loading-spinner" class="flex flex-col items-center justify-center mt-20">
             <div class="nyx-spinner mb-4"></div>
             <p class="text-sm font-black text-gray-400 uppercase tracking-widest">Conectando con Servidores Google...</p>
         </div>
         <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 md:gap-8 hidden">
-            </div>
+            <!-- Renderizado por JS -->
+        </div>
     </main>
 
+    <!-- ================= MODALS UI ================= -->
+
+    <!-- Modal: Detalles del Producto -->
     <div id="modal-details" class="fixed inset-0 bg-nyx/90 backdrop-blur-sm hidden z-50 items-center justify-center p-4">
         <div class="bg-white rounded-2xl shadow-2xl w-full max-w-5xl max-h-[90vh] overflow-y-auto flex flex-col md:flex-row relative modal-enter border border-gray-200">
             <button onclick="window.closeModals()" class="absolute top-4 right-4 bg-nyx hover:bg-accent text-white rounded-full w-10 h-10 flex items-center justify-center transition z-20 shadow-lg group"><i class="fas fa-times text-xl group-hover:scale-110 transition-transform"></i></button>
@@ -169,6 +179,7 @@
         </div>
     </div>
 
+    <!-- Modals Secundarios -->
     <div id="modal-preguntar" class="fixed inset-0 bg-nyx/90 backdrop-blur-sm hidden z-50 items-center justify-center p-4">
         <div class="bg-white rounded-2xl shadow-2xl w-full max-w-md overflow-hidden flex flex-col modal-enter border border-gray-200">
             <div class="bg-nyx text-white p-5 flex justify-between items-center wood-texture">
@@ -219,8 +230,10 @@
         </div>
     </div>
 
+    <!-- ================= MODAL ADMIN CLOUD PRO ================= -->
     <div id="modal-admin" class="fixed inset-0 bg-black/95 backdrop-blur-md hidden z-[60] items-center justify-center p-2 md:p-4">
         <div class="bg-white rounded-2xl shadow-2xl w-full max-w-6xl max-h-[95vh] h-[95vh] overflow-hidden flex flex-col border border-gray-700 modal-enter">
+            <!-- Header Admin -->
             <div class="bg-nyx text-white p-4 flex justify-between items-center shadow-md wood-texture shrink-0">
                 <h3 class="font-black uppercase tracking-widest text-white text-sm md:text-base"><i class="fas fa-cloud text-accent mr-2"></i> CLOUD ADMIN</h3>
                 <div class="flex items-center">
@@ -229,15 +242,19 @@
                 </div>
             </div>
             
+            <!-- TABS NAVEGACIÓN -->
             <div class="flex border-b border-gray-200 bg-gray-50 shrink-0">
                 <button id="tab-btn-editar" onclick="window.switchAdminTab('editar')" class="flex-1 py-3 text-xs md:text-sm font-black uppercase text-accent border-b-2 border-accent transition-colors"><i class="fas fa-boxes mr-2"></i>Inventario</button>
                 <button id="tab-btn-nuevo" onclick="window.switchAdminTab('nuevo')" class="flex-1 py-3 text-xs md:text-sm font-black uppercase text-gray-400 border-b-2 border-transparent transition-colors"><i class="fas fa-plus-circle mr-2"></i>Nuevo Fierro</button>
             </div>
 
+            <!-- CONTENEDOR SCROLL -->
             <div class="flex-1 overflow-y-auto bg-gray-100 p-2 md:p-4 relative">
                 
+                <!-- TAB 1: EDITAR (ACORDEÓN) -->
                 <div id="admin-tab-editar" class="space-y-2"></div>
 
+                <!-- TAB 2: NUEVO FIERRO -->
                 <div id="admin-tab-nuevo" class="hidden max-w-2xl mx-auto bg-white p-6 rounded-xl border border-gray-200 shadow-sm mt-4">
                     <h4 class="font-black uppercase text-sm tracking-widest text-nyx mb-4 border-b border-gray-100 pb-2"><i class="fas fa-cloud-upload-alt text-accent mr-2"></i>Publicador de Productos</h4>
                     <div class="space-y-4">
@@ -278,6 +295,7 @@
                 </div>
             </div>
 
+            <!-- FOOTER ADMIN -->
             <div id="admin-footer-editar" class="p-4 bg-white border-t border-gray-200 shrink-0">
                 <button id="btn-save-admin" onclick="window.saveAdminChanges()" class="w-full bg-nyx hover:bg-accent text-white font-black py-4 rounded-xl uppercase tracking-widest transition shadow-lg flex justify-center items-center text-sm">
                     <i class="fas fa-sync-alt mr-2 text-xl"></i> Guardar Cambios Locales en Nube
@@ -286,6 +304,7 @@
         </div>
     </div>
 
+    <!-- Modal: Auth Blindado -->
     <div id="modal-auth" class="fixed inset-0 bg-nyx/95 backdrop-blur-md hidden z-[70] items-center justify-center p-4">
         <div class="bg-white p-8 rounded-2xl shadow-2xl w-full max-w-sm border-t-4 border-accent text-center modal-enter">
             <h3 class="font-black uppercase mb-6 tracking-widest text-nyx text-lg"><i class="fas fa-lock mr-2 text-accent"></i> Acceso Arquitecto</h3>
@@ -298,6 +317,7 @@
         </div>
     </div>
 
+    <!-- Sidebar Carrito -->
     <div id="cart-sidebar" class="fixed inset-y-0 right-0 w-full md:w-[420px] bg-white/95 backdrop-blur-xl shadow-2xl transform translate-x-full transition-transform duration-300 ease-in-out z-50 flex flex-col border-l border-gray-200">
         <div class="p-5 bg-nyx text-white flex justify-between items-center shadow-lg z-10 border-b-4 border-accent wood-texture">
             <h2 class="text-xl font-black uppercase tracking-widest"><i class="fas fa-clipboard-list text-accent mr-2"></i> Panel de Tratos</h2>
@@ -334,6 +354,7 @@
 
     <div id="overlay" onclick="window.closeModals(); window.toggleCart(false)" class="fixed inset-0 bg-nyx/80 backdrop-blur-sm hidden z-40 transition-all duration-300"></div>
 
+    <!-- MOTOR DE INTERFAZ -->
     <script>
         const numTelefono = "528711119800"; 
         window.productos = [];
@@ -354,10 +375,15 @@
             { id: 'licuadora', codeId: '08', categoria: 'Cocina', nombre: 'Licuadora Ninja Profesional', desc: 'Cuchillas de acero inoxidable, motor intacto.', pIndiv: 1300, pPaquete: 1100, img: ['img/licuadora_ninja_profesional.webp'], vendido: false, timestamp: Date.now()+7 },
             { id: 'microondas', codeId: '09', categoria: 'Cocina', nombre: 'Microondas Comercial Inox', desc: 'Modelo de alta potencia con acabado total en acero.', pIndiv: 1900, pPaquete: 1600, img: ['img/microondas_de_acero_inoxidable.webp'], vendido: false, timestamp: Date.now()+8 },
             { id: 'plancha-mesa', codeId: '10', categoria: 'Cocina', nombre: 'Plancha de Mesa a Gas', desc: 'Plancha auxiliar de acero liso.', pIndiv: 1350, pPaquete: 1200, img: ['img/plancha_industrial_de_gas.webp'], vendido: false, timestamp: Date.now()+9 },
-            { id: 'estante-1', codeId: '11', categoria: 'Mobiliario', nombre: 'Rack Metálico Industrial (Costco)', desc: 'Estante negro reforzado tipo rack de 5 niveles.', pIndiv: 3200, pPaquete: 2900, img: ['img/estanter_a_met_lica_de_cinco_niveles.webp'], vendido: false, timestamp: Date.now()+10 },
+            { id: 'estante-1', codeId: '11', categoria: 'Mobiliario', nombre: 'Rack Metálico Industrial (Costco)', desc: 'Estante negro reforzado tipo rack de 5 niveles.', pIndiv: 2000, pPaquete: 2000, img: ['img/estanter_a_met_lica_negra_5_niveles.webp'], vendido: false, timestamp: Date.now()+10 },
             { id: 'trampa-grasa', codeId: '12', categoria: 'Mobiliario', nombre: 'Trampa de Grasa 20L', desc: 'Estructura 100% acero inoxidable.', pIndiv: 900, pPaquete: 800, img: ['img/trampa_grasa_pendiente.png'], vendido: false, timestamp: Date.now()+11 },
-            { id: 'sartenes-lote', codeId: '13', categoria: 'Cocina', nombre: 'Lote de Sartenes Industriales', desc: 'Juego de 3 sartenes de alto impacto.', pIndiv: 650, pPaquete: 500, img: ['img/sartenes_pendientes.png'], vendido: false, timestamp: Date.now()+12 },
-            { id: 'lote-loza', codeId: '14', categoria: 'Vajilla', nombre: 'Lote de Servicio y Loza (341 pzas)', desc: '68 platos, 79 cristalería, 22 especialidades, 75 servicio, 97 cubiertos.', pIndiv: 14500, pPaquete: 12000, img: ['img/juego_de_vasos_de_cristal.webp', 'img/bandejas_rectangulares_negras.webp', 'img/tarros_de_cerveza_tecate.webp', 'img/tazas_de_cer_mica_colores_pastel.webp', 'img/molcajete_de_piedra_volc_nica.webp'], vendido: false, timestamp: Date.now()+13 } 
+            { id: 'sartenes-lote', codeId: '13', categoria: 'Cocina', nombre: 'Lote de Sartenes Industriales', desc: 'Juego de 3 sartenes de alto impacto.', pIndiv: 300, pPaquete: 300, img: ['img/sartenes_pendientes.png'], vendido: false, timestamp: Date.now()+12 },
+            { id: 'vasos-cristal', codeId: '14', categoria: 'Vajilla', nombre: 'Juego de Vasos de Cristal', desc: 'Cristalería de servicio pesado.', pIndiv: 800, pPaquete: 700, img: ['img/juego_de_vasos_de_cristal.webp'], vendido: false, timestamp: Date.now()+13 },
+            { id: 'bandejas-negras', codeId: '15', categoria: 'Vajilla', nombre: 'Bandejas Rectangulares Negras', desc: 'Bandejas de servicio para alimentos.', pIndiv: 1200, pPaquete: 1000, img: ['img/bandejas_rectangulares_negras.webp'], vendido: false, timestamp: Date.now()+14 },
+            { id: 'tarros-tecate', codeId: '16', categoria: 'Vajilla', nombre: 'Tarros de Cerveza Tecate', desc: 'Tarros de cristal grueso para bebidas.', pIndiv: 900, pPaquete: 750, img: ['img/tarros_de_cerveza_tecate.webp'], vendido: false, timestamp: Date.now()+15 },
+            { id: 'tazas-ceramica', codeId: '17', categoria: 'Vajilla', nombre: 'Tazas de Cerámica Pastel', desc: 'Juego de tazas para café o té.', pIndiv: 600, pPaquete: 500, img: ['img/tazas_de_cer_mica_colores_pastel.webp'], vendido: false, timestamp: Date.now()+16 },
+            { id: 'molcajete', codeId: '18', categoria: 'Cocina', nombre: 'Molcajete de Piedra Volcánica', desc: 'Molcajete tradicional tamaño grande.', pIndiv: 450, pPaquete: 350, img: ['img/molcajete_de_piedra_volc_nica.webp'], vendido: false, timestamp: Date.now()+17 },
+            { id: 'lote-loza-paquete', codeId: '19', categoria: 'Vajilla', nombre: 'Paquete de Loza (341 pzas)', desc: 'Lote completo. Se va todo junto a precio especial.', pIndiv: 5000, pPaquete: 5000, img: ['img/juego_de_vasos_de_cristal.webp', 'img/bandejas_rectangulares_negras.webp', 'img/tarros_de_cerveza_tecate.webp', 'img/tazas_de_cer_mica_colores_pastel.webp', 'img/molcajete_de_piedra_volc_nica.webp'], vendido: false, timestamp: Date.now()+18 }
         ];
         
         window.productos = JSON.parse(JSON.stringify(defaultProductos));
@@ -675,6 +701,7 @@
         window.addImagesToProduct = function() { alert("Conectando a Nube... espera."); };
     </script>
 
+    <!-- MOTOR CLOUD FIREBASE V11 -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getFirestore, collection, onSnapshot, doc, updateDoc, setDoc, getDocs } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
