@@ -1,0 +1,813 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catálogo KRAKEN - Cloud UI Final</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        nyx: '#0f172a',      
+                        nyxLight: '#1e293b', 
+                        accent: '#7c3aed',   
+                        pending: '#f59e0b', 
+                    },
+                    boxShadow: {
+                        'glow': '0 0 15px rgba(124, 58, 237, 0.4)',
+                        'glow-lg': '0 0 25px rgba(124, 58, 237, 0.6)',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        input[type="number"]::-webkit-inner-spin-button,
+        input[type="number"]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        .modal-active { display: flex !important; }
+        .line-clamp-2 {
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;  
+            overflow: hidden;
+        }
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #7c3aed; }
+        
+        .glass-nav {
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+        .wood-texture {
+            background-image: url('https://www.transparenttextures.com/patterns/wood-pattern.png');
+            background-blend-mode: overlay;
+        }
+        .modal-enter {
+            animation: scaleIn 0.2s ease-out forwards;
+        }
+        @keyframes scaleIn {
+            from { transform: scale(0.95); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+        .nyx-spinner {
+            border: 3px solid rgba(124, 58, 237, 0.3);
+            border-radius: 50%;
+            border-top: 3px solid #7c3aed;
+            width: 40px;
+            height: 40px;
+            -webkit-animation: spin 1s linear infinite;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-900 font-sans antialiased relative selection:bg-accent selection:text-white">
+
+    <nav class="glass-nav text-white p-4 sticky top-0 z-50 shadow-lg border-b border-gray-800 flex justify-between items-center transition-all wood-texture">
+        <div>
+            <h1 class="text-2xl font-black tracking-widest cursor-pointer hover:text-accent transition" onclick="window.scrollTo(0,0)">KRAKEN <span class="text-accent text-lg">LIQUIDACIÓN</span></h1>
+            <p class="text-[10px] md:text-xs text-gray-400 font-mono tracking-wider uppercase mt-1">Equipo Seminuevo • Torreón, Coah.</p>
+        </div>
+        <div class="flex items-center space-x-3 md:space-x-5">
+            <div id="cloud-status" class="text-[10px] text-green-400 font-black uppercase tracking-widest hidden md:flex items-center">
+                <span class="w-2 h-2 bg-green-500 rounded-full mr-2 animate-pulse"></span> Nube Activa
+            </div>
+            <button id="btn-export-pdf" onclick="window.exportToPDF()" class="text-xs text-gray-300 hover:text-white transition flex items-center bg-nyxLight px-4 py-2 rounded-lg border border-gray-700 hover:border-accent group" title="Descargar Catálogo PDF">
+                <i class="fas fa-file-pdf text-red-500 text-lg md:mr-2 group-hover:scale-110 transition-transform"></i> <span class="hidden md:inline font-bold uppercase tracking-wider">Generar PDF</span>
+            </button>
+            <button onclick="window.openAdmin()" class="text-xs text-gray-400 hover:text-accent transition flex items-center p-2" title="Configuración KRAKEN">
+                <i class="fas fa-cog text-xl hover:rotate-90 transition-transform duration-300"></i>
+            </button>
+            <button onclick="window.toggleCart()" class="relative p-3 bg-accent text-white rounded-xl hover:bg-purple-700 transition shadow-glow ml-2 group">
+                <i class="fas fa-shopping-cart text-xl group-hover:scale-110 transition-transform"></i>
+                <span id="cart-count" class="absolute -top-2 -right-2 bg-nyx text-white border border-accent text-xs font-black px-2 py-1 rounded-full shadow-lg">0</span>
+            </button>
+        </div>
+    </nav>
+
+    <header class="bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-nyxLight via-nyx to-black text-white p-8 md:p-12 text-center border-b-4 border-accent relative overflow-hidden shadow-2xl">
+        <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/wood-pattern.png')] opacity-40 mix-blend-overlay"></div>
+        <div class="relative z-10 max-w-3xl mx-auto">
+            <h2 class="text-3xl md:text-5xl font-black uppercase mb-4 tracking-tight leading-tight drop-shadow-lg">Catálogo de Activos <br><span class="text-accent">Gastronómicos</span></h2>
+            
+            <div class="mt-4 inline-flex items-center bg-accent/20 border border-accent text-white px-6 py-3 rounded-xl font-bold text-sm shadow-glow-lg backdrop-blur-sm">
+                <i class="fas fa-bolt text-accent text-xl mr-3"></i> 
+                <span>COMPRA <span class="text-accent text-lg">2 O MÁS EQUIPOS</span> Y DESBLOQUEA PRECIO DE PAQUETE</span>
+            </div>
+            <p class="text-sm text-gray-400 mt-6 font-mono drop-shadow-md"><i class="fas fa-crosshairs text-accent mr-2"></i>Selecciona cualquier producto en la cuadrícula para analizar especificaciones.</p>
+        </div>
+    </header>
+
+    <main class="max-w-[90rem] mx-auto p-4 md:p-8 mb-12 min-h-[50vh]">
+        <div id="loading-spinner" class="flex flex-col items-center justify-center mt-20">
+            <div class="nyx-spinner mb-4"></div>
+            <p class="text-sm font-black text-gray-400 uppercase tracking-widest">Conectando con Servidores Google...</p>
+        </div>
+        <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 md:gap-8 hidden">
+            </div>
+    </main>
+
+    <div id="modal-details" class="fixed inset-0 bg-nyx/90 backdrop-blur-sm hidden z-50 items-center justify-center p-4">
+        <div class="bg-white rounded-2xl shadow-2xl w-full max-w-5xl max-h-[90vh] overflow-y-auto flex flex-col md:flex-row relative modal-enter border border-gray-200">
+            <button onclick="window.closeModals()" class="absolute top-4 right-4 bg-nyx hover:bg-accent text-white rounded-full w-10 h-10 flex items-center justify-center transition z-20 shadow-lg group"><i class="fas fa-times text-xl group-hover:scale-110 transition-transform"></i></button>
+            
+            <div id="detail-img-wrapper" class="md:w-1/2 bg-gray-100 relative min-h-[300px] md:min-h-[500px] flex items-center justify-center overflow-hidden rounded-t-2xl md:rounded-l-2xl md:rounded-tr-none border-b md:border-b-0 md:border-r border-gray-200 group">
+                <div id="detail-watermark" class="absolute inset-0 flex items-center justify-center z-0 overflow-hidden pointer-events-none hidden">
+                    <span class="text-accent/10 font-black text-8xl md:text-9xl transform -rotate-12 tracking-widest uppercase select-none drop-shadow-sm">KRAKEN</span>
+                </div>
+                <span id="detail-category" class="absolute top-4 left-4 bg-nyx text-white text-[10px] px-4 py-1.5 rounded-md font-bold uppercase tracking-widest shadow-lg z-20 border border-gray-700"></span>
+                
+                <img id="detail-img" src="" onerror="window.imgFallback(this)" class="w-full h-full object-cover absolute inset-0 z-10 mix-blend-multiply transition-opacity duration-300">
+                
+                <button id="slider-prev" onclick="window.prevSlide()" class="absolute left-4 top-1/2 transform -translate-y-1/2 z-30 bg-black/60 hover:bg-accent text-white w-10 h-10 rounded-full flex items-center justify-center transition shadow-lg hidden"><i class="fas fa-chevron-left"></i></button>
+                <button id="slider-next" onclick="window.nextSlide()" class="absolute right-4 top-1/2 transform -translate-y-1/2 z-30 bg-black/60 hover:bg-accent text-white w-10 h-10 rounded-full flex items-center justify-center transition shadow-lg hidden"><i class="fas fa-chevron-right"></i></button>
+                
+                <div id="slider-dots" class="absolute bottom-4 left-0 right-0 flex justify-center space-x-2 z-30 hidden"></div>
+            </div>
+            
+            <div class="md:w-1/2 p-6 md:p-10 flex flex-col justify-between bg-white rounded-b-2xl md:rounded-r-2xl">
+                <div>
+                    <h3 id="detail-name" class="font-black text-3xl text-nyx leading-tight mb-3 uppercase tracking-tight"></h3>
+                    <p id="detail-desc" class="text-sm text-gray-500 mb-8 leading-relaxed"></p>
+                    
+                    <div class="bg-gray-50 p-5 rounded-xl border border-gray-200 mb-8 shadow-inner">
+                        <div class="flex justify-between items-end mb-3 border-b border-gray-200 pb-3">
+                            <span class="font-bold text-gray-500 text-xs uppercase tracking-widest">Precio de Lista</span>
+                            <span id="detail-indiv" class="font-black text-3xl text-nyx"></span>
+                        </div>
+                        <div class="flex justify-between items-center text-accent bg-accent/10 px-4 py-3 rounded-lg border border-accent/30">
+                            <span class="text-xs font-black uppercase tracking-widest"><i class="fas fa-tags mr-2"></i>Precio Paquete (2+)</span>
+                            <span id="detail-paquete" class="font-black text-xl"></span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="space-y-4">
+                    <div class="grid grid-cols-2 gap-4">
+                        <button id="btn-detail-ask" class="bg-white border-2 border-gray-300 hover:border-nyx hover:bg-gray-50 text-nyx font-black py-3 rounded-xl text-xs transition uppercase shadow-sm flex items-center justify-center"><i class="fas fa-comment-dots mr-2 text-lg"></i> Consultar</button>
+                        <button id="btn-detail-offer" class="bg-white border-2 border-pending hover:bg-pending hover:text-white text-pending font-black py-3 rounded-xl text-xs transition uppercase shadow-sm flex items-center justify-center"><i class="fas fa-handshake mr-2 text-lg"></i> Contraoferta</button>
+                    </div>
+                    <button id="btn-detail-add" class="w-full bg-nyx hover:bg-accent text-white font-black py-5 rounded-xl uppercase text-sm transition shadow-xl hover:shadow-glow flex items-center justify-center tracking-widest">
+                        <i class="fas fa-cart-plus mr-3 text-xl"></i> Añadir a la Cotización
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal-preguntar" class="fixed inset-0 bg-nyx/90 backdrop-blur-sm hidden z-50 items-center justify-center p-4">
+        <div class="bg-white rounded-2xl shadow-2xl w-full max-w-md overflow-hidden flex flex-col modal-enter border border-gray-200">
+            <div class="bg-nyx text-white p-5 flex justify-between items-center wood-texture">
+                <h3 class="font-black uppercase tracking-widest text-sm"><i class="fas fa-comment-dots text-accent mr-2"></i> Consultar Detalles</h3>
+                <button onclick="window.openProductDetails(window.activeProductId)" class="text-gray-400 hover:text-white transition bg-gray-800 w-8 h-8 rounded-full flex items-center justify-center" title="Volver"><i class="fas fa-arrow-left"></i></button>
+            </div>
+            <div class="p-6 flex-1 flex flex-col gap-4">
+                <p id="question-target-name" class="font-black text-nyx text-sm uppercase border-b border-gray-200 pb-3"></p>
+                <div class="flex flex-wrap gap-2 mt-2">
+                    <button onclick="window.appendQuestion('¿Cuál es tu mejor precio?')" class="text-[10px] uppercase tracking-wider bg-gray-100 hover:bg-gray-200 border border-gray-300 px-3 py-2 rounded-lg text-gray-700 font-bold transition">¿Mejor precio?</button>
+                    <button onclick="window.appendQuestion('¿Tiene algún detalle estético o falla?')" class="text-[10px] uppercase tracking-wider bg-gray-100 hover:bg-gray-200 border border-gray-300 px-3 py-2 rounded-lg text-gray-700 font-bold transition">¿Detalles/Fallas?</button>
+                </div>
+                <textarea id="question-text" rows="5" class="w-full border-2 border-gray-300 p-4 rounded-xl focus:ring-0 focus:border-accent outline-none text-sm resize-none mt-2 transition bg-gray-50"></textarea>
+                <button onclick="window.sendQuestion()" class="w-full bg-[#25D366] hover:bg-[#128C7E] text-white font-black py-4 rounded-xl transition shadow-lg uppercase tracking-widest mt-2 flex justify-center items-center"><i class="fab fa-whatsapp mr-2 text-xl"></i> Enviar a KRAKEN</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal-oferta" class="fixed inset-0 bg-nyx/90 backdrop-blur-sm hidden z-50 items-center justify-center p-4">
+        <div class="bg-white rounded-2xl shadow-2xl w-full max-w-sm overflow-hidden flex flex-col modal-enter border border-gray-200">
+            <div class="bg-nyx text-white p-5 flex justify-between items-center wood-texture">
+                <h3 class="font-black uppercase tracking-widest text-sm"><i class="fas fa-hand-holding-dollar text-accent mr-2"></i> Negociación Directa</h3>
+                <button onclick="window.openProductDetails(window.activeProductId)" class="text-gray-400 hover:text-white transition bg-gray-800 w-8 h-8 rounded-full flex items-center justify-center"><i class="fas fa-arrow-left"></i></button>
+            </div>
+            <div class="p-6 text-center bg-gray-50">
+                <p id="offer-target-name" class="font-black text-nyx text-sm mb-1 uppercase tracking-tight"></p>
+                <p class="text-xs text-gray-500 mb-5 border-b border-gray-200 pb-4 uppercase tracking-widest">Precio Base: <span id="offer-target-price" class="font-black line-through text-red-500 ml-1"></span></p>
+                <div class="bg-nyx p-4 rounded-xl mb-6 text-right shadow-inner border-2 border-gray-800 flex items-center justify-end wood-texture">
+                    <span class="text-accent text-2xl font-black mr-2">$</span>
+                    <input type="number" id="offer-input" class="bg-transparent text-5xl font-black text-white w-full text-right outline-none tracking-tighter" readonly value="0">
+                </div>
+                <div class="grid grid-cols-3 gap-3">
+                    <button onclick="window.padInput('1')" class="bg-white border-2 border-gray-200 hover:border-accent p-4 rounded-xl font-black text-2xl text-nyx transition">1</button>
+                    <button onclick="window.padInput('2')" class="bg-white border-2 border-gray-200 hover:border-accent p-4 rounded-xl font-black text-2xl text-nyx transition">2</button>
+                    <button onclick="window.padInput('3')" class="bg-white border-2 border-gray-200 hover:border-accent p-4 rounded-xl font-black text-2xl text-nyx transition">3</button>
+                    <button onclick="window.padInput('4')" class="bg-white border-2 border-gray-200 hover:border-accent p-4 rounded-xl font-black text-2xl text-nyx transition">4</button>
+                    <button onclick="window.padInput('5')" class="bg-white border-2 border-gray-200 hover:border-accent p-4 rounded-xl font-black text-2xl text-nyx transition">5</button>
+                    <button onclick="window.padInput('6')" class="bg-white border-2 border-gray-200 hover:border-accent p-4 rounded-xl font-black text-2xl text-nyx transition">6</button>
+                    <button onclick="window.padInput('7')" class="bg-white border-2 border-gray-200 hover:border-accent p-4 rounded-xl font-black text-2xl text-nyx transition">7</button>
+                    <button onclick="window.padInput('8')" class="bg-white border-2 border-gray-200 hover:border-accent p-4 rounded-xl font-black text-2xl text-nyx transition">8</button>
+                    <button onclick="window.padInput('9')" class="bg-white border-2 border-gray-200 hover:border-accent p-4 rounded-xl font-black text-2xl text-nyx transition">9</button>
+                    <button onclick="window.padClear()" class="bg-red-50 border-2 border-red-200 text-red-600 p-4 rounded-xl font-black text-2xl transition">C</button>
+                    <button onclick="window.padInput('0')" class="bg-white border-2 border-gray-200 hover:border-accent p-4 rounded-xl font-black text-2xl text-nyx transition">0</button>
+                    <button onclick="window.padDel()" class="bg-gray-200 border-2 border-gray-300 p-4 rounded-xl font-black text-xl transition"><i class="fas fa-backspace text-gray-700"></i></button>
+                </div>
+                <button onclick="window.submitOffer()" class="w-full mt-6 bg-pending hover:bg-yellow-600 text-white font-black py-4 rounded-xl uppercase tracking-widest transition shadow-lg text-sm">Lanzar Oferta <i class="fas fa-paper-plane ml-2"></i></button>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal-admin" class="fixed inset-0 bg-black/95 backdrop-blur-md hidden z-[60] items-center justify-center p-2 md:p-4">
+        <div class="bg-white rounded-2xl shadow-2xl w-full max-w-6xl max-h-[95vh] h-[95vh] overflow-hidden flex flex-col border border-gray-700 modal-enter">
+            <div class="bg-nyx text-white p-4 flex justify-between items-center shadow-md wood-texture shrink-0">
+                <h3 class="font-black uppercase tracking-widest text-white text-sm md:text-base"><i class="fas fa-cloud text-accent mr-2"></i> CLOUD ADMIN</h3>
+                <div class="flex items-center">
+                    <span class="text-[10px] bg-green-500/20 text-green-400 border border-green-500 px-2 py-1 rounded shadow-inner tracking-widest uppercase font-black mr-4 hidden md:inline-block"><i class="fas fa-wifi mr-1"></i>Sincronizado</span>
+                    <button onclick="window.closeModals()" class="text-gray-400 hover:text-white text-xl w-8 h-8 flex items-center justify-center bg-gray-800 rounded-full">&times;</button>
+                </div>
+            </div>
+            
+            <div class="flex border-b border-gray-200 bg-gray-50 shrink-0">
+                <button id="tab-btn-editar" onclick="window.switchAdminTab('editar')" class="flex-1 py-3 text-xs md:text-sm font-black uppercase text-accent border-b-2 border-accent transition-colors"><i class="fas fa-boxes mr-2"></i>Inventario</button>
+                <button id="tab-btn-nuevo" onclick="window.switchAdminTab('nuevo')" class="flex-1 py-3 text-xs md:text-sm font-black uppercase text-gray-400 border-b-2 border-transparent transition-colors"><i class="fas fa-plus-circle mr-2"></i>Nuevo Fierro</button>
+            </div>
+
+            <div class="flex-1 overflow-y-auto bg-gray-100 p-2 md:p-4 relative">
+                
+                <div id="admin-tab-editar" class="space-y-2"></div>
+
+                <div id="admin-tab-nuevo" class="hidden max-w-2xl mx-auto bg-white p-6 rounded-xl border border-gray-200 shadow-sm mt-4">
+                    <h4 class="font-black uppercase text-sm tracking-widest text-nyx mb-4 border-b border-gray-100 pb-2"><i class="fas fa-cloud-upload-alt text-accent mr-2"></i>Publicador de Productos</h4>
+                    <div class="space-y-4">
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1">ID Producto</label>
+                                <input type="text" id="new-code" placeholder="Ej. 15" class="w-full p-3 rounded-lg bg-gray-50 border border-gray-300 text-sm font-bold outline-none focus:border-accent">
+                            </div>
+                            <div>
+                                <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1">Categoría</label>
+                                <input type="text" id="new-cat" placeholder="Ej. Cocina" class="w-full p-3 rounded-lg bg-gray-50 border border-gray-300 text-sm font-bold outline-none focus:border-accent">
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1">Nombre del Equipo</label>
+                            <input type="text" id="new-nombre" placeholder="Ej. Vasos de Cristal" class="w-full p-3 rounded-lg bg-gray-50 border border-gray-300 text-sm font-bold outline-none focus:border-accent">
+                        </div>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1">Precio Unitario ($)</label>
+                                <input type="number" id="new-indiv" placeholder="0" class="w-full p-3 rounded-lg bg-gray-50 border border-gray-300 text-sm font-bold outline-none focus:border-accent text-nyx">
+                            </div>
+                            <div>
+                                <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1">Precio Paquete ($)</label>
+                                <input type="number" id="new-paquete" placeholder="0" class="w-full p-3 rounded-lg bg-gray-50 border border-gray-300 text-sm font-bold outline-none focus:border-accent text-accent">
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1">Descripción</label>
+                            <textarea id="new-desc" rows="3" placeholder="Detalles, condiciones..." class="w-full p-3 rounded-lg bg-gray-50 border border-gray-300 text-sm font-bold outline-none focus:border-accent resize-none"></textarea>
+                        </div>
+                        <div class="bg-gray-50 p-4 rounded-lg border-2 border-dashed border-gray-300 text-center">
+                            <label class="block text-[10px] font-black text-gray-500 uppercase tracking-widest mb-2"><i class="fas fa-camera mr-1"></i> Imágenes (Puedes elegir varias)</label>
+                            <input type="file" id="new-file" accept="image/*" multiple class="text-xs w-full file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-black file:bg-nyx file:text-white hover:file:bg-accent cursor-pointer">
+                        </div>
+                        <button onclick="window.uploadNewProduct()" id="btn-upload" class="w-full bg-accent hover:bg-purple-600 text-white font-black py-4 rounded-lg text-xs uppercase tracking-widest transition shadow-lg mt-4 flex items-center justify-center"><i class="fas fa-cloud-upload-alt text-xl mr-2"></i> Publicar en Catálogo</button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="admin-footer-editar" class="p-4 bg-white border-t border-gray-200 shrink-0">
+                <button id="btn-save-admin" onclick="window.saveAdminChanges()" class="w-full bg-nyx hover:bg-accent text-white font-black py-4 rounded-xl uppercase tracking-widest transition shadow-lg flex justify-center items-center text-sm">
+                    <i class="fas fa-sync-alt mr-2 text-xl"></i> Guardar Cambios Locales en Nube
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal-auth" class="fixed inset-0 bg-nyx/95 backdrop-blur-md hidden z-[70] items-center justify-center p-4">
+        <div class="bg-white p-8 rounded-2xl shadow-2xl w-full max-w-sm border-t-4 border-accent text-center modal-enter">
+            <h3 class="font-black uppercase mb-6 tracking-widest text-nyx text-lg"><i class="fas fa-lock mr-2 text-accent"></i> Acceso Arquitecto</h3>
+            <p class="text-[10px] text-gray-400 mb-4 font-mono leading-tight">Terminal conectada a Firestore.</p>
+            <input type="password" id="admin-pwd" class="w-full border-2 border-gray-200 bg-gray-50 p-4 rounded-xl text-center tracking-[0.5em] font-black outline-none focus:border-accent mb-6 text-nyx text-xl transition" placeholder="••••••••">
+            <div class="flex gap-3">
+                <button onclick="window.closeAuthModal()" class="w-1/3 bg-gray-200 hover:bg-gray-300 text-gray-700 font-black rounded-xl text-xs uppercase tracking-wider transition">Cerrar</button>
+                <button onclick="window.verifyAdmin()" class="w-2/3 bg-nyx hover:bg-accent text-white font-black py-4 rounded-xl uppercase tracking-widest transition shadow-lg text-xs">Desbloquear</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="cart-sidebar" class="fixed inset-y-0 right-0 w-full md:w-[420px] bg-white/95 backdrop-blur-xl shadow-2xl transform translate-x-full transition-transform duration-300 ease-in-out z-50 flex flex-col border-l border-gray-200">
+        <div class="p-5 bg-nyx text-white flex justify-between items-center shadow-lg z-10 border-b-4 border-accent wood-texture">
+            <h2 class="text-xl font-black uppercase tracking-widest"><i class="fas fa-clipboard-list text-accent mr-2"></i> Panel de Tratos</h2>
+            <button onclick="window.toggleCart()" class="text-gray-400 hover:text-white text-2xl transition bg-gray-800 w-8 h-8 rounded-full flex items-center justify-center">&times;</button>
+        </div>
+        <div id="cart-items" class="flex-1 overflow-y-auto p-5 space-y-4 bg-gray-50/50"></div>
+        <div class="p-6 bg-white border-t border-gray-200 shadow-[0_-10px_20px_-5px_rgba(0,0,0,0.05)]">
+            <div class="flex gap-2 mb-5">
+                <input type="text" id="coupon-code" placeholder="CÓDIGO (Ej. CODE02)" class="flex-1 border-2 border-gray-200 p-3 text-xs font-black rounded-xl outline-none focus:border-nyx uppercase bg-gray-50 tracking-widest transition">
+                <button onclick="window.applyCoupon()" class="bg-nyx text-white px-5 py-3 rounded-xl hover:bg-accent transition font-bold shadow-md"><i class="fas fa-unlock"></i></button>
+            </div>
+            <div class="space-y-2 mb-5">
+                <div class="flex justify-between text-gray-500 text-sm font-bold uppercase tracking-wider">
+                    <span>Subtotal</span><span id="cart-subtotal" class="font-black text-gray-800">$0.00</span>
+                </div>
+                <div class="flex justify-between text-accent font-black text-sm uppercase tracking-wider hidden bg-accent/10 p-2 rounded-lg border border-accent/20" id="discount-row">
+                    <span>Ahorro Paquete</span><span id="cart-discount">-$0.00</span>
+                </div>
+                <div class="flex justify-between text-pending font-black text-sm uppercase tracking-wider hidden bg-yellow-50 p-2 rounded-lg border border-yellow-200" id="pending-row">
+                    <span>En Revisión</span><span id="cart-pending">$0.00</span>
+                </div>
+                <div class="flex justify-between text-3xl font-black text-nyx pt-4 mt-2 border-t-2 border-gray-100">
+                    <span class="tracking-widest">TOTAL</span><span id="cart-total" class="text-accent">$0.00</span>
+                </div>
+            </div>
+            <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Logística de Entrega</label>
+            <select id="delivery-method" class="w-full border-2 border-gray-200 p-4 text-xs font-black rounded-xl outline-none bg-gray-50 mb-4 text-nyx uppercase focus:border-nyx cursor-pointer transition">
+                <option value="RECOGER EN BODEGA (TORREON)">Recoger en Bodega (Torreón)</option>
+                <option value="FLETE LOCAL (NO INCLUIDO)">Flete Local (Se cotiza extra)</option>
+            </select>
+            <button onclick="window.checkoutWhatsApp()" class="w-full bg-[#25D366] hover:bg-[#128C7E] text-white font-black py-4 rounded-xl shadow-lg hover:shadow-xl transition uppercase tracking-widest flex justify-center items-center text-sm"><i class="fab fa-whatsapp text-2xl mr-3"></i> Cerrar Trato</button>
+        </div>
+    </div>
+
+    <div id="overlay" onclick="window.closeModals(); window.toggleCart(false)" class="fixed inset-0 bg-nyx/80 backdrop-blur-sm hidden z-40 transition-all duration-300"></div>
+
+    <script>
+        const numTelefono = "528711119800"; 
+        window.productos = [];
+        window.cart = {};
+        window.activeProductId = null;
+        window.currentSliderImages = [];
+        window.currentSlideIndex = 0;
+
+        // KRAKEN TACTICA: Base de datos corregida. Items separados, estantes limpios, precio de loza ajustado.
+        const defaultProductos = [
+            { id: 'pv-full', codeId: '01', categoria: 'Gestión', nombre: 'Punto de Venta Nextep', desc: 'Sistema integral operativo. CPU, Monitor Touch, Impresoras. Licencia activa.', pIndiv: 11500, pPaquete: 10850, img: ['img/sistema_de_punto_de_venta.webp'], vendido: false, timestamp: Date.now() },
+            { id: 'terminal-smart', codeId: '02', categoria: 'Gestión', nombre: 'Terminal Point Smart', desc: 'Mercado Pago. Alta velocidad de cobro, incluye base de carga.', pIndiv: 750, pPaquete: 650, img: ['img/terminal_mercado_pago_point_smart.webp'], vendido: false, timestamp: Date.now()+1 },
+            { id: 'aire-lavado-1', codeId: '03', categoria: 'Clima', nombre: 'Aire Lavado Comercial (#1)', desc: 'Unidad de alto flujo para inyección de volumen en local comercial.', pIndiv: 11500, pPaquete: 10500, img: ['img/enfriador_evaporativo_port_til.webp'], vendido: false, timestamp: Date.now()+2 },
+            { id: 'aire-lavado-2', codeId: '04', categoria: 'Clima', nombre: 'Aire Lavado Comercial (#2)', desc: 'Unidad de alto flujo para inyección de volumen en local comercial.', pIndiv: 11500, pPaquete: 10500, img: ['img/enfriador_evaporativo_port_til.webp'], vendido: false, timestamp: Date.now()+3 },
+            { id: 'congelador', codeId: '05', categoria: 'Clima', nombre: 'Congelador Vertical Hamilton Beach', desc: '7 compartimentos independientes, blanco. Garage Ready.', pIndiv: 5200, pPaquete: 4800, img: ['img/congelador_vertical_hamilton_beach.webp'], vendido: true, timestamp: Date.now()+4 },
+            { id: 'freidora', codeId: '06', categoria: 'Cocina', nombre: 'Freidora Industrial de Acero', desc: 'Alta potencia para operación continua. Acero inoxidable.', pIndiv: 3500, pPaquete: 3100, img: ['img/freidora_industrial_con_quemador.webp'], vendido: false, timestamp: Date.now()+5 },
+            { id: 'horno-conv', codeId: '07', categoria: 'Cocina', nombre: 'Horno Convección Air Fryer', desc: 'Gran capacidad de cocción uniforme.', pIndiv: 2800, pPaquete: 2500, img: ['img/horno_freidora_de_aire.webp'], vendido: false, timestamp: Date.now()+6 },
+            { id: 'licuadora', codeId: '08', categoria: 'Cocina', nombre: 'Licuadora Ninja Profesional', desc: 'Cuchillas de acero inoxidable, motor intacto.', pIndiv: 1300, pPaquete: 1100, img: ['img/licuadora_ninja_profesional.webp'], vendido: false, timestamp: Date.now()+7 },
+            { id: 'microondas', codeId: '09', categoria: 'Cocina', nombre: 'Microondas Comercial Inox', desc: 'Modelo de alta potencia con acabado total en acero.', pIndiv: 1900, pPaquete: 1600, img: ['img/microondas_de_acero_inoxidable.webp'], vendido: false, timestamp: Date.now()+8 },
+            { id: 'plancha-mesa', codeId: '10', categoria: 'Cocina', nombre: 'Plancha de Mesa a Gas', desc: 'Plancha auxiliar de acero liso.', pIndiv: 1350, pPaquete: 1200, img: ['img/plancha_industrial_de_gas.webp'], vendido: false, timestamp: Date.now()+9 },
+            { id: 'estante-1', codeId: '11', categoria: 'Mobiliario', nombre: 'Rack Metálico Industrial (Costco)', desc: 'Estante negro reforzado tipo rack de 5 niveles.', pIndiv: 3200, pPaquete: 2900, img: ['img/estanter_a_met_lica_de_cinco_niveles.webp'], vendido: false, timestamp: Date.now()+10 },
+            { id: 'trampa-grasa', codeId: '12', categoria: 'Mobiliario', nombre: 'Trampa de Grasa 20L', desc: 'Estructura 100% acero inoxidable.', pIndiv: 900, pPaquete: 800, img: ['img/trampa_grasa_pendiente.png'], vendido: false, timestamp: Date.now()+11 },
+            { id: 'sartenes-lote', codeId: '13', categoria: 'Cocina', nombre: 'Lote de Sartenes Industriales', desc: 'Juego de 3 sartenes de alto impacto.', pIndiv: 650, pPaquete: 500, img: ['img/sartenes_pendientes.png'], vendido: false, timestamp: Date.now()+12 },
+            { id: 'lote-loza', codeId: '14', categoria: 'Vajilla', nombre: 'Lote de Servicio y Loza (341 pzas)', desc: '68 platos, 79 cristalería, 22 especialidades, 75 servicio, 97 cubiertos.', pIndiv: 14500, pPaquete: 12000, img: ['img/juego_de_vasos_de_cristal.webp', 'img/bandejas_rectangulares_negras.webp', 'img/tarros_de_cerveza_tecate.webp', 'img/tazas_de_cer_mica_colores_pastel.webp', 'img/molcajete_de_piedra_volc_nica.webp'], vendido: false, timestamp: Date.now()+13 } 
+        ];
+        
+        window.productos = JSON.parse(JSON.stringify(defaultProductos));
+
+        window.imgFallback = function(imgEl) {
+            if (!imgEl.dataset.retried) {
+                imgEl.dataset.retried = "true";
+                // Lógica dura: Si es webp intenta png, si es png intenta webp
+                if(imgEl.src.includes('.png')) imgEl.src = imgEl.src.replace(/\.png$/i, '.webp');
+                else if(imgEl.src.includes('.webp')) imgEl.src = imgEl.src.replace(/\.webp$/i, '.png');
+                else imgEl.src = 'https://via.placeholder.com/400x300?text=KRAKEN+PENDIENTE';
+            } else imgEl.src = 'https://via.placeholder.com/400x300?text=KRAKEN+PENDIENTE';
+        };
+
+        window.renderProductos = function() {
+            const grid = document.getElementById('product-grid');
+            if(!window.productos || window.productos.length === 0) return;
+            grid.innerHTML = window.productos.map(p => {
+                const isSold = p.vendido === true;
+                const isPos = p.id === 'pv-full';
+                const imgSrc = p.img && p.img.length > 0 ? p.img[0] : ''; 
+                return `
+                <div class="bg-white rounded-2xl shadow-lg ${!isSold ? 'hover:shadow-2xl cursor-pointer group hover:-translate-y-1' : 'opacity-70 grayscale border-red-200'} transition-all duration-300 flex flex-col border border-gray-100 overflow-hidden" ${!isSold ? `onclick="window.openProductDetails('${p.id}')"` : ''}>
+                    <div class="h-56 bg-gray-50 relative flex items-center justify-center overflow-hidden border-b border-gray-100">
+                        ${isPos ? `<div class="absolute inset-0 flex items-center justify-center z-0 overflow-hidden pointer-events-none"><span class="text-accent/10 font-black text-6xl transform -rotate-12 uppercase select-none">KRAKEN</span></div>` : ''}
+                        <span class="absolute top-4 left-4 bg-nyx/90 backdrop-blur-md text-white text-[10px] px-3 py-1.5 rounded-lg font-black uppercase z-10 shadow-md">${p.categoria}</span>
+                        ${p.img && p.img.length > 1 ? `<span class="absolute top-4 right-4 bg-nyx/70 text-white text-[10px] px-2 py-1 rounded font-bold z-10"><i class="fas fa-images mr-1"></i>${p.img.length}</span>` : ''}
+                        <img src="${imgSrc}" onerror="window.imgFallback(this)" class="w-full h-full object-cover transform ${!isSold ? 'group-hover:scale-110 transition-transform duration-700 ease-out' : ''} relative z-10 mix-blend-multiply" crossorigin="anonymous">
+                        ${isSold ? `<div class="absolute inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-20"><span class="bg-red-600 text-white font-black px-8 py-3 rounded-lg transform -rotate-12 shadow-2xl text-2xl border-4 border-red-800 tracking-widest uppercase">VENDIDO</span></div>` : ''}
+                    </div>
+                    <div class="p-5 flex-1 flex flex-col justify-between bg-white">
+                        <div>
+                            <h3 class="font-black text-nyx leading-tight mb-2 text-xl tracking-tight ${isSold ? 'text-gray-500 line-through' : ''}">${p.nombre}</h3>
+                            <p class="text-sm text-gray-500 line-clamp-2 mb-5 font-medium">${p.desc}</p>
+                        </div>
+                        <div class="flex justify-between items-end border-t border-gray-100 pt-4 mt-auto">
+                            <span class="text-[10px] ${isSold ? 'text-red-500' : 'text-gray-400'} font-black uppercase tracking-widest bg-gray-50 px-2 py-1 rounded-md">${isSold ? 'Agotado' : 'Precio Base'}</span>
+                            <span class="font-black text-2xl text-nyx ${isSold ? 'line-through text-red-500 opacity-50' : ''}">$${p.pIndiv.toLocaleString()}</span>
+                        </div>
+                    </div>
+                </div>
+            `}).join('');
+        };
+
+        window.switchAdminTab = function(tab) {
+            const btnEditar = document.getElementById('tab-btn-editar');
+            const btnNuevo = document.getElementById('tab-btn-nuevo');
+            const secEditar = document.getElementById('admin-tab-editar');
+            const secNuevo = document.getElementById('admin-tab-nuevo');
+            const footEditar = document.getElementById('admin-footer-editar');
+
+            if(tab === 'editar') {
+                btnEditar.classList.replace('text-gray-400', 'text-accent');
+                btnEditar.classList.replace('border-transparent', 'border-accent');
+                btnNuevo.classList.replace('text-accent', 'text-gray-400');
+                btnNuevo.classList.replace('border-accent', 'border-transparent');
+                secEditar.classList.remove('hidden');
+                footEditar.classList.remove('hidden');
+                secNuevo.classList.add('hidden');
+                window.renderAdminForm();
+            } else {
+                btnNuevo.classList.replace('text-gray-400', 'text-accent');
+                btnNuevo.classList.replace('border-transparent', 'border-accent');
+                btnEditar.classList.replace('text-accent', 'text-gray-400');
+                btnEditar.classList.replace('border-accent', 'border-transparent');
+                secNuevo.classList.remove('hidden');
+                secEditar.classList.add('hidden');
+                footEditar.classList.add('hidden'); 
+            }
+        };
+
+        window.toggleAccordion = function(id) {
+            const el = document.getElementById(id);
+            if(el.classList.contains('hidden')) {
+                document.querySelectorAll('.admin-accordion-content').forEach(x => x.classList.add('hidden'));
+                el.classList.remove('hidden');
+            } else {
+                el.classList.add('hidden');
+            }
+        };
+
+        window.renderAdminForm = function() {
+            const container = document.getElementById('admin-tab-editar');
+            container.innerHTML = window.productos.map((p, index) => {
+                const isSold = p.vendido;
+                const imgsHtml = (p.img && p.img.length > 0) ? p.img.map((url, i) => `
+                    <div class="relative w-16 h-16 md:w-20 md:h-20 flex-shrink-0 group rounded-lg overflow-hidden border border-gray-300">
+                        <img src="${url}" class="w-full h-full object-cover" onerror="window.imgFallback(this)">
+                        <div class="absolute inset-0 bg-black/60 hidden group-hover:flex items-center justify-center gap-2 transition-all">
+                            <a href="${url}" target="_blank" class="text-white hover:text-blue-400 p-1" title="Descargar"><i class="fas fa-download"></i></a>
+                            <button onclick="window.removeImageFromProduct('${p.id}', ${i})" class="text-white hover:text-red-400 p-1" title="Eliminar"><i class="fas fa-trash"></i></button>
+                        </div>
+                    </div>
+                `).join('') : '<p class="text-xs text-gray-400 p-2">Sin imágenes</p>';
+
+                return `
+                <div class="bg-white rounded-xl border ${isSold ? 'border-red-300' : 'border-gray-200'} overflow-hidden shadow-sm hover:shadow-md transition">
+                    <div class="p-4 ${isSold ? 'bg-red-50' : 'bg-gray-50 hover:bg-gray-100'} flex justify-between items-center cursor-pointer select-none" onclick="window.toggleAccordion('edit-item-${index}')">
+                        <div class="flex items-center gap-3 overflow-hidden">
+                            <span class="bg-nyx text-white text-[10px] px-2 py-1 rounded font-black tracking-widest shrink-0">ID: ${p.codeId}</span>
+                            <span class="font-black text-sm text-nyx truncate uppercase">${p.nombre}</span>
+                        </div>
+                        <div class="flex items-center gap-3 shrink-0">
+                            <span class="text-[10px] font-black uppercase tracking-widest ${isSold ? 'text-red-600 bg-red-100 px-2 py-1 rounded' : 'text-gray-400'}">${isSold ? 'Vendido' : 'Activo'}</span>
+                            <i class="fas fa-chevron-down text-gray-400"></i>
+                        </div>
+                    </div>
+                    <div id="edit-item-${index}" class="admin-accordion-content hidden p-4 border-t border-gray-200 bg-white">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                            <div>
+                                <label class="block text-[10px] uppercase font-black text-gray-500 tracking-widest mb-1">Nombre</label>
+                                <input type="text" id="adm-name-${index}" value="${p.nombre}" class="w-full border border-gray-300 p-2 text-sm rounded focus:border-accent outline-none font-bold text-nyx">
+                            </div>
+                            <div class="grid grid-cols-2 gap-2">
+                                <div>
+                                    <label class="block text-[10px] uppercase font-black text-gray-500 tracking-widest mb-1">Precio ($)</label>
+                                    <input type="number" id="adm-indiv-${index}" value="${p.pIndiv}" class="w-full border border-gray-300 p-2 text-sm rounded focus:border-accent outline-none font-bold text-nyx">
+                                </div>
+                                <div>
+                                    <label class="block text-[10px] uppercase font-black text-gray-500 tracking-widest mb-1">Paquete ($)</label>
+                                    <input type="number" id="adm-paquete-${index}" value="${p.pPaquete}" class="w-full border border-gray-300 p-2 text-sm rounded focus:border-accent outline-none font-bold text-accent">
+                                </div>
+                            </div>
+                            <div class="md:col-span-2">
+                                <label class="block text-[10px] uppercase font-black text-gray-500 tracking-widest mb-1">Descripción</label>
+                                <input type="text" id="adm-desc-${index}" value="${p.desc}" class="w-full border border-gray-300 p-2 text-sm rounded focus:border-accent outline-none font-medium text-gray-700">
+                            </div>
+                            <div class="md:col-span-2 flex items-center gap-3 bg-gray-50 p-3 rounded border border-gray-200">
+                                <input type="checkbox" id="adm-vendido-${index}" ${p.vendido ? 'checked' : ''} class="w-5 h-5 accent-red-600">
+                                <label class="text-xs uppercase font-black text-gray-700 tracking-widest">Marcar como Vendido / Agotado</label>
+                            </div>
+                        </div>
+                        <div class="border-t border-dashed border-gray-300 pt-4 mt-4">
+                            <label class="block text-[10px] uppercase font-black text-accent tracking-widest mb-2"><i class="fas fa-camera mr-1"></i> Galería del Producto</label>
+                            <div class="flex gap-3 overflow-x-auto pb-2">
+                                ${imgsHtml}
+                            </div>
+                            <div class="mt-3 flex flex-col md:flex-row items-start md:items-center gap-2">
+                                <input type="file" id="add-img-file-${p.id}" accept="image/*" multiple class="text-[10px] file:mr-2 file:py-1 file:px-2 file:rounded file:border-0 file:bg-gray-200 file:font-black w-full md:w-auto">
+                                <button onclick="window.addImagesToProduct('${p.id}')" class="bg-accent text-white px-3 py-1.5 rounded text-[10px] font-black uppercase tracking-wider hover:bg-purple-600 transition w-full md:w-auto"><i class="fas fa-plus mr-1"></i> Añadir Foto(s)</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `}).join('');
+        };
+
+        window.updateSliderUI = function() {
+            const imgEl = document.getElementById('detail-img');
+            imgEl.removeAttribute('data-retried'); 
+            imgEl.src = window.currentSliderImages[window.currentSlideIndex];
+            const dotsContainer = document.getElementById('slider-dots');
+            if (window.currentSliderImages.length > 1) {
+                dotsContainer.innerHTML = window.currentSliderImages.map((_, i) => `<div class="w-2 h-2 rounded-full transition-colors ${i === window.currentSlideIndex ? 'bg-accent' : 'bg-white/50'}"></div>`).join('');
+            }
+        };
+
+        window.nextSlide = function() {
+            if(window.currentSliderImages.length <= 1) return;
+            window.currentSlideIndex = (window.currentSlideIndex + 1) % window.currentSliderImages.length;
+            window.updateSliderUI();
+        };
+
+        window.prevSlide = function() {
+            if(window.currentSliderImages.length <= 1) return;
+            window.currentSlideIndex = (window.currentSlideIndex - 1 + window.currentSliderImages.length) % window.currentSliderImages.length;
+            window.updateSliderUI();
+        };
+
+        window.openProductDetails = function(id) {
+            window.closeModals();
+            window.activeProductId = id;
+            const p = window.productos.find(x => x.id === id);
+            window.currentSliderImages = p.img || [];
+            window.currentSlideIndex = 0;
+            
+            const btnPrev = document.getElementById('slider-prev');
+            const btnNext = document.getElementById('slider-next');
+            const dots = document.getElementById('slider-dots');
+            
+            if (window.currentSliderImages.length > 1) {
+                btnPrev.classList.remove('hidden'); btnNext.classList.remove('hidden'); dots.classList.remove('hidden');
+            } else {
+                btnPrev.classList.add('hidden'); btnNext.classList.add('hidden'); dots.classList.add('hidden');
+            }
+            
+            window.updateSliderUI();
+            
+            if (p.id === 'pv-full') document.getElementById('detail-watermark').classList.remove('hidden');
+            else document.getElementById('detail-watermark').classList.add('hidden');
+
+            document.getElementById('detail-category').innerText = `${p.categoria} (ID: ${p.codeId})`;
+            document.getElementById('detail-name').innerText = p.nombre;
+            document.getElementById('detail-desc').innerText = p.desc;
+            document.getElementById('detail-indiv').innerText = `$${p.pIndiv.toLocaleString()}`;
+            document.getElementById('detail-paquete').innerText = `$${p.pPaquete.toLocaleString()}`;
+            
+            document.getElementById('btn-detail-ask').onclick = () => window.openQuestion(id);
+            document.getElementById('btn-detail-offer').onclick = () => window.openOffer(id);
+            document.getElementById('modal-details').classList.add('modal-active');
+            document.getElementById('overlay').classList.remove('hidden');
+        };
+
+        window.closeModals = function() {
+            document.querySelectorAll('.modal-active').forEach(el => {
+                el.classList.remove('modal-active'); el.classList.add('hidden');
+            });
+            document.getElementById('overlay').classList.add('hidden');
+        };
+
+        window.openAdmin = function() {
+            window.closeModals();
+            document.getElementById('admin-pwd').value = '';
+            document.getElementById('modal-auth').classList.remove('hidden');
+            document.getElementById('modal-auth').classList.add('modal-active');
+        };
+
+        window.verifyAdmin = function() {
+            if(document.getElementById('admin-pwd').value === "KRAKEN26") {
+                window.closeAuthModal();
+                window.switchAdminTab('editar');
+                document.getElementById('modal-admin').classList.remove('hidden');
+                document.getElementById('modal-admin').classList.add('modal-active');
+                document.getElementById('overlay').classList.remove('hidden');
+            } else alert("Acceso denegado.");
+        };
+
+        window.closeAuthModal = function() {
+            document.getElementById('modal-auth').classList.add('hidden');
+            document.getElementById('modal-auth').classList.remove('modal-active');
+        };
+
+        window.toggleCart = function(forceState) {
+            const sidebar = document.getElementById('cart-sidebar');
+            const overlay = document.getElementById('overlay');
+            const hasModalActive = document.querySelector('.modal-active') !== null;
+
+            if (forceState === false) {
+                sidebar.classList.add('translate-x-full');
+                if (!hasModalActive) overlay.classList.add('hidden');
+            } else if (forceState === true) {
+                sidebar.classList.remove('translate-x-full');
+                overlay.classList.remove('hidden');
+            } else {
+                sidebar.classList.toggle('translate-x-full');
+                if (sidebar.classList.contains('translate-x-full')) {
+                    if (!hasModalActive) overlay.classList.add('hidden');
+                } else overlay.classList.remove('hidden');
+            }
+        };
+
+        // Carrito logic
+        window.addToCart = function(id, status = 'active', offerPrice = 0) {
+            const p = window.productos.find(x => x.id === id);
+            if (!window.cart[id] || status === 'pending') window.cart[id] = { ...p, qty: 1, status: status, customPrice: offerPrice };
+            else window.cart[id].qty++;
+            window.updateCartUI();
+        };
+
+        window.updateQty = function(id, delta) {
+            if (!window.cart[id]) return;
+            window.cart[id].qty += delta;
+            if (window.cart[id].qty <= 0) delete window.cart[id];
+            window.updateCartUI();
+        };
+
+        window.removePending = function(id) { delete window.cart[id]; window.updateCartUI(); };
+
+        window.updateCartUI = function() {
+            const container = document.getElementById('cart-items');
+            const items = Object.values(window.cart);
+            const activeItems = items.filter(i => i.status === 'active');
+            const totalActiveQty = activeItems.reduce((sum, item) => sum + item.qty, 0);
+            const aplicaPaquete = totalActiveQty >= 2;
+            let subtotal = 0, totalAprobado = 0, totalPendiente = 0;
+
+            container.innerHTML = items.length === 0 ? '<div class="text-center text-gray-400 mt-10">Cotización Vacía</div>' : items.map(item => {
+                const currentProductInfo = window.productos.find(p => p.id === item.id) || item;
+                if (item.status === 'pending') {
+                    totalPendiente += item.customPrice * item.qty;
+                    return `<div class="bg-yellow-50 p-4 rounded-xl mb-2 text-sm">Pendiente: ${currentProductInfo.nombre} - Oferta: $${item.customPrice} <button onclick="window.removePending('${item.id}')" class="text-red-500 ml-2">Quitar</button></div>`;
+                } else {
+                    const precioAplicado = item.customPrice > 0 ? item.customPrice : (aplicaPaquete ? currentProductInfo.pPaquete : currentProductInfo.pIndiv);
+                    if (item.customPrice === 0) subtotal += currentProductInfo.pIndiv * item.qty;
+                    else subtotal += precioAplicado * item.qty; 
+                    totalAprobado += precioAplicado * item.qty;
+                    return `<div class="bg-white p-4 rounded-xl border mb-2 flex justify-between items-center text-sm">
+                        <span>${currentProductInfo.nombre} ($${precioAplicado})</span>
+                        <div class="flex gap-2"><button onclick="window.updateQty('${item.id}', -1)">-</button>${item.qty}<button onclick="window.updateQty('${item.id}', 1)">+</button></div>
+                    </div>`;
+                }
+            }).join('');
+
+            const ahorro = subtotal - totalAprobado;
+            document.getElementById('cart-count').innerText = items.length;
+            document.getElementById('cart-subtotal').innerText = `$${subtotal.toLocaleString()}`;
+            if (ahorro > 0) { document.getElementById('discount-row').classList.remove('hidden'); document.getElementById('cart-discount').innerText = `-$${ahorro.toLocaleString()}`; } 
+            else document.getElementById('discount-row').classList.add('hidden');
+            if (totalPendiente > 0) { document.getElementById('pending-row').classList.remove('hidden'); document.getElementById('cart-pending').innerText = `$${totalPendiente.toLocaleString()}`; } 
+            else document.getElementById('pending-row').classList.add('hidden');
+            document.getElementById('cart-total').innerText = `$${totalAprobado.toLocaleString()}`;
+        };
+
+        window.checkoutWhatsApp = function() {
+            if(Object.keys(window.cart).length === 0) return alert("Carrito vacío");
+            let msg = "Orden KRAKEN:\n";
+            Object.values(window.cart).forEach(i => msg += `- ${i.qty}x ${i.nombre}\n`);
+            window.open(`https://wa.me/${numTelefono}?text=${encodeURIComponent(msg)}`, '_blank');
+        };
+
+        window.exportToPDF = function() { alert("Para habilitar PDF sin trabas móviles, se recomienda acceder de escritorio."); };
+        window.saveAdminChanges = function() { alert("Conectando a Nube... espera."); };
+        window.uploadNewProduct = function() { alert("Conectando a Nube... espera."); };
+        window.removeImageFromProduct = function() { alert("Conectando a Nube... espera."); };
+        window.addImagesToProduct = function() { alert("Conectando a Nube... espera."); };
+    </script>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getFirestore, collection, onSnapshot, doc, updateDoc, setDoc, getDocs } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-storage.js";
+        import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDSrigkVk1Jd3Y_t1iCuXkIpWXtysmwBCQ",
+            authDomain: "kraken-a6b44.firebaseapp.com",
+            projectId: "kraken-a6b44",
+            storageBucket: "kraken-a6b44.firebasestorage.app",
+            messagingSenderId: "984413462221",
+            appId: "1:984413462221:web:c5dac8510b95834f401384"
+        };
+
+        try {
+            const app = initializeApp(firebaseConfig);
+            const db = getFirestore(app);
+            const storage = getStorage(app);
+            const auth = getAuth(app);
+
+            signInAnonymously(auth).catch(e => console.error(e));
+
+            onAuthStateChanged(auth, async (user) => {
+                if (user) {
+                    // Protocolo de Semilla
+                    try {
+                        const snap = await getDocs(collection(db, "productos"));
+                        if (snap.empty) {
+                            for(const p of window.productos) await setDoc(doc(db, "productos", p.id), p);
+                        }
+                    } catch (e) {}
+
+                    onSnapshot(collection(db, "productos"), (snapshot) => {
+                        window.productos = snapshot.docs.map(d => ({id: d.id, ...d.data()}));
+                        window.productos.sort((a,b) => parseInt(a.codeId) - parseInt(b.codeId));
+                        document.getElementById('loading-spinner').classList.add('hidden');
+                        document.getElementById('product-grid').classList.remove('hidden');
+                        window.renderProductos();
+                        if(document.getElementById('modal-admin').classList.contains('modal-active') && !document.getElementById('admin-tab-editar').classList.contains('hidden')) {
+                            window.renderAdminForm();
+                        }
+                    });
+                }
+            });
+
+            window.saveAdminChanges = async function() {
+                const btn = document.getElementById('btn-save-admin');
+                const orig = btn.innerHTML;
+                btn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Sincronizando...';
+                try {
+                    let updates = 0;
+                    for(let i=0; i<window.productos.length; i++) {
+                        const p = window.productos[i];
+                        const nn = document.getElementById(`adm-name-${i}`).value;
+                        const ni = parseInt(document.getElementById(`adm-indiv-${i}`).value) || 0;
+                        const np = parseInt(document.getElementById(`adm-paquete-${i}`).value) || 0;
+                        const nd = document.getElementById(`adm-desc-${i}`).value;
+                        const nv = document.getElementById(`adm-vendido-${i}`).checked;
+
+                        if(p.nombre !== nn || p.pIndiv !== ni || p.pPaquete !== np || p.desc !== nd || p.vendido !== nv) {
+                            await updateDoc(doc(db, "productos", p.id), { nombre: nn, pIndiv: ni, pPaquete: np, desc: nd, vendido: nv });
+                            updates++;
+                        }
+                    }
+                    alert(updates > 0 ? `${updates} actualizados en la nube.` : "Sin cambios.");
+                } catch(e) { alert("Error: " + e.message); } 
+                finally { btn.innerHTML = orig; }
+            };
+
+            window.removeImageFromProduct = async function(prodId, imgIndex) {
+                if(!confirm("¿Borrar foto de Firebase?")) return;
+                const p = window.productos.find(x => x.id === prodId);
+                const newImgArray = [...p.img];
+                newImgArray.splice(imgIndex, 1);
+                try { await updateDoc(doc(db, "productos", prodId), { img: newImgArray }); } 
+                catch(e) { alert("Error borrando foto: " + e); }
+            };
+
+            window.addImagesToProduct = async function(prodId) {
+                const input = document.getElementById(`add-img-file-${prodId}`);
+                if(!input.files || input.files.length === 0) return alert("Selecciona fotos.");
+                const p = window.productos.find(x => x.id === prodId);
+                const newUrls = [];
+                try {
+                    for(let file of input.files) {
+                        const storageRef = ref(storage, 'productos/' + Date.now() + '_' + file.name);
+                        await uploadBytes(storageRef, file);
+                        const url = await getDownloadURL(storageRef);
+                        newUrls.push(url);
+                    }
+                    await updateDoc(doc(db, "productos", prodId), { img: [...(p.img || []), ...newUrls] });
+                    input.value = '';
+                } catch(e) { alert("Error subiendo foto: " + e); }
+            };
+
+            window.uploadNewProduct = async function() {
+                const code = document.getElementById('new-code').value;
+                const name = document.getElementById('new-nombre').value;
+                const fileInput = document.getElementById('new-file');
+                
+                if(!code || !name) return alert("Falta ID y Nombre.");
+
+                const btn = document.getElementById('btn-upload');
+                const orig = btn.innerHTML;
+                btn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Subiendo...';
+                btn.disabled = true;
+
+                try {
+                    const newUrls = [];
+                    if(fileInput.files && fileInput.files.length > 0) {
+                        for(let file of fileInput.files) {
+                            const storageRef = ref(storage, 'productos/' + Date.now() + '_' + file.name);
+                            await uploadBytes(storageRef, file);
+                            const url = await getDownloadURL(storageRef);
+                            newUrls.push(url);
+                        }
+                    }
+                    const newId = 'prod_' + Date.now();
+                    await setDoc(doc(db, "productos", newId), {
+                        id: newId, codeId: code, categoria: document.getElementById('new-cat').value || 'General',
+                        nombre: name, pIndiv: parseInt(document.getElementById('new-indiv').value) || 0,
+                        pPaquete: parseInt(document.getElementById('new-paquete').value) || 0, desc: document.getElementById('new-desc').value,
+                        img: newUrls, vendido: false, timestamp: Date.now()
+                    });
+                    
+                    alert("Producto Nuevo Publicado.");
+                    document.getElementById('new-code').value = ''; document.getElementById('new-nombre').value = ''; fileInput.value = '';
+                    window.switchAdminTab('editar'); 
+                } catch(e) { alert("Error: " + e.message); } 
+                finally { btn.innerHTML = orig; btn.disabled = false; }
+            };
+        } catch (e) { console.error(e); }
+    </script>
+</body>
+</html>
