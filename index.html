@@ -391,6 +391,7 @@
         window.imgFallback = function(imgEl) {
             if (!imgEl.dataset.retried) {
                 imgEl.dataset.retried = "true";
+                // Lógica dura: Si es webp intenta png, si es png intenta webp
                 if(imgEl.src.includes('.png')) imgEl.src = imgEl.src.replace(/\.png$/i, '.webp');
                 else if(imgEl.src.includes('.webp')) imgEl.src = imgEl.src.replace(/\.webp$/i, '.png');
                 else imgEl.src = 'https://via.placeholder.com/400x300?text=KRAKEN+PENDIENTE';
@@ -464,7 +465,6 @@
             }
         };
 
-        // KRAKEN TÁCTICA: IDs anclados a `p.id` en lugar de index, para evitar cruce de cables.
         window.renderAdminForm = function() {
             const container = document.getElementById('admin-tab-editar');
             container.innerHTML = window.productos.map((p) => {
@@ -581,8 +581,16 @@
             document.getElementById('detail-indiv').innerText = `$${p.pIndiv.toLocaleString()}`;
             document.getElementById('detail-paquete').innerText = `$${p.pPaquete.toLocaleString()}`;
             
+            // KRAKEN TÁCTICA: BOTONES RECONECTADOS AL DOM
             document.getElementById('btn-detail-ask').onclick = () => window.openQuestion(id);
             document.getElementById('btn-detail-offer').onclick = () => window.openOffer(id);
+            document.getElementById('btn-detail-add').onclick = (e) => {
+                window.addToCart(id);
+                window.toastEffect(e.currentTarget, '<i class="fas fa-check mr-2"></i> AÑADIDO', 'bg-green-500');
+                setTimeout(() => { window.closeModals(); window.toggleCart(true); }, 500);
+            };
+
+            document.getElementById('modal-details').classList.remove('hidden');
             document.getElementById('modal-details').classList.add('modal-active');
             document.getElementById('overlay').classList.remove('hidden');
         };
@@ -635,7 +643,6 @@
             }
         };
 
-        // Carrito logic
         window.addToCart = function(id, status = 'active', offerPrice = 0) {
             const p = window.productos.find(x => x.id === id);
             if (!window.cart[id] || status === 'pending') window.cart[id] = { ...p, qty: 1, status: status, customPrice: offerPrice };
@@ -664,15 +671,15 @@
                 const currentProductInfo = window.productos.find(p => p.id === item.id) || item;
                 if (item.status === 'pending') {
                     totalPendiente += item.customPrice * item.qty;
-                    return `<div class="bg-yellow-50 p-4 rounded-xl mb-2 text-sm">Pendiente: ${currentProductInfo.nombre} - Oferta: $${item.customPrice} <button onclick="window.removePending('${item.id}')" class="text-red-500 ml-2">Quitar</button></div>`;
+                    return `<div class="bg-yellow-50 p-4 rounded-xl mb-2 text-sm border border-yellow-200 shadow-sm"><span class="font-black text-pending uppercase text-[10px] block mb-1">En Revisión</span><div class="flex justify-between items-center"><span class="font-bold text-gray-800">${currentProductInfo.nombre}</span><span class="font-black text-pending">$${item.customPrice}</span></div><button onclick="window.removePending('${item.id}')" class="text-red-500 text-xs font-bold mt-2 uppercase">Quitar</button></div>`;
                 } else {
                     const precioAplicado = item.customPrice > 0 ? item.customPrice : (aplicaPaquete ? currentProductInfo.pPaquete : currentProductInfo.pIndiv);
                     if (item.customPrice === 0) subtotal += currentProductInfo.pIndiv * item.qty;
                     else subtotal += precioAplicado * item.qty; 
                     totalAprobado += precioAplicado * item.qty;
-                    return `<div class="bg-white p-4 rounded-xl border mb-2 flex justify-between items-center text-sm">
-                        <span>${currentProductInfo.nombre} ($${precioAplicado})</span>
-                        <div class="flex gap-2"><button onclick="window.updateQty('${item.id}', -1)">-</button>${item.qty}<button onclick="window.updateQty('${item.id}', 1)">+</button></div>
+                    return `<div class="bg-white p-4 rounded-xl border border-gray-200 mb-2 flex justify-between items-center text-sm shadow-sm">
+                        <div class="flex flex-col"><span class="font-bold text-nyx uppercase">${currentProductInfo.nombre}</span><span class="text-xs text-gray-500">$${precioAplicado.toLocaleString()} c/u</span></div>
+                        <div class="flex items-center gap-2 bg-gray-50 p-1 rounded-lg border border-gray-200"><button onclick="window.updateQty('${item.id}', -1)" class="w-6 h-6 bg-white rounded flex items-center justify-center font-black">-</button><span class="font-black w-4 text-center">${item.qty}</span><button onclick="window.updateQty('${item.id}', 1)" class="w-6 h-6 bg-white rounded flex items-center justify-center font-black">+</button></div>
                     </div>`;
                 }
             }).join('');
@@ -687,18 +694,195 @@
             document.getElementById('cart-total').innerText = `$${totalAprobado.toLocaleString()}`;
         };
 
-        window.checkoutWhatsApp = function() {
-            if(Object.keys(window.cart).length === 0) return alert("Carrito vacío");
-            let msg = "Orden KRAKEN:\n";
-            Object.values(window.cart).forEach(i => msg += `- ${i.qty}x ${i.nombre}\n`);
-            window.open(`https://wa.me/${numTelefono}?text=${encodeURIComponent(msg)}`, '_blank');
+        window.toastEffect = function(btn, text, colorClass) {
+            const originalText = btn.innerHTML;
+            const originalColor = Array.from(btn.classList).find(c => c.startsWith('bg-'));
+            btn.innerHTML = text;
+            if(originalColor) btn.classList.replace(originalColor, colorClass);
+            else btn.classList.add(colorClass);
+            setTimeout(() => {
+                btn.innerHTML = originalText;
+                if(originalColor) btn.classList.replace(colorClass, originalColor);
+                else btn.classList.remove(colorClass);
+            }, 800);
         };
 
-        window.exportToPDF = function() { alert("Para habilitar PDF sin trabas móviles, se recomienda acceder de escritorio."); };
-        window.saveAdminChanges = function() { alert("Conectando a Nube... espera."); };
-        window.uploadNewProduct = function() { alert("Conectando a Nube... espera."); };
-        window.removeImageFromProduct = function() { alert("Conectando a Nube... espera."); };
-        window.addImagesToProduct = function() { alert("Conectando a Nube... espera."); };
+        window.openQuestion = function(id) {
+            window.closeModals();
+            window.activeProductId = id;
+            const p = window.productos.find(x => x.id === id);
+            document.getElementById('question-target-name').innerText = p.nombre;
+            document.getElementById('question-text').value = '';
+            document.getElementById('modal-preguntar').classList.remove('hidden');
+            document.getElementById('modal-preguntar').classList.add('modal-active');
+            document.getElementById('overlay').classList.remove('hidden');
+        };
+
+        window.appendQuestion = function(text) {
+            const ta = document.getElementById('question-text');
+            ta.value = ta.value ? ta.value + '\n' + text : text;
+        };
+
+        window.sendQuestion = function() {
+            const p = window.productos.find(x => x.id === window.activeProductId);
+            const text = document.getElementById('question-text').value.trim();
+            if(!text) return;
+            let msg = `*CONSULTA DE EQUIPO:*\nProducto: ${p.nombre}\n\nPregunta: ${text}`;
+            window.open(`https://wa.me/${numTelefono}?text=${encodeURIComponent(msg)}`, '_blank');
+            window.closeModals();
+        };
+
+        window.openOffer = function(id) {
+            window.closeModals();
+            window.activeProductId = id;
+            const p = window.productos.find(x => x.id === id);
+            document.getElementById('offer-target-name').innerText = p.nombre;
+            document.getElementById('offer-target-price').innerText = `$${p.pIndiv.toLocaleString()}`;
+            document.getElementById('offer-input').value = '0';
+            document.getElementById('modal-oferta').classList.remove('hidden');
+            document.getElementById('modal-oferta').classList.add('modal-active');
+            document.getElementById('overlay').classList.remove('hidden');
+        };
+
+        window.padInput = function(num) {
+            const inp = document.getElementById('offer-input');
+            if(inp.value === '0') inp.value = num;
+            else if(inp.value.length < 8) inp.value += num;
+        };
+        
+        window.padClear = function() { document.getElementById('offer-input').value = '0'; };
+        
+        window.padDel = function() { 
+            const inp = document.getElementById('offer-input');
+            inp.value = inp.value.length > 1 ? inp.value.slice(0, -1) : '0';
+        };
+
+        window.submitOffer = function() {
+            const val = parseInt(document.getElementById('offer-input').value);
+            if (val <= 0) return;
+            const p = window.productos.find(x => x.id === window.activeProductId);
+            window.addToCart(p.id, 'pending', val);
+            let msg = `*NUEVA CONTRAOFERTA*\nProducto: ${p.nombre} (ID: ${p.codeId})\nPrecio de lista: $${p.pIndiv}\nMi Oferta: *$${val}*\n\n¿Me autorizas el código?`;
+            window.open(`https://wa.me/${numTelefono}?text=${encodeURIComponent(msg)}`, '_blank');
+            window.closeModals();
+            window.toggleCart(true);
+        };
+
+        window.checkoutWhatsApp = function() {
+            const items = Object.values(window.cart);
+            if (items.length === 0) return alert("SISTEMA NYX: Carrito vacío.");
+
+            const activeItems = items.filter(i => i.status === 'active');
+            const pendingItems = items.filter(i => i.status === 'pending');
+            
+            if (activeItems.length === 0 && pendingItems.length > 0) return alert("SISTEMA NYX: Tienes ítems bloqueados. Solicita tu código al vendedor.");
+
+            const delivery = document.getElementById('delivery-method').value;
+            const aplicaPaquete = activeItems.reduce((sum, item) => sum + item.qty, 0) >= 2;
+            
+            let totalAprobado = 0, subtotalCalc = 0;
+            let mensaje = `*CONFIRMACIÓN DE ORDEN (KRAKEN)*\n\n*CARRITO APROBADO:*\n`;
+
+            activeItems.forEach(item => {
+                const currentProductInfo = window.productos.find(p => p.id === item.id) || item;
+                const precio = item.customPrice > 0 ? item.customPrice : (aplicaPaquete ? currentProductInfo.pPaquete : currentProductInfo.pIndiv);
+                totalAprobado += precio * item.qty;
+                subtotalCalc += item.customPrice === 0 ? (currentProductInfo.pIndiv * item.qty) : (precio * item.qty);
+                let etiqueta = item.customPrice > 0 ? '[PACTADO]' : (aplicaPaquete && currentProductInfo.pIndiv !== currentProductInfo.pPaquete ? '[PAQUETE]' : '');
+                mensaje += `- ${item.qty}X ${currentProductInfo.nombre} $${(precio * item.qty).toLocaleString()} ${etiqueta}\n`;
+            });
+
+            const ahorro = subtotalCalc - totalAprobado;
+            mensaje += `\n*RESUMEN:*\n`;
+            if (ahorro > 0) mensaje += `AHORRO: -$${ahorro.toLocaleString()}\n`;
+            mensaje += `*TOTAL A PAGAR: $${totalAprobado.toLocaleString()} MXN*\nENTREGA: ${delivery}\n`;
+
+            if (pendingItems.length > 0) {
+                mensaje += `\n*ÍTEMS PENDIENTES:*\n`;
+                pendingItems.forEach(item => { 
+                    const currentProductInfo = window.productos.find(p => p.id === item.id) || item;
+                    mensaje += `- ${currentProductInfo.nombre} (Oferta: $${item.customPrice})\n`; 
+                });
+            }
+
+            window.open(`https://wa.me/${numTelefono}?text=${encodeURIComponent(mensaje.toUpperCase())}`, '_blank');
+        };
+
+        // KRAKEN TÁCTICA: GENERADOR DE PDF RECONECTADO CON `window.productos` (NUBE)
+        window.exportToPDF = function() {
+            window.closeModals();
+            const btn = document.getElementById('btn-export-pdf');
+            const btnOriginal = btn.innerHTML;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin text-lg md:mr-2 text-red-500"></i> <span class="hidden md:inline font-bold">Procesando...</span>';
+
+            let htmlContent = `
+                <div style="font-family: 'Helvetica Neue', 'Arial', sans-serif; padding: 40px; color: #111; width: 800px; margin: 0 auto; background-color: #f8fafc;">
+                    <div style="border-bottom: 5px solid #7c3aed; padding-bottom: 25px; margin-bottom: 35px; text-align: center; background-color: #0f172a; padding-top: 25px; border-radius: 10px 10px 0 0;">
+                        <h1 style="margin: 0; font-size: 32px; font-weight: 900; letter-spacing: 3px; color: #fff;">KRAKEN <span style="color: #7c3aed;">LIQUIDACIÓN</span></h1>
+                        <p style="margin: 8px 0 0 0; font-size: 14px; color: #cbd5e1; text-transform: uppercase; letter-spacing: 1px;">Catálogo Oficial de Activos Gastronómicos</p>
+                        <p style="margin: 8px 0 0 0; font-size: 15px; font-weight: bold; color: #fff; background-color: #7c3aed; display: inline-block; padding: 5px 15px; border-radius: 20px; margin-top: 15px;">WA Ventas: +52 871 111 9800</p>
+                    </div>
+                    <div style="background-color: #f5f3ff; border-left: 4px solid #7c3aed; padding: 20px; border-radius: 0 8px 8px 0; margin-bottom: 35px; box-shadow: 0 4px 6px rgba(0,0,0,0.05);">
+                        <strong style="color: #111; font-size: 14px; text-transform: uppercase; letter-spacing: 1px;">SISTEMA DE DESCUENTO ACTIVO</strong>
+                        <p style="margin: 8px 0 0 0; font-size: 13px; color: #555;">Al adquirir <strong style="color:#7c3aed;">2 o más equipos</strong>, se desbloquea automáticamente el "Precio Paquete" para toda la orden.</p>
+                    </div>
+            `;
+
+            window.productos.forEach(p => {
+                const isSold = p.vendido === true;
+                const imgSrc = p.img && p.img.length > 0 ? p.img[0] : '';
+                htmlContent += `
+                    <div style="display: flex; background-color: #fff; border: 1px solid #e2e8f0; border-radius: 12px; margin-bottom: 25px; overflow: hidden; page-break-inside: avoid; box-shadow: 0 2px 10px rgba(0,0,0,0.03); ${isSold ? 'opacity: 0.65;' : ''}">
+                        <div style="width: 220px; background-color: #f1f5f9; flex-shrink: 0; position: relative; border-right: 1px solid #e2e8f0;">
+                            <img src="${imgSrc}" onerror="window.imgFallback(this)" style="width: 100%; height: 100%; object-fit: cover; ${isSold ? 'filter: grayscale(100%);' : ''}">
+                            ${isSold ? '<div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(-15deg); background-color: #dc2626; color: white; padding: 8px 20px; font-weight: 900; font-size: 18px; border: 3px solid #7f1d1d; text-transform: uppercase; letter-spacing: 2px; box-shadow: 0 4px 15px rgba(0,0,0,0.3);">VENDIDO</div>' : ''}
+                        </div>
+                        <div style="padding: 25px; flex-grow: 1;">
+                            <div style="font-size: 10px; font-weight: 900; color: ${isSold ? '#dc2626' : '#7c3aed'}; text-transform: uppercase; margin-bottom: 8px; letter-spacing: 1.5px; background-color: ${isSold ? '#fef2f2' : '#f3e8ff'}; display: inline-block; padding: 4px 10px; border-radius: 4px;">${p.categoria} | ID: ${p.codeId}</div>
+                            <h3 style="margin: 0 0 12px 0; font-size: 20px; font-weight: 900; color: #0f172a; text-transform: uppercase; ${isSold ? 'text-decoration: line-through; color: #64748b;' : ''}">${p.nombre}</h3>
+                            <p style="margin: 0 0 20px 0; font-size: 13px; color: #475569; line-height: 1.6;">${p.desc}</p>
+                            
+                            <table style="width: 100%; border-collapse: collapse; margin-top: 15px; background-color: #f8fafc; border-radius: 8px; overflow: hidden;">
+                                <tr>
+                                    <td style="padding: 12px 15px; border-bottom: 1px solid #e2e8f0; font-size: 12px; color: #64748b; font-weight: bold; text-transform: uppercase;">Precio Unitario:</td>
+                                    <td style="padding: 12px 15px; border-bottom: 1px solid #e2e8f0; font-size: 18px; font-weight: 900; text-align: right; color: #0f172a; ${isSold ? 'text-decoration: line-through; color: #dc2626;' : ''}">$${p.pIndiv.toLocaleString()} MXN</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding: 12px 15px; font-size: 12px; color: #7c3aed; font-weight: bold; text-transform: uppercase;">Precio Paquete (2+):</td>
+                                    <td style="padding: 12px 15px; font-size: 18px; font-weight: 900; color: #7c3aed; text-align: right;">$${p.pPaquete.toLocaleString()} MXN</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                `;
+            });
+
+            htmlContent += `
+                    <div style="text-align: center; margin-top: 50px; padding-top: 25px; border-top: 2px dashed #cbd5e1; font-size: 11px; color: #94a3b8; text-transform: uppercase; letter-spacing: 1px;">
+                        <strong>SISTEMA NYX / CORE KRAKEN CLOUD</strong><br><br>
+                        Precios sujetos a disponibilidad. Equipo entregado en Torreón, Coah.
+                    </div>
+                </div>
+            `;
+
+            const opt = {
+                margin:       [10, 0, 10, 0],
+                filename:     'Catalogo_KRAKEN_Cloud.pdf',
+                image:        { type: 'jpeg', quality: 0.98 },
+                html2canvas:  { scale: 2, useCORS: true, scrollY: 0 }, 
+                jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+            };
+
+            setTimeout(() => {
+                html2pdf().set(opt).from(htmlContent).save().then(() => {
+                    btn.innerHTML = btnOriginal;
+                }).catch(err => {
+                    console.error("PDF Error: ", err);
+                    alert("SISTEMA NYX: Hubo un error procesando el PDF.");
+                    btn.innerHTML = btnOriginal;
+                });
+            }, 1000);
+        };
     </script>
 
     <!-- MOTOR CLOUD FIREBASE V11 -->
@@ -744,7 +928,10 @@
                         
                         window.renderProductos();
                         
-                        // KRAKEN TÁCTICA: Ya NO recargamos el form del Admin automáticamente para evitar que se te borre lo que estás escribiendo.
+                        // Evita recargar el admin si estás editando
+                        if(document.getElementById('modal-admin').classList.contains('modal-active') && !document.getElementById('admin-tab-editar').classList.contains('hidden')) {
+                            // window.renderAdminForm(); // Comentado para evitar que borre lo que escribes.
+                        }
                     });
                 }
             });
@@ -759,11 +946,11 @@
                     let updates = 0;
                     const pendingUpdates = [];
 
-                    // 1. Recoger datos primero (usando p.id para que sea exacto)
+                    // 1. Recoger datos primero
                     for(let i=0; i<window.productos.length; i++) {
                         const p = window.productos[i];
                         const nnInput = document.getElementById(`adm-name-${p.id}`);
-                        if(!nnInput) continue; // Por si el acordeón no renderizó este en específico
+                        if(!nnInput) continue; 
 
                         const nn = nnInput.value;
                         const ni = parseInt(document.getElementById(`adm-indiv-${p.id}`).value) || 0;
@@ -785,9 +972,7 @@
                         updates++;
                     }
 
-                    alert(updates > 0 ? `${updates} actualizados en la nube de forma segura.` : "Sin cambios detectados.");
-                    
-                    // 3. Ya que se guardó todo, refrescamos el panel para limpiar la memoria visual
+                    alert(updates > 0 ? `${updates} actualizados en la nube.` : "Sin cambios detectados.");
                     if(updates > 0) window.renderAdminForm();
 
                 } catch(e) { alert("Error crítico: " + e.message); } 
@@ -795,13 +980,12 @@
             };
 
             window.removeImageFromProduct = async function(prodId, imgIndex) {
-                if(!confirm("¿Borrar foto de Firebase permanentemente?")) return;
+                if(!confirm("¿Borrar foto permanentemente?")) return;
                 const p = window.productos.find(x => x.id === prodId);
                 const newImgArray = [...p.img];
                 newImgArray.splice(imgIndex, 1);
                 try { 
                     await updateDoc(doc(db, "productos", prodId), { img: newImgArray });
-                    // Recargar el form de forma local para reflejar que se borró
                     setTimeout(() => window.renderAdminForm(), 1000);
                 } 
                 catch(e) { alert("Error borrando foto: " + e); }
@@ -809,7 +993,7 @@
 
             window.addImagesToProduct = async function(prodId) {
                 const input = document.getElementById(`add-img-file-${prodId}`);
-                if(!input.files || input.files.length === 0) return alert("Selecciona fotos de tu galería.");
+                if(!input.files || input.files.length === 0) return alert("Selecciona fotos.");
                 const p = window.productos.find(x => x.id === prodId);
                 const newUrls = [];
                 try {
@@ -821,7 +1005,7 @@
                     }
                     await updateDoc(doc(db, "productos", prodId), { img: [...(p.img || []), ...newUrls] });
                     input.value = '';
-                    alert("Fotos inyectadas en la nube correctamente.");
+                    alert("Fotos inyectadas correctamente.");
                     setTimeout(() => window.renderAdminForm(), 1000);
                 } catch(e) { alert("Error subiendo foto: " + e); }
             };
@@ -831,11 +1015,11 @@
                 const name = document.getElementById('new-nombre').value;
                 const fileInput = document.getElementById('new-file');
                 
-                if(!code || !name) return alert("Falta ID y Nombre en el formulario.");
+                if(!code || !name) return alert("Falta ID y Nombre.");
 
                 const btn = document.getElementById('btn-upload');
                 const orig = btn.innerHTML;
-                btn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Subiendo fierro a la nube...';
+                btn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Subiendo...';
                 btn.disabled = true;
 
                 try {
@@ -856,7 +1040,7 @@
                         img: newUrls, vendido: false, timestamp: Date.now()
                     });
                     
-                    alert("Producto Nuevo Publicado. Ya aparece en el catálogo.");
+                    alert("Producto Nuevo Publicado.");
                     document.getElementById('new-code').value = ''; document.getElementById('new-nombre').value = ''; fileInput.value = '';
                     window.switchAdminTab('editar'); 
                 } catch(e) { alert("Error: " + e.message); } 
