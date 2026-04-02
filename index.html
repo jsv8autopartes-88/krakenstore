@@ -418,14 +418,14 @@
             grid.innerHTML = window.productos.map(p => {
                 const isSold = p.vendido === true;
                 const isPos = p.id === 'pv-full';
-                const imgSrc = p.img && p.img.length > 0 ? p.img[0] : ''; 
+                const imgSrc = p.img && p.img.length > 0 ? p.img[0] : 'https://via.placeholder.com/400x300?text=KRAKEN+PENDIENTE';
                 return `
                 <div class="bg-white rounded-2xl shadow-lg ${!isSold ? 'hover:shadow-2xl cursor-pointer group hover:-translate-y-1' : 'opacity-70 grayscale border-red-200'} transition-all duration-300 flex flex-col border border-gray-100 overflow-hidden" ${!isSold ? `onclick="window.openProductDetails('${p.id}')"` : ''}>
                     <div class="h-56 bg-gray-50 relative flex items-center justify-center overflow-hidden border-b border-gray-100">
                         ${isPos ? `<div class="absolute inset-0 flex items-center justify-center z-0 overflow-hidden pointer-events-none"><span class="text-accent/10 font-black text-6xl transform -rotate-12 uppercase select-none">KRAKEN</span></div>` : ''}
                         <span class="absolute top-4 left-4 bg-nyx/90 backdrop-blur-md text-white text-[10px] px-3 py-1.5 rounded-lg font-black uppercase z-10 shadow-md">${p.categoria}</span>
                         ${p.img && p.img.length > 1 ? `<span class="absolute top-4 right-4 bg-nyx/70 text-white text-[10px] px-2 py-1 rounded font-bold z-10"><i class="fas fa-images mr-1"></i>${p.img.length}</span>` : ''}
-                        <img src="${imgSrc}" onerror="window.imgFallback(this)" class="w-full h-full object-cover transform ${!isSold ? 'group-hover:scale-110 transition-transform duration-700 ease-out' : ''} relative z-10 mix-blend-multiply" crossorigin="anonymous">
+                        <img src="${imgSrc}" onerror="window.imgFallback(this)" class="w-full h-full object-cover transform ${!isSold ? 'group-hover:scale-110 transition-transform duration-700 ease-out' : ''} relative z-10 mix-blend-multiply">
                         ${isSold ? `<div class="absolute inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-20"><span class="bg-red-600 text-white font-black px-8 py-3 rounded-lg transform -rotate-12 shadow-2xl text-2xl border-4 border-red-800 tracking-widest uppercase">VENDIDO</span></div>` : ''}
                     </div>
                     <div class="p-5 flex-1 flex flex-col justify-between bg-white">
