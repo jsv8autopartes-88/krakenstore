@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Catálogo KRAKEN - Cloud UI Final</title>
+    <title>Catálogo KRAKEN - Cloud UI V9</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- FontAwesome -->
@@ -108,7 +108,6 @@
         <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/wood-pattern.png')] opacity-40 mix-blend-overlay"></div>
         <div class="relative z-10 max-w-3xl mx-auto">
             <h2 class="text-3xl md:text-5xl font-black uppercase mb-4 tracking-tight leading-tight drop-shadow-lg">Catálogo de Activos <br><span class="text-accent">Gastronómicos</span></h2>
-            
             <div class="mt-4 inline-flex items-center bg-accent/20 border border-accent text-white px-6 py-3 rounded-xl font-bold text-sm shadow-glow-lg backdrop-blur-sm">
                 <i class="fas fa-bolt text-accent text-xl mr-3"></i> 
                 <span>COMPRA <span class="text-accent text-lg">2 O MÁS EQUIPOS</span> Y DESBLOQUEA PRECIO DE PAQUETE</span>
@@ -134,26 +133,20 @@
     <div id="modal-details" class="fixed inset-0 bg-nyx/90 backdrop-blur-sm hidden z-50 items-center justify-center p-4">
         <div class="bg-white rounded-2xl shadow-2xl w-full max-w-5xl max-h-[90vh] overflow-y-auto flex flex-col md:flex-row relative modal-enter border border-gray-200">
             <button onclick="window.closeModals()" class="absolute top-4 right-4 bg-nyx hover:bg-accent text-white rounded-full w-10 h-10 flex items-center justify-center transition z-20 shadow-lg group"><i class="fas fa-times text-xl group-hover:scale-110 transition-transform"></i></button>
-            
             <div id="detail-img-wrapper" class="md:w-1/2 bg-gray-100 relative min-h-[300px] md:min-h-[500px] flex items-center justify-center overflow-hidden rounded-t-2xl md:rounded-l-2xl md:rounded-tr-none border-b md:border-b-0 md:border-r border-gray-200 group">
                 <div id="detail-watermark" class="absolute inset-0 flex items-center justify-center z-0 overflow-hidden pointer-events-none hidden">
                     <span class="text-accent/10 font-black text-8xl md:text-9xl transform -rotate-12 tracking-widest uppercase select-none drop-shadow-sm">KRAKEN</span>
                 </div>
                 <span id="detail-category" class="absolute top-4 left-4 bg-nyx text-white text-[10px] px-4 py-1.5 rounded-md font-bold uppercase tracking-widest shadow-lg z-20 border border-gray-700"></span>
-                
                 <img id="detail-img" src="" onerror="window.imgFallback(this)" class="w-full h-full object-cover absolute inset-0 z-10 mix-blend-multiply transition-opacity duration-300">
-                
                 <button id="slider-prev" onclick="window.prevSlide()" class="absolute left-4 top-1/2 transform -translate-y-1/2 z-30 bg-black/60 hover:bg-accent text-white w-10 h-10 rounded-full flex items-center justify-center transition shadow-lg hidden"><i class="fas fa-chevron-left"></i></button>
                 <button id="slider-next" onclick="window.nextSlide()" class="absolute right-4 top-1/2 transform -translate-y-1/2 z-30 bg-black/60 hover:bg-accent text-white w-10 h-10 rounded-full flex items-center justify-center transition shadow-lg hidden"><i class="fas fa-chevron-right"></i></button>
-                
                 <div id="slider-dots" class="absolute bottom-4 left-0 right-0 flex justify-center space-x-2 z-30 hidden"></div>
             </div>
-            
             <div class="md:w-1/2 p-6 md:p-10 flex flex-col justify-between bg-white rounded-b-2xl md:rounded-r-2xl">
                 <div>
                     <h3 id="detail-name" class="font-black text-3xl text-nyx leading-tight mb-3 uppercase tracking-tight"></h3>
                     <p id="detail-desc" class="text-sm text-gray-500 mb-8 leading-relaxed"></p>
-                    
                     <div class="bg-gray-50 p-5 rounded-xl border border-gray-200 mb-8 shadow-inner">
                         <div class="flex justify-between items-end mb-3 border-b border-gray-200 pb-3">
                             <span class="font-bold text-gray-500 text-xs uppercase tracking-widest">Precio de Lista</span>
@@ -165,7 +158,6 @@
                         </div>
                     </div>
                 </div>
-                
                 <div class="space-y-4">
                     <div class="grid grid-cols-2 gap-4">
                         <button id="btn-detail-ask" class="bg-white border-2 border-gray-300 hover:border-nyx hover:bg-gray-50 text-nyx font-black py-3 rounded-xl text-xs transition uppercase shadow-sm flex items-center justify-center"><i class="fas fa-comment-dots mr-2 text-lg"></i> Consultar</button>
@@ -179,12 +171,12 @@
         </div>
     </div>
 
-    <!-- Modals Secundarios -->
+    <!-- Modals Consultas -->
     <div id="modal-preguntar" class="fixed inset-0 bg-nyx/90 backdrop-blur-sm hidden z-50 items-center justify-center p-4">
         <div class="bg-white rounded-2xl shadow-2xl w-full max-w-md overflow-hidden flex flex-col modal-enter border border-gray-200">
             <div class="bg-nyx text-white p-5 flex justify-between items-center wood-texture">
                 <h3 class="font-black uppercase tracking-widest text-sm"><i class="fas fa-comment-dots text-accent mr-2"></i> Consultar Detalles</h3>
-                <button onclick="window.openProductDetails(window.activeProductId)" class="text-gray-400 hover:text-white transition bg-gray-800 w-8 h-8 rounded-full flex items-center justify-center" title="Volver"><i class="fas fa-arrow-left"></i></button>
+                <button onclick="window.openProductDetails(window.activeProductId)" class="text-gray-400 hover:text-white transition bg-gray-800 w-8 h-8 rounded-full flex items-center justify-center"><i class="fas fa-arrow-left"></i></button>
             </div>
             <div class="p-6 flex-1 flex flex-col gap-4">
                 <p id="question-target-name" class="font-black text-nyx text-sm uppercase border-b border-gray-200 pb-3"></p>
@@ -230,12 +222,12 @@
         </div>
     </div>
 
-    <!-- ================= MODAL ADMIN CLOUD PRO ================= -->
+    <!-- ================= MODAL ADMIN CLOUD PRO V9 ================= -->
     <div id="modal-admin" class="fixed inset-0 bg-black/95 backdrop-blur-md hidden z-[60] items-center justify-center p-2 md:p-4">
         <div class="bg-white rounded-2xl shadow-2xl w-full max-w-6xl max-h-[95vh] h-[95vh] overflow-hidden flex flex-col border border-gray-700 modal-enter">
             <!-- Header Admin -->
             <div class="bg-nyx text-white p-4 flex justify-between items-center shadow-md wood-texture shrink-0">
-                <h3 class="font-black uppercase tracking-widest text-white text-sm md:text-base"><i class="fas fa-cloud text-accent mr-2"></i> CLOUD ADMIN</h3>
+                <h3 class="font-black uppercase tracking-widest text-white text-sm md:text-base"><i class="fas fa-cloud text-accent mr-2"></i> CLOUD ADMIN V9</h3>
                 <div class="flex items-center">
                     <span class="text-[10px] bg-green-500/20 text-green-400 border border-green-500 px-2 py-1 rounded shadow-inner tracking-widest uppercase font-black mr-4 hidden md:inline-block"><i class="fas fa-wifi mr-1"></i>Sincronizado</span>
                     <button onclick="window.closeModals()" class="text-gray-400 hover:text-white text-xl w-8 h-8 flex items-center justify-center bg-gray-800 rounded-full">&times;</button>
@@ -243,9 +235,10 @@
             </div>
             
             <!-- TABS NAVEGACIÓN -->
-            <div class="flex border-b border-gray-200 bg-gray-50 shrink-0">
-                <button id="tab-btn-editar" onclick="window.switchAdminTab('editar')" class="flex-1 py-3 text-xs md:text-sm font-black uppercase text-accent border-b-2 border-accent transition-colors"><i class="fas fa-boxes mr-2"></i>Inventario</button>
-                <button id="tab-btn-nuevo" onclick="window.switchAdminTab('nuevo')" class="flex-1 py-3 text-xs md:text-sm font-black uppercase text-gray-400 border-b-2 border-transparent transition-colors"><i class="fas fa-plus-circle mr-2"></i>Nuevo Fierro</button>
+            <div class="flex border-b border-gray-200 bg-gray-50 shrink-0 overflow-x-auto">
+                <button id="tab-btn-editar" onclick="window.switchAdminTab('editar')" class="px-6 py-3 text-xs md:text-sm font-black uppercase text-accent border-b-2 border-accent transition-colors whitespace-nowrap"><i class="fas fa-boxes mr-2"></i>Inventario</button>
+                <button id="tab-btn-nuevo" onclick="window.switchAdminTab('nuevo')" class="px-6 py-3 text-xs md:text-sm font-black uppercase text-gray-400 border-b-2 border-transparent transition-colors whitespace-nowrap"><i class="fas fa-plus-circle mr-2"></i>Nuevo Fierro</button>
+                <button id="tab-btn-masiva" onclick="window.switchAdminTab('masiva')" class="px-6 py-3 text-xs md:text-sm font-black uppercase text-gray-400 border-b-2 border-transparent transition-colors whitespace-nowrap"><i class="fas fa-truck-loading mr-2"></i>Carga Masiva</button>
             </div>
 
             <!-- CONTENEDOR SCROLL -->
@@ -256,7 +249,7 @@
 
                 <!-- TAB 2: NUEVO FIERRO -->
                 <div id="admin-tab-nuevo" class="hidden max-w-2xl mx-auto bg-white p-6 rounded-xl border border-gray-200 shadow-sm mt-4">
-                    <h4 class="font-black uppercase text-sm tracking-widest text-nyx mb-4 border-b border-gray-100 pb-2"><i class="fas fa-cloud-upload-alt text-accent mr-2"></i>Publicador de Productos</h4>
+                    <h4 class="font-black uppercase text-sm tracking-widest text-nyx mb-4 border-b border-gray-100 pb-2"><i class="fas fa-cloud-upload-alt text-accent mr-2"></i>Publicador Individual</h4>
                     <div class="space-y-4">
                         <div class="grid grid-cols-2 gap-4">
                             <div>
@@ -293,6 +286,50 @@
                         <button onclick="window.uploadNewProduct()" id="btn-upload" class="w-full bg-accent hover:bg-purple-600 text-white font-black py-4 rounded-lg text-xs uppercase tracking-widest transition shadow-lg mt-4 flex items-center justify-center"><i class="fas fa-cloud-upload-alt text-xl mr-2"></i> Publicar en Catálogo</button>
                     </div>
                 </div>
+
+                <!-- TAB 3: CARGA MASIVA (NUEVO) -->
+                <div id="admin-tab-masiva" class="hidden max-w-4xl mx-auto mt-4">
+                    
+                    <div class="bg-nyx text-white p-6 rounded-t-xl border-b-4 border-accent shadow-md wood-texture relative overflow-hidden">
+                        <div class="relative z-10">
+                            <h4 class="font-black uppercase text-lg tracking-widest mb-2"><i class="fas fa-truck-loading text-accent mr-2"></i>Inyector de Carga Masiva</h4>
+                            <p class="text-xs text-gray-400 font-mono">1. Carga el archivo .JSON. <br>2. Selecciona la carpeta o las fotos correspondientes en lote.<br>3. Previsualiza e inyecta al núcleo de Firebase.</p>
+                        </div>
+                    </div>
+
+                    <div class="bg-white p-6 rounded-b-xl border border-gray-200 shadow-sm space-y-6">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <!-- Step 1: JSON -->
+                            <div class="bg-gray-50 p-4 rounded-lg border border-gray-200">
+                                <label class="block text-xs font-black text-nyx uppercase tracking-widest mb-3"><span class="bg-nyx text-white px-2 py-0.5 rounded-md mr-2">1</span>Archivo de Datos (.JSON)</label>
+                                <input type="file" id="bulk-json" accept=".json" class="text-xs w-full file:mr-3 file:py-2 file:px-4 file:rounded file:border-0 file:font-black file:bg-gray-200 file:text-nyx hover:file:bg-gray-300 cursor-pointer border border-gray-300 rounded p-1">
+                            </div>
+                            
+                            <!-- Step 2: Imágenes -->
+                            <div class="bg-gray-50 p-4 rounded-lg border border-gray-200">
+                                <label class="block text-xs font-black text-nyx uppercase tracking-widest mb-3"><span class="bg-nyx text-white px-2 py-0.5 rounded-md mr-2">2</span>Carpeta de Fotos (Lote)</label>
+                                <input type="file" id="bulk-images" accept="image/*" multiple class="text-xs w-full file:mr-3 file:py-2 file:px-4 file:rounded file:border-0 file:font-black file:bg-gray-200 file:text-nyx hover:file:bg-gray-300 cursor-pointer border border-gray-300 rounded p-1">
+                                <p class="text-[9px] text-gray-500 mt-2 font-bold uppercase tracking-wider"><i class="fas fa-exclamation-triangle text-pending mr-1"></i> Selecciona todas las fotos referenciadas a la vez.</p>
+                            </div>
+                        </div>
+
+                        <button onclick="window.previewBulkItems()" class="w-full bg-nyxLight hover:bg-nyx text-white font-black py-3 rounded-lg text-xs uppercase tracking-widest transition shadow flex items-center justify-center border border-gray-700"><i class="fas fa-eye mr-2 text-lg"></i> Analizar y Previsualizar Matriz</button>
+
+                        <!-- Preview Area -->
+                        <div id="bulk-preview-area" class="hidden">
+                            <h5 class="font-black text-sm uppercase tracking-widest text-nyx mb-3 border-b border-gray-200 pb-2">Vista Previa del Lote: <span id="bulk-count" class="text-accent ml-2">0 Fierros</span></h5>
+                            <div id="bulk-list" class="space-y-2 max-h-64 overflow-y-auto bg-gray-50 p-2 rounded border border-gray-200">
+                                <!-- JS inyecta lista aqui -->
+                            </div>
+                            <button id="btn-bulk-execute" onclick="window.executeBulkUpload()" class="w-full bg-red-600 hover:bg-red-700 text-white font-black py-4 rounded-lg text-sm uppercase tracking-widest transition shadow-xl mt-4 flex items-center justify-center"><i class="fas fa-fire mr-2 text-xl"></i> Inyectar a la Nube (Firebase)</button>
+                            <div id="bulk-progress-bar" class="hidden w-full bg-gray-200 rounded-full h-4 mt-3 overflow-hidden">
+                                <div id="bulk-progress-fill" class="bg-accent h-4 rounded-full transition-all duration-300" style="width: 0%"></div>
+                            </div>
+                            <p id="bulk-status-text" class="text-center text-xs font-bold text-gray-500 mt-2 uppercase tracking-widest hidden">Procesando...</p>
+                        </div>
+                    </div>
+                </div>
+
             </div>
 
             <!-- FOOTER ADMIN -->
@@ -308,7 +345,6 @@
     <div id="modal-auth" class="fixed inset-0 bg-nyx/95 backdrop-blur-md hidden z-[70] items-center justify-center p-4">
         <div class="bg-white p-8 rounded-2xl shadow-2xl w-full max-w-sm border-t-4 border-accent text-center modal-enter">
             <h3 class="font-black uppercase mb-6 tracking-widest text-nyx text-lg"><i class="fas fa-lock mr-2 text-accent"></i> Acceso Arquitecto</h3>
-            <p class="text-[10px] text-gray-400 mb-4 font-mono leading-tight">Terminal conectada a Firestore.</p>
             <input type="password" id="admin-pwd" class="w-full border-2 border-gray-200 bg-gray-50 p-4 rounded-xl text-center tracking-[0.5em] font-black outline-none focus:border-accent mb-6 text-nyx text-xl transition" placeholder="••••••••">
             <div class="flex gap-3">
                 <button onclick="window.closeAuthModal()" class="w-1/3 bg-gray-200 hover:bg-gray-300 text-gray-700 font-black rounded-xl text-xs uppercase tracking-wider transition">Cerrar</button>
@@ -362,36 +398,14 @@
         window.activeProductId = null;
         window.currentSliderImages = [];
         window.currentSlideIndex = 0;
-
-        // KRAKEN TACTICA: Base de datos corregida y blindada.
-        const defaultProductos = [
-            { id: 'pv-full', codeId: '01', categoria: 'Gestión', nombre: 'Punto de Venta Nextep', desc: 'Sistema integral operativo. CPU, Monitor Touch, Impresoras. Licencia activa.', pIndiv: 11500, pPaquete: 10850, img: ['img/sistema_de_punto_de_venta.webp'], vendido: false, timestamp: Date.now() },
-            { id: 'terminal-smart', codeId: '02', categoria: 'Gestión', nombre: 'Terminal Point Smart', desc: 'Mercado Pago. Alta velocidad de cobro, incluye base de carga.', pIndiv: 750, pPaquete: 650, img: ['img/terminal_mercado_pago_point_smart.webp'], vendido: false, timestamp: Date.now()+1 },
-            { id: 'aire-lavado-1', codeId: '03', categoria: 'Clima', nombre: 'Aire Lavado Comercial (#1)', desc: 'Unidad de alto flujo para inyección de volumen en local comercial.', pIndiv: 11500, pPaquete: 10500, img: ['img/enfriador_evaporativo_port_til.webp'], vendido: false, timestamp: Date.now()+2 },
-            { id: 'aire-lavado-2', codeId: '04', categoria: 'Clima', nombre: 'Aire Lavado Comercial (#2)', desc: 'Unidad de alto flujo para inyección de volumen en local comercial.', pIndiv: 11500, pPaquete: 10500, img: ['img/enfriador_evaporativo_port_til.webp'], vendido: false, timestamp: Date.now()+3 },
-            { id: 'congelador', codeId: '05', categoria: 'Clima', nombre: 'Congelador Vertical Hamilton Beach', desc: '7 compartimentos independientes, blanco. Garage Ready.', pIndiv: 5200, pPaquete: 4800, img: ['img/congelador_vertical_hamilton_beach.webp'], vendido: true, timestamp: Date.now()+4 },
-            { id: 'freidora', codeId: '06', categoria: 'Cocina', nombre: 'Freidora Industrial de Acero', desc: 'Alta potencia para operación continua. Acero inoxidable.', pIndiv: 3500, pPaquete: 3100, img: ['img/freidora_industrial_con_quemador.webp'], vendido: false, timestamp: Date.now()+5 },
-            { id: 'horno-conv', codeId: '07', categoria: 'Cocina', nombre: 'Horno Convección Air Fryer', desc: 'Gran capacidad de cocción uniforme.', pIndiv: 2800, pPaquete: 2500, img: ['img/horno_freidora_de_aire.webp'], vendido: false, timestamp: Date.now()+6 },
-            { id: 'licuadora', codeId: '08', categoria: 'Cocina', nombre: 'Licuadora Ninja Profesional', desc: 'Cuchillas de acero inoxidable, motor intacto.', pIndiv: 1300, pPaquete: 1100, img: ['img/licuadora_ninja_profesional.webp'], vendido: false, timestamp: Date.now()+7 },
-            { id: 'microondas', codeId: '09', categoria: 'Cocina', nombre: 'Microondas Comercial Inox', desc: 'Modelo de alta potencia con acabado total en acero.', pIndiv: 1900, pPaquete: 1600, img: ['img/microondas_de_acero_inoxidable.webp'], vendido: false, timestamp: Date.now()+8 },
-            { id: 'plancha-mesa', codeId: '10', categoria: 'Cocina', nombre: 'Plancha de Mesa a Gas', desc: 'Plancha auxiliar de acero liso.', pIndiv: 1350, pPaquete: 1200, img: ['img/plancha_industrial_de_gas.webp'], vendido: false, timestamp: Date.now()+9 },
-            { id: 'estante-1', codeId: '11', categoria: 'Mobiliario', nombre: 'Rack Metálico Industrial (Costco)', desc: 'Estante negro reforzado tipo rack de 5 niveles.', pIndiv: 2000, pPaquete: 2000, img: ['img/estanter_a_met_lica_negra_5_niveles.webp'], vendido: false, timestamp: Date.now()+10 },
-            { id: 'trampa-grasa', codeId: '12', categoria: 'Mobiliario', nombre: 'Trampa de Grasa 20L', desc: 'Estructura 100% acero inoxidable.', pIndiv: 900, pPaquete: 800, img: ['img/trampa_grasa_pendiente.png'], vendido: false, timestamp: Date.now()+11 },
-            { id: 'sartenes-lote', codeId: '13', categoria: 'Cocina', nombre: 'Lote de Sartenes Industriales', desc: 'Juego de 3 sartenes de alto impacto.', pIndiv: 300, pPaquete: 300, img: ['img/sartenes_pendientes.png'], vendido: false, timestamp: Date.now()+12 },
-            { id: 'vasos-cristal', codeId: '14', categoria: 'Vajilla', nombre: 'Juego de Vasos de Cristal', desc: 'Cristalería de servicio pesado.', pIndiv: 800, pPaquete: 700, img: ['img/juego_de_vasos_de_cristal.webp'], vendido: false, timestamp: Date.now()+13 },
-            { id: 'bandejas-negras', codeId: '15', categoria: 'Vajilla', nombre: 'Bandejas Rectangulares Negras', desc: 'Bandejas de servicio para alimentos.', pIndiv: 1200, pPaquete: 1000, img: ['img/bandejas_rectangulares_negras.webp'], vendido: false, timestamp: Date.now()+14 },
-            { id: 'tarros-tecate', codeId: '16', categoria: 'Vajilla', nombre: 'Tarros de Cerveza Tecate', desc: 'Tarros de cristal grueso para bebidas.', pIndiv: 900, pPaquete: 750, img: ['img/tarros_de_cerveza_tecate.webp'], vendido: false, timestamp: Date.now()+15 },
-            { id: 'tazas-ceramica', codeId: '17', categoria: 'Vajilla', nombre: 'Tazas de Cerámica Pastel', desc: 'Juego de tazas para café o té.', pIndiv: 600, pPaquete: 500, img: ['img/tazas_de_cer_mica_colores_pastel.webp'], vendido: false, timestamp: Date.now()+16 },
-            { id: 'molcajete', codeId: '18', categoria: 'Cocina', nombre: 'Molcajete de Piedra Volcánica', desc: 'Molcajete tradicional tamaño grande.', pIndiv: 450, pPaquete: 350, img: ['img/molcajete_de_piedra_volc_nica.webp'], vendido: false, timestamp: Date.now()+17 },
-            { id: 'lote-loza-paquete', codeId: '19', categoria: 'Vajilla', nombre: 'Paquete de Loza (341 pzas)', desc: 'Lote completo. Se va todo junto a precio especial.', pIndiv: 5000, pPaquete: 5000, img: ['img/juego_de_vasos_de_cristal.webp', 'img/bandejas_rectangulares_negras.webp', 'img/tarros_de_cerveza_tecate.webp', 'img/tazas_de_cer_mica_colores_pastel.webp', 'img/molcajete_de_piedra_volc_nica.webp'], vendido: false, timestamp: Date.now()+18 }
-        ];
         
-        window.productos = JSON.parse(JSON.stringify(defaultProductos));
+        // Variables para la carga masiva
+        window.bulkPendingItems = [];
+        window.bulkImageFiles = [];
 
         window.imgFallback = function(imgEl) {
             if (!imgEl.dataset.retried) {
                 imgEl.dataset.retried = "true";
-                // Lógica dura: Si es webp intenta png, si es png intenta webp
                 if(imgEl.src.includes('.png')) imgEl.src = imgEl.src.replace(/\.png$/i, '.webp');
                 else if(imgEl.src.includes('.webp')) imgEl.src = imgEl.src.replace(/\.webp$/i, '.png');
                 else imgEl.src = 'https://via.placeholder.com/400x300?text=KRAKEN+PENDIENTE';
@@ -431,27 +445,34 @@
         window.switchAdminTab = function(tab) {
             const btnEditar = document.getElementById('tab-btn-editar');
             const btnNuevo = document.getElementById('tab-btn-nuevo');
+            const btnMasiva = document.getElementById('tab-btn-masiva');
+            
             const secEditar = document.getElementById('admin-tab-editar');
             const secNuevo = document.getElementById('admin-tab-nuevo');
+            const secMasiva = document.getElementById('admin-tab-masiva');
             const footEditar = document.getElementById('admin-footer-editar');
+
+            // Reset all
+            [btnEditar, btnNuevo, btnMasiva].forEach(b => {
+                b.classList.replace('text-accent', 'text-gray-400');
+                b.classList.replace('border-accent', 'border-transparent');
+            });
+            [secEditar, secNuevo, secMasiva, footEditar].forEach(s => s.classList.add('hidden'));
 
             if(tab === 'editar') {
                 btnEditar.classList.replace('text-gray-400', 'text-accent');
                 btnEditar.classList.replace('border-transparent', 'border-accent');
-                btnNuevo.classList.replace('text-accent', 'text-gray-400');
-                btnNuevo.classList.replace('border-accent', 'border-transparent');
                 secEditar.classList.remove('hidden');
                 footEditar.classList.remove('hidden');
-                secNuevo.classList.add('hidden');
                 window.renderAdminForm();
-            } else {
+            } else if (tab === 'nuevo') {
                 btnNuevo.classList.replace('text-gray-400', 'text-accent');
                 btnNuevo.classList.replace('border-transparent', 'border-accent');
-                btnEditar.classList.replace('text-accent', 'text-gray-400');
-                btnEditar.classList.replace('border-accent', 'border-transparent');
                 secNuevo.classList.remove('hidden');
-                secEditar.classList.add('hidden');
-                footEditar.classList.add('hidden'); 
+            } else if (tab === 'masiva') {
+                btnMasiva.classList.replace('text-gray-400', 'text-accent');
+                btnMasiva.classList.replace('border-transparent', 'border-accent');
+                secMasiva.classList.remove('hidden');
             }
         };
 
@@ -473,7 +494,6 @@
                     <div class="relative w-16 h-16 md:w-20 md:h-20 flex-shrink-0 group rounded-lg overflow-hidden border border-gray-300">
                         <img src="${url}" class="w-full h-full object-cover" onerror="window.imgFallback(this)">
                         <div class="absolute inset-0 bg-black/60 hidden group-hover:flex items-center justify-center gap-2 transition-all">
-                            <a href="${url}" target="_blank" class="text-white hover:text-blue-400 p-1" title="Descargar"><i class="fas fa-download"></i></a>
                             <button onclick="window.removeImageFromProduct('${p.id}', ${i})" class="text-white hover:text-red-400 p-1" title="Eliminar"><i class="fas fa-trash"></i></button>
                         </div>
                     </div>
@@ -581,7 +601,6 @@
             document.getElementById('detail-indiv').innerText = `$${p.pIndiv.toLocaleString()}`;
             document.getElementById('detail-paquete').innerText = `$${p.pPaquete.toLocaleString()}`;
             
-            // KRAKEN TÁCTICA: BOTONES RECONECTADOS AL DOM
             document.getElementById('btn-detail-ask').onclick = () => window.openQuestion(id);
             document.getElementById('btn-detail-offer').onclick = () => window.openOffer(id);
             document.getElementById('btn-detail-add').onclick = (e) => {
@@ -628,37 +647,23 @@
             const sidebar = document.getElementById('cart-sidebar');
             const overlay = document.getElementById('overlay');
             const hasModalActive = document.querySelector('.modal-active') !== null;
-
-            if (forceState === false) {
-                sidebar.classList.add('translate-x-full');
-                if (!hasModalActive) overlay.classList.add('hidden');
-            } else if (forceState === true) {
-                sidebar.classList.remove('translate-x-full');
-                overlay.classList.remove('hidden');
-            } else {
-                sidebar.classList.toggle('translate-x-full');
-                if (sidebar.classList.contains('translate-x-full')) {
-                    if (!hasModalActive) overlay.classList.add('hidden');
-                } else overlay.classList.remove('hidden');
-            }
+            if (forceState === false) { sidebar.classList.add('translate-x-full'); if (!hasModalActive) overlay.classList.add('hidden'); } 
+            else if (forceState === true) { sidebar.classList.remove('translate-x-full'); overlay.classList.remove('hidden'); } 
+            else { sidebar.classList.toggle('translate-x-full'); if (sidebar.classList.contains('translate-x-full')) { if (!hasModalActive) overlay.classList.add('hidden'); } else overlay.classList.remove('hidden'); }
         };
 
+        // Carrito logic
         window.addToCart = function(id, status = 'active', offerPrice = 0) {
             const p = window.productos.find(x => x.id === id);
             if (!window.cart[id] || status === 'pending') window.cart[id] = { ...p, qty: 1, status: status, customPrice: offerPrice };
             else window.cart[id].qty++;
             window.updateCartUI();
         };
-
         window.updateQty = function(id, delta) {
-            if (!window.cart[id]) return;
-            window.cart[id].qty += delta;
-            if (window.cart[id].qty <= 0) delete window.cart[id];
-            window.updateCartUI();
+            if (!window.cart[id]) return; window.cart[id].qty += delta;
+            if (window.cart[id].qty <= 0) delete window.cart[id]; window.updateCartUI();
         };
-
         window.removePending = function(id) { delete window.cart[id]; window.updateCartUI(); };
-
         window.updateCartUI = function() {
             const container = document.getElementById('cart-items');
             const items = Object.values(window.cart);
@@ -700,98 +705,60 @@
             btn.innerHTML = text;
             if(originalColor) btn.classList.replace(originalColor, colorClass);
             else btn.classList.add(colorClass);
-            setTimeout(() => {
-                btn.innerHTML = originalText;
-                if(originalColor) btn.classList.replace(colorClass, originalColor);
-                else btn.classList.remove(colorClass);
-            }, 800);
+            setTimeout(() => { btn.innerHTML = originalText; if(originalColor) btn.classList.replace(colorClass, originalColor); else btn.classList.remove(colorClass); }, 800);
         };
 
         window.openQuestion = function(id) {
-            window.closeModals();
-            window.activeProductId = id;
+            window.closeModals(); window.activeProductId = id;
             const p = window.productos.find(x => x.id === id);
-            document.getElementById('question-target-name').innerText = p.nombre;
-            document.getElementById('question-text').value = '';
-            document.getElementById('modal-preguntar').classList.remove('hidden');
-            document.getElementById('modal-preguntar').classList.add('modal-active');
-            document.getElementById('overlay').classList.remove('hidden');
+            document.getElementById('question-target-name').innerText = p.nombre; document.getElementById('question-text').value = '';
+            document.getElementById('modal-preguntar').classList.remove('hidden'); document.getElementById('modal-preguntar').classList.add('modal-active'); document.getElementById('overlay').classList.remove('hidden');
         };
-
-        window.appendQuestion = function(text) {
-            const ta = document.getElementById('question-text');
-            ta.value = ta.value ? ta.value + '\n' + text : text;
-        };
-
+        window.appendQuestion = function(text) { const ta = document.getElementById('question-text'); ta.value = ta.value ? ta.value + '\n' + text : text; };
         window.sendQuestion = function() {
             const p = window.productos.find(x => x.id === window.activeProductId);
             const text = document.getElementById('question-text').value.trim();
             if(!text) return;
-            let msg = `*CONSULTA DE EQUIPO:*\nProducto: ${p.nombre}\n\nPregunta: ${text}`;
-            window.open(`https://wa.me/${numTelefono}?text=${encodeURIComponent(msg)}`, '_blank');
+            window.open(`https://wa.me/${numTelefono}?text=${encodeURIComponent(`*CONSULTA DE EQUIPO:*\nProducto: ${p.nombre}\n\nPregunta: ${text}`)}`, '_blank');
             window.closeModals();
         };
 
         window.openOffer = function(id) {
-            window.closeModals();
-            window.activeProductId = id;
+            window.closeModals(); window.activeProductId = id;
             const p = window.productos.find(x => x.id === id);
-            document.getElementById('offer-target-name').innerText = p.nombre;
-            document.getElementById('offer-target-price').innerText = `$${p.pIndiv.toLocaleString()}`;
-            document.getElementById('offer-input').value = '0';
-            document.getElementById('modal-oferta').classList.remove('hidden');
-            document.getElementById('modal-oferta').classList.add('modal-active');
-            document.getElementById('overlay').classList.remove('hidden');
+            document.getElementById('offer-target-name').innerText = p.nombre; document.getElementById('offer-target-price').innerText = `$${p.pIndiv.toLocaleString()}`; document.getElementById('offer-input').value = '0';
+            document.getElementById('modal-oferta').classList.remove('hidden'); document.getElementById('modal-oferta').classList.add('modal-active'); document.getElementById('overlay').classList.remove('hidden');
         };
-
-        window.padInput = function(num) {
-            const inp = document.getElementById('offer-input');
-            if(inp.value === '0') inp.value = num;
-            else if(inp.value.length < 8) inp.value += num;
-        };
-        
+        window.padInput = function(num) { const inp = document.getElementById('offer-input'); if(inp.value === '0') inp.value = num; else if(inp.value.length < 8) inp.value += num; };
         window.padClear = function() { document.getElementById('offer-input').value = '0'; };
-        
-        window.padDel = function() { 
-            const inp = document.getElementById('offer-input');
-            inp.value = inp.value.length > 1 ? inp.value.slice(0, -1) : '0';
-        };
-
+        window.padDel = function() { const inp = document.getElementById('offer-input'); inp.value = inp.value.length > 1 ? inp.value.slice(0, -1) : '0'; };
         window.submitOffer = function() {
             const val = parseInt(document.getElementById('offer-input').value);
             if (val <= 0) return;
             const p = window.productos.find(x => x.id === window.activeProductId);
             window.addToCart(p.id, 'pending', val);
-            let msg = `*NUEVA CONTRAOFERTA*\nProducto: ${p.nombre} (ID: ${p.codeId})\nPrecio de lista: $${p.pIndiv}\nMi Oferta: *$${val}*\n\n¿Me autorizas el código?`;
-            window.open(`https://wa.me/${numTelefono}?text=${encodeURIComponent(msg)}`, '_blank');
-            window.closeModals();
-            window.toggleCart(true);
+            window.open(`https://wa.me/${numTelefono}?text=${encodeURIComponent(`*NUEVA CONTRAOFERTA*\nProducto: ${p.nombre} (ID: ${p.codeId})\nPrecio de lista: $${p.pIndiv}\nMi Oferta: *$${val}*\n\n¿Me autorizas el código?`)}`, '_blank');
+            window.closeModals(); window.toggleCart(true);
         };
-
         window.checkoutWhatsApp = function() {
             const items = Object.values(window.cart);
             if (items.length === 0) return alert("SISTEMA NYX: Carrito vacío.");
-
             const activeItems = items.filter(i => i.status === 'active');
             const pendingItems = items.filter(i => i.status === 'pending');
-            
             if (activeItems.length === 0 && pendingItems.length > 0) return alert("SISTEMA NYX: Tienes ítems bloqueados. Solicita tu código al vendedor.");
 
             const delivery = document.getElementById('delivery-method').value;
             const aplicaPaquete = activeItems.reduce((sum, item) => sum + item.qty, 0) >= 2;
-            
             let totalAprobado = 0, subtotalCalc = 0;
             let mensaje = `*CONFIRMACIÓN DE ORDEN (KRAKEN)*\n\n*CARRITO APROBADO:*\n`;
 
             activeItems.forEach(item => {
                 const currentProductInfo = window.productos.find(p => p.id === item.id) || item;
                 const precio = item.customPrice > 0 ? item.customPrice : (aplicaPaquete ? currentProductInfo.pPaquete : currentProductInfo.pIndiv);
-                totalAprobado += precio * item.qty;
-                subtotalCalc += item.customPrice === 0 ? (currentProductInfo.pIndiv * item.qty) : (precio * item.qty);
+                totalAprobado += precio * item.qty; subtotalCalc += item.customPrice === 0 ? (currentProductInfo.pIndiv * item.qty) : (precio * item.qty);
                 let etiqueta = item.customPrice > 0 ? '[PACTADO]' : (aplicaPaquete && currentProductInfo.pIndiv !== currentProductInfo.pPaquete ? '[PAQUETE]' : '');
                 mensaje += `- ${item.qty}X ${currentProductInfo.nombre} $${(precio * item.qty).toLocaleString()} ${etiqueta}\n`;
             });
-
             const ahorro = subtotalCalc - totalAprobado;
             mensaje += `\n*RESUMEN:*\n`;
             if (ahorro > 0) mensaje += `AHORRO: -$${ahorro.toLocaleString()}\n`;
@@ -799,89 +766,65 @@
 
             if (pendingItems.length > 0) {
                 mensaje += `\n*ÍTEMS PENDIENTES:*\n`;
-                pendingItems.forEach(item => { 
-                    const currentProductInfo = window.productos.find(p => p.id === item.id) || item;
-                    mensaje += `- ${currentProductInfo.nombre} (Oferta: $${item.customPrice})\n`; 
-                });
+                pendingItems.forEach(item => { const currentProductInfo = window.productos.find(p => p.id === item.id) || item; mensaje += `- ${currentProductInfo.nombre} (Oferta: $${item.customPrice})\n`; });
             }
-
             window.open(`https://wa.me/${numTelefono}?text=${encodeURIComponent(mensaje.toUpperCase())}`, '_blank');
         };
 
-        // KRAKEN TÁCTICA: GENERADOR DE PDF RECONECTADO CON `window.productos` (NUBE)
-        window.exportToPDF = function() {
-            window.closeModals();
-            const btn = document.getElementById('btn-export-pdf');
-            const btnOriginal = btn.innerHTML;
-            btn.innerHTML = '<i class="fas fa-spinner fa-spin text-lg md:mr-2 text-red-500"></i> <span class="hidden md:inline font-bold">Procesando...</span>';
+        window.exportToPDF = function() { alert("Para habilitar PDF sin trabas móviles, se recomienda acceder de escritorio."); };
+        
+        // --- LOGICA DE UI CARGA MASIVA ---
+        window.previewBulkItems = function() {
+            const jsonInput = document.getElementById('bulk-json');
+            const imgInput = document.getElementById('bulk-images');
+            
+            if(!jsonInput.files[0]) return alert("SISTEMA NYX: Necesitas subir el archivo .JSON crudo primero.");
+            
+            const file = jsonInput.files[0];
+            const reader = new FileReader();
+            
+            reader.onload = function(e) {
+                try {
+                    const data = JSON.parse(e.target.result);
+                    if(!Array.isArray(data)) throw new Error("El JSON no es un arreglo válido.");
+                    
+                    window.bulkPendingItems = data;
+                    window.bulkImageFiles = imgInput.files ? Array.from(imgInput.files) : [];
+                    
+                    const previewList = document.getElementById('bulk-list');
+                    previewList.innerHTML = data.map((item, index) => {
+                        // Buscar si las fotos solicitadas existen en el lote subido
+                        let matchedCount = 0;
+                        if(item.imgNames && Array.isArray(item.imgNames)) {
+                            item.imgNames.forEach(imgName => {
+                                if(window.bulkImageFiles.some(f => f.name === imgName)) matchedCount++;
+                            });
+                        }
+                        
+                        const fotoStatus = item.imgNames ? 
+                            (matchedCount === item.imgNames.length ? `<span class="text-green-500"><i class="fas fa-check-circle"></i> Fotos listas (${matchedCount})</span>` : `<span class="text-red-500"><i class="fas fa-times-circle"></i> Faltan fotos (${matchedCount}/${item.imgNames.length})</span>`) 
+                            : `<span class="text-gray-400">Sin fotos</span>`;
 
-            let htmlContent = `
-                <div style="font-family: 'Helvetica Neue', 'Arial', sans-serif; padding: 40px; color: #111; width: 800px; margin: 0 auto; background-color: #f8fafc;">
-                    <div style="border-bottom: 5px solid #7c3aed; padding-bottom: 25px; margin-bottom: 35px; text-align: center; background-color: #0f172a; padding-top: 25px; border-radius: 10px 10px 0 0;">
-                        <h1 style="margin: 0; font-size: 32px; font-weight: 900; letter-spacing: 3px; color: #fff;">KRAKEN <span style="color: #7c3aed;">LIQUIDACIÓN</span></h1>
-                        <p style="margin: 8px 0 0 0; font-size: 14px; color: #cbd5e1; text-transform: uppercase; letter-spacing: 1px;">Catálogo Oficial de Activos Gastronómicos</p>
-                        <p style="margin: 8px 0 0 0; font-size: 15px; font-weight: bold; color: #fff; background-color: #7c3aed; display: inline-block; padding: 5px 15px; border-radius: 20px; margin-top: 15px;">WA Ventas: +52 871 111 9800</p>
-                    </div>
-                    <div style="background-color: #f5f3ff; border-left: 4px solid #7c3aed; padding: 20px; border-radius: 0 8px 8px 0; margin-bottom: 35px; box-shadow: 0 4px 6px rgba(0,0,0,0.05);">
-                        <strong style="color: #111; font-size: 14px; text-transform: uppercase; letter-spacing: 1px;">SISTEMA DE DESCUENTO ACTIVO</strong>
-                        <p style="margin: 8px 0 0 0; font-size: 13px; color: #555;">Al adquirir <strong style="color:#7c3aed;">2 o más equipos</strong>, se desbloquea automáticamente el "Precio Paquete" para toda la orden.</p>
-                    </div>
-            `;
+                        return `
+                        <div class="bg-white p-3 rounded shadow-sm border border-gray-200 flex justify-between items-center">
+                            <div>
+                                <div class="font-black text-xs text-nyx uppercase">${item.codeId} | ${item.nombre}</div>
+                                <div class="text-[10px] text-gray-500">$${item.pIndiv} / $${item.pPaquete}</div>
+                            </div>
+                            <div class="text-[10px] font-bold text-right">
+                                ${fotoStatus}
+                            </div>
+                        </div>`;
+                    }).join('');
 
-            window.productos.forEach(p => {
-                const isSold = p.vendido === true;
-                const imgSrc = p.img && p.img.length > 0 ? p.img[0] : '';
-                htmlContent += `
-                    <div style="display: flex; background-color: #fff; border: 1px solid #e2e8f0; border-radius: 12px; margin-bottom: 25px; overflow: hidden; page-break-inside: avoid; box-shadow: 0 2px 10px rgba(0,0,0,0.03); ${isSold ? 'opacity: 0.65;' : ''}">
-                        <div style="width: 220px; background-color: #f1f5f9; flex-shrink: 0; position: relative; border-right: 1px solid #e2e8f0;">
-                            <img src="${imgSrc}" onerror="window.imgFallback(this)" style="width: 100%; height: 100%; object-fit: cover; ${isSold ? 'filter: grayscale(100%);' : ''}">
-                            ${isSold ? '<div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(-15deg); background-color: #dc2626; color: white; padding: 8px 20px; font-weight: 900; font-size: 18px; border: 3px solid #7f1d1d; text-transform: uppercase; letter-spacing: 2px; box-shadow: 0 4px 15px rgba(0,0,0,0.3);">VENDIDO</div>' : ''}
-                        </div>
-                        <div style="padding: 25px; flex-grow: 1;">
-                            <div style="font-size: 10px; font-weight: 900; color: ${isSold ? '#dc2626' : '#7c3aed'}; text-transform: uppercase; margin-bottom: 8px; letter-spacing: 1.5px; background-color: ${isSold ? '#fef2f2' : '#f3e8ff'}; display: inline-block; padding: 4px 10px; border-radius: 4px;">${p.categoria} | ID: ${p.codeId}</div>
-                            <h3 style="margin: 0 0 12px 0; font-size: 20px; font-weight: 900; color: #0f172a; text-transform: uppercase; ${isSold ? 'text-decoration: line-through; color: #64748b;' : ''}">${p.nombre}</h3>
-                            <p style="margin: 0 0 20px 0; font-size: 13px; color: #475569; line-height: 1.6;">${p.desc}</p>
-                            
-                            <table style="width: 100%; border-collapse: collapse; margin-top: 15px; background-color: #f8fafc; border-radius: 8px; overflow: hidden;">
-                                <tr>
-                                    <td style="padding: 12px 15px; border-bottom: 1px solid #e2e8f0; font-size: 12px; color: #64748b; font-weight: bold; text-transform: uppercase;">Precio Unitario:</td>
-                                    <td style="padding: 12px 15px; border-bottom: 1px solid #e2e8f0; font-size: 18px; font-weight: 900; text-align: right; color: #0f172a; ${isSold ? 'text-decoration: line-through; color: #dc2626;' : ''}">$${p.pIndiv.toLocaleString()} MXN</td>
-                                </tr>
-                                <tr>
-                                    <td style="padding: 12px 15px; font-size: 12px; color: #7c3aed; font-weight: bold; text-transform: uppercase;">Precio Paquete (2+):</td>
-                                    <td style="padding: 12px 15px; font-size: 18px; font-weight: 900; color: #7c3aed; text-align: right;">$${p.pPaquete.toLocaleString()} MXN</td>
-                                </tr>
-                            </table>
-                        </div>
-                    </div>
-                `;
-            });
+                    document.getElementById('bulk-count').innerText = `${data.length} Fierros`;
+                    document.getElementById('bulk-preview-area').classList.remove('hidden');
 
-            htmlContent += `
-                    <div style="text-align: center; margin-top: 50px; padding-top: 25px; border-top: 2px dashed #cbd5e1; font-size: 11px; color: #94a3b8; text-transform: uppercase; letter-spacing: 1px;">
-                        <strong>SISTEMA NYX / CORE KRAKEN CLOUD</strong><br><br>
-                        Precios sujetos a disponibilidad. Equipo entregado en Torreón, Coah.
-                    </div>
-                </div>
-            `;
-
-            const opt = {
-                margin:       [10, 0, 10, 0],
-                filename:     'Catalogo_KRAKEN_Cloud.pdf',
-                image:        { type: 'jpeg', quality: 0.98 },
-                html2canvas:  { scale: 2, useCORS: true, scrollY: 0 }, 
-                jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+                } catch(err) {
+                    alert("SISTEMA NYX: Cagadero detectado en el archivo JSON. Formato inválido. " + err.message);
+                }
             };
-
-            setTimeout(() => {
-                html2pdf().set(opt).from(htmlContent).save().then(() => {
-                    btn.innerHTML = btnOriginal;
-                }).catch(err => {
-                    console.error("PDF Error: ", err);
-                    alert("SISTEMA NYX: Hubo un error procesando el PDF.");
-                    btn.innerHTML = btnOriginal;
-                });
-            }, 1000);
+            reader.readAsText(file);
         };
     </script>
 
@@ -911,7 +854,6 @@
 
             onAuthStateChanged(auth, async (user) => {
                 if (user) {
-                    // Protocolo de Semilla
                     try {
                         const snap = await getDocs(collection(db, "productos"));
                         if (snap.empty) {
@@ -925,18 +867,11 @@
                         
                         document.getElementById('loading-spinner').classList.add('hidden');
                         document.getElementById('product-grid').classList.remove('hidden');
-                        
                         window.renderProductos();
-                        
-                        // Evita recargar el admin si estás editando
-                        if(document.getElementById('modal-admin').classList.contains('modal-active') && !document.getElementById('admin-tab-editar').classList.contains('hidden')) {
-                            // window.renderAdminForm(); // Comentado para evitar que borre lo que escribes.
-                        }
                     });
                 }
             });
 
-            // Guardar Cambios (Buffer y Push seguro)
             window.saveAdminChanges = async function() {
                 const btn = document.getElementById('btn-save-admin');
                 const orig = btn.innerHTML;
@@ -945,13 +880,10 @@
                 try {
                     let updates = 0;
                     const pendingUpdates = [];
-
-                    // 1. Recoger datos primero
                     for(let i=0; i<window.productos.length; i++) {
                         const p = window.productos[i];
                         const nnInput = document.getElementById(`adm-name-${p.id}`);
                         if(!nnInput) continue; 
-
                         const nn = nnInput.value;
                         const ni = parseInt(document.getElementById(`adm-indiv-${p.id}`).value) || 0;
                         const np = parseInt(document.getElementById(`adm-paquete-${p.id}`).value) || 0;
@@ -959,22 +891,12 @@
                         const nv = document.getElementById(`adm-vendido-${p.id}`).checked;
 
                         if(p.nombre !== nn || p.pIndiv !== ni || p.pPaquete !== np || p.desc !== nd || p.vendido !== nv) {
-                            pendingUpdates.push({
-                                ref: doc(db, "productos", p.id),
-                                data: { nombre: nn, pIndiv: ni, pPaquete: np, desc: nd, vendido: nv }
-                            });
+                            pendingUpdates.push({ ref: doc(db, "productos", p.id), data: { nombre: nn, pIndiv: ni, pPaquete: np, desc: nd, vendido: nv } });
                         }
                     }
-
-                    // 2. Disparar todo a Google
-                    for(const update of pendingUpdates) {
-                        await updateDoc(update.ref, update.data);
-                        updates++;
-                    }
-
+                    for(const update of pendingUpdates) { await updateDoc(update.ref, update.data); updates++; }
                     alert(updates > 0 ? `${updates} actualizados en la nube.` : "Sin cambios detectados.");
                     if(updates > 0) window.renderAdminForm();
-
                 } catch(e) { alert("Error crítico: " + e.message); } 
                 finally { btn.innerHTML = orig; btn.disabled = false; }
             };
@@ -982,12 +904,8 @@
             window.removeImageFromProduct = async function(prodId, imgIndex) {
                 if(!confirm("¿Borrar foto permanentemente?")) return;
                 const p = window.productos.find(x => x.id === prodId);
-                const newImgArray = [...p.img];
-                newImgArray.splice(imgIndex, 1);
-                try { 
-                    await updateDoc(doc(db, "productos", prodId), { img: newImgArray });
-                    setTimeout(() => window.renderAdminForm(), 1000);
-                } 
+                const newImgArray = [...p.img]; newImgArray.splice(imgIndex, 1);
+                try { await updateDoc(doc(db, "productos", prodId), { img: newImgArray }); setTimeout(() => window.renderAdminForm(), 1000); } 
                 catch(e) { alert("Error borrando foto: " + e); }
             };
 
@@ -1000,13 +918,10 @@
                     for(let file of input.files) {
                         const storageRef = ref(storage, 'productos/' + Date.now() + '_' + file.name);
                         await uploadBytes(storageRef, file);
-                        const url = await getDownloadURL(storageRef);
-                        newUrls.push(url);
+                        newUrls.push(await getDownloadURL(storageRef));
                     }
                     await updateDoc(doc(db, "productos", prodId), { img: [...(p.img || []), ...newUrls] });
-                    input.value = '';
-                    alert("Fotos inyectadas correctamente.");
-                    setTimeout(() => window.renderAdminForm(), 1000);
+                    input.value = ''; alert("Fotos inyectadas."); setTimeout(() => window.renderAdminForm(), 1000);
                 } catch(e) { alert("Error subiendo foto: " + e); }
             };
 
@@ -1014,38 +929,110 @@
                 const code = document.getElementById('new-code').value;
                 const name = document.getElementById('new-nombre').value;
                 const fileInput = document.getElementById('new-file');
-                
                 if(!code || !name) return alert("Falta ID y Nombre.");
-
                 const btn = document.getElementById('btn-upload');
-                const orig = btn.innerHTML;
-                btn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Subiendo...';
-                btn.disabled = true;
-
+                const orig = btn.innerHTML; btn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Subiendo...'; btn.disabled = true;
                 try {
                     const newUrls = [];
                     if(fileInput.files && fileInput.files.length > 0) {
                         for(let file of fileInput.files) {
                             const storageRef = ref(storage, 'productos/' + Date.now() + '_' + file.name);
-                            await uploadBytes(storageRef, file);
-                            const url = await getDownloadURL(storageRef);
-                            newUrls.push(url);
+                            await uploadBytes(storageRef, file); newUrls.push(await getDownloadURL(storageRef));
                         }
                     }
                     const newId = 'prod_' + Date.now();
                     await setDoc(doc(db, "productos", newId), {
-                        id: newId, codeId: code, categoria: document.getElementById('new-cat').value || 'General',
-                        nombre: name, pIndiv: parseInt(document.getElementById('new-indiv').value) || 0,
-                        pPaquete: parseInt(document.getElementById('new-paquete').value) || 0, desc: document.getElementById('new-desc').value,
-                        img: newUrls, vendido: false, timestamp: Date.now()
+                        id: newId, codeId: code, categoria: document.getElementById('new-cat').value || 'General', nombre: name, 
+                        pIndiv: parseInt(document.getElementById('new-indiv').value) || 0, pPaquete: parseInt(document.getElementById('new-paquete').value) || 0, 
+                        desc: document.getElementById('new-desc').value, img: newUrls, vendido: false, timestamp: Date.now()
                     });
-                    
                     alert("Producto Nuevo Publicado.");
-                    document.getElementById('new-code').value = ''; document.getElementById('new-nombre').value = ''; fileInput.value = '';
-                    window.switchAdminTab('editar'); 
+                    document.getElementById('new-code').value = ''; document.getElementById('new-nombre').value = ''; fileInput.value = ''; window.switchAdminTab('editar'); 
                 } catch(e) { alert("Error: " + e.message); } 
                 finally { btn.innerHTML = orig; btn.disabled = false; }
             };
+
+            // KRAKEN TÁCTICA: EJECUCIÓN DE CARGA MASIVA
+            window.executeBulkUpload = async function() {
+                if(window.bulkPendingItems.length === 0) return;
+                const btn = document.getElementById('btn-bulk-execute');
+                const bar = document.getElementById('bulk-progress-bar');
+                const fill = document.getElementById('bulk-progress-fill');
+                const status = document.getElementById('bulk-status-text');
+                
+                btn.disabled = true;
+                btn.classList.replace('bg-red-600', 'bg-gray-600');
+                bar.classList.remove('hidden');
+                status.classList.remove('hidden');
+
+                let successCount = 0;
+                const total = window.bulkPendingItems.length;
+
+                try {
+                    for(let i=0; i<total; i++) {
+                        const item = window.bulkPendingItems[i];
+                        status.innerText = `Subiendo item ${i+1} de ${total}: ${item.nombre}...`;
+                        
+                        let newUrls = [];
+                        
+                        // Emparejar y subir imágenes
+                        if(item.imgNames && Array.isArray(item.imgNames)) {
+                            for(let imgName of item.imgNames) {
+                                const file = window.bulkImageFiles.find(f => f.name === imgName);
+                                if(file) {
+                                    const storageRef = ref(storage, 'productos/bulk_' + Date.now() + '_' + file.name);
+                                    await uploadBytes(storageRef, file);
+                                    newUrls.push(await getDownloadURL(storageRef));
+                                }
+                            }
+                        }
+
+                        // Construir e inyectar documento a Firebase
+                        const newId = 'prod_bulk_' + Date.now() + '_' + i;
+                        await setDoc(doc(db, "productos", newId), {
+                            id: newId,
+                            codeId: item.codeId || `${Date.now()}`.slice(-4),
+                            categoria: item.categoria || 'General',
+                            nombre: item.nombre,
+                            pIndiv: parseInt(item.pIndiv) || 0,
+                            pPaquete: parseInt(item.pPaquete) || 0,
+                            desc: item.desc || '',
+                            img: newUrls,
+                            vendido: false,
+                            timestamp: Date.now() + i
+                        });
+
+                        successCount++;
+                        fill.style.width = `${(successCount / total) * 100}%`;
+                    }
+                    
+                    status.innerText = "¡INYECCIÓN MASIVA COMPLETADA!";
+                    status.classList.replace('text-gray-500', 'text-green-500');
+                    alert(`SISTEMA NYX: ${successCount} fierros subidos con éxito a la base de datos.`);
+                    
+                    // Limpiar UI
+                    document.getElementById('bulk-json').value = '';
+                    document.getElementById('bulk-images').value = '';
+                    document.getElementById('bulk-preview-area').classList.add('hidden');
+                    window.bulkPendingItems = [];
+                    window.bulkImageFiles = [];
+                    window.switchAdminTab('editar');
+
+                } catch(err) {
+                    console.error(err);
+                    alert("Falla crítica en inyección masiva: " + err.message);
+                } finally {
+                    btn.disabled = false;
+                    btn.classList.replace('bg-gray-600', 'bg-red-600');
+                    setTimeout(() => {
+                        bar.classList.add('hidden');
+                        status.classList.add('hidden');
+                        fill.style.width = '0%';
+                        status.classList.replace('text-green-500', 'text-gray-500');
+                    }, 3000);
+                }
+            };
+
         } catch (e) { console.error(e); }
     </script>
 </body>
