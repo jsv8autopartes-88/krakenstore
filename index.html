@@ -3,9 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Catálogo KRAKEN - Cloud UI V9</title>
+    <title>Catálogo KRAKEN - Cloud UI V11</title>
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <!-- html2pdf Library -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     
     <script>
@@ -77,6 +80,7 @@
 </head>
 <body class="bg-gray-50 text-gray-900 font-sans antialiased relative selection:bg-accent selection:text-white">
 
+    <!-- Navbar -->
     <nav class="glass-nav text-white p-4 sticky top-0 z-50 shadow-lg border-b border-gray-800 flex justify-between items-center transition-all wood-texture">
         <div>
             <h1 class="text-2xl font-black tracking-widest cursor-pointer hover:text-accent transition" onclick="window.scrollTo(0,0)">KRAKEN <span class="text-accent text-lg">LIQUIDACIÓN</span></h1>
@@ -99,6 +103,7 @@
         </div>
     </nav>
 
+    <!-- Header Promocional -->
     <header class="bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-nyxLight via-nyx to-black text-white p-8 md:p-12 text-center border-b-4 border-accent relative overflow-hidden shadow-2xl">
         <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/wood-pattern.png')] opacity-40 mix-blend-overlay"></div>
         <div class="relative z-10 max-w-3xl mx-auto">
@@ -111,15 +116,20 @@
         </div>
     </header>
 
+    <!-- Main Content -->
     <main class="max-w-[90rem] mx-auto p-4 md:p-8 mb-12 min-h-[50vh]">
         <div id="loading-spinner" class="flex flex-col items-center justify-center mt-20">
             <div class="nyx-spinner mb-4"></div>
             <p class="text-sm font-black text-gray-400 uppercase tracking-widest">Conectando con Servidores Google...</p>
         </div>
         <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 md:gap-8 hidden">
-            </div>
+            <!-- Renderizado por JS -->
+        </div>
     </main>
 
+    <!-- ================= MODALS UI ================= -->
+
+    <!-- Modal: Detalles del Producto -->
     <div id="modal-details" class="fixed inset-0 bg-nyx/90 backdrop-blur-sm hidden z-50 items-center justify-center p-4">
         <div class="bg-white rounded-2xl shadow-2xl w-full max-w-5xl max-h-[90vh] overflow-y-auto flex flex-col md:flex-row relative modal-enter border border-gray-200">
             <button onclick="window.closeModals()" class="absolute top-4 right-4 bg-nyx hover:bg-accent text-white rounded-full w-10 h-10 flex items-center justify-center transition z-20 shadow-lg group"><i class="fas fa-times text-xl group-hover:scale-110 transition-transform"></i></button>
@@ -161,6 +171,7 @@
         </div>
     </div>
 
+    <!-- Modals Consultas -->
     <div id="modal-preguntar" class="fixed inset-0 bg-nyx/90 backdrop-blur-sm hidden z-50 items-center justify-center p-4">
         <div class="bg-white rounded-2xl shadow-2xl w-full max-w-md overflow-hidden flex flex-col modal-enter border border-gray-200">
             <div class="bg-nyx text-white p-5 flex justify-between items-center wood-texture">
@@ -211,22 +222,26 @@
         </div>
     </div>
 
+    <!-- ================= MODAL ADMIN CLOUD ================= -->
     <div id="modal-admin" class="fixed inset-0 bg-black/95 backdrop-blur-md hidden z-[60] items-center justify-center p-2 md:p-4">
         <div class="bg-white rounded-2xl shadow-2xl w-full max-w-6xl max-h-[95vh] h-[95vh] overflow-hidden flex flex-col border border-gray-700 modal-enter">
+            <!-- Header Admin -->
             <div class="bg-nyx text-white p-4 flex justify-between items-center shadow-md wood-texture shrink-0">
-                <h3 class="font-black uppercase tracking-widest text-white text-sm md:text-base"><i class="fas fa-cloud text-accent mr-2"></i> CLOUD ADMIN V10</h3>
+                <h3 class="font-black uppercase tracking-widest text-white text-sm md:text-base"><i class="fas fa-cloud text-accent mr-2"></i> CLOUD ADMIN V11</h3>
                 <div class="flex items-center">
                     <span class="text-[10px] bg-green-500/20 text-green-400 border border-green-500 px-2 py-1 rounded shadow-inner tracking-widest uppercase font-black mr-4 hidden md:inline-block"><i class="fas fa-wifi mr-1"></i>Sincronizado</span>
                     <button onclick="window.closeModals()" class="text-gray-400 hover:text-white text-xl w-8 h-8 flex items-center justify-center bg-gray-800 rounded-full">&times;</button>
                 </div>
             </div>
             
+            <!-- TABS NAVEGACIÓN -->
             <div class="flex border-b border-gray-200 bg-gray-50 shrink-0 overflow-x-auto">
                 <button id="tab-btn-editar" onclick="window.switchAdminTab('editar')" class="px-6 py-3 text-xs md:text-sm font-black uppercase text-accent border-b-2 border-accent transition-colors whitespace-nowrap"><i class="fas fa-boxes mr-2"></i>Inventario</button>
                 <button id="tab-btn-nuevo" onclick="window.switchAdminTab('nuevo')" class="px-6 py-3 text-xs md:text-sm font-black uppercase text-gray-400 border-b-2 border-transparent transition-colors whitespace-nowrap"><i class="fas fa-plus-circle mr-2"></i>Nuevo Fierro</button>
                 <button id="tab-btn-masiva" onclick="window.switchAdminTab('masiva')" class="px-6 py-3 text-xs md:text-sm font-black uppercase text-gray-400 border-b-2 border-transparent transition-colors whitespace-nowrap"><i class="fas fa-truck-loading mr-2"></i>Carga Masiva</button>
             </div>
 
+            <!-- CONTENEDOR SCROLL -->
             <div class="flex-1 overflow-y-auto bg-gray-100 p-2 md:p-4 relative">
                 <div id="admin-tab-editar" class="space-y-2"></div>
                 <div id="admin-tab-nuevo" class="hidden max-w-2xl mx-auto bg-white p-6 rounded-xl border border-gray-200 shadow-sm mt-4">
@@ -302,6 +317,7 @@
         </div>
     </div>
 
+    <!-- Modal: Auth -->
     <div id="modal-auth" class="fixed inset-0 bg-nyx/95 backdrop-blur-md hidden z-[70] items-center justify-center p-4">
         <div class="bg-white p-8 rounded-2xl shadow-2xl w-full max-w-sm border-t-4 border-accent text-center">
             <h3 class="font-black uppercase mb-6 tracking-widest text-nyx text-lg">Acceso Arquitecto</h3>
@@ -313,6 +329,7 @@
         </div>
     </div>
 
+    <!-- Sidebar Carrito -->
     <div id="cart-sidebar" class="fixed inset-y-0 right-0 w-full md:w-[420px] bg-white/95 backdrop-blur-xl shadow-2xl transform translate-x-full transition-transform duration-300 ease-in-out z-50 flex flex-col border-l border-gray-200">
         <div class="p-5 bg-nyx text-white flex justify-between items-center border-b-4 border-accent wood-texture">
             <h2 class="text-xl font-black uppercase tracking-widest"><i class="fas fa-clipboard-list text-accent mr-2"></i> Panel de Tratos</h2>
@@ -331,6 +348,7 @@
 
     <div id="overlay" onclick="window.closeModals(); window.toggleCart(false)" class="fixed inset-0 bg-nyx/80 backdrop-blur-sm hidden z-40 transition-all duration-300"></div>
 
+    <!-- MOTOR DE LÓGICA -->
     <script>
         const numTelefono = "528711119800"; 
         window.productos = [];
@@ -344,11 +362,8 @@
         window.imgFallback = function(imgEl) {
             if (!imgEl.dataset.retried) {
                 imgEl.dataset.retried = "true";
-                let src = imgEl.src.split('?')[0]; // TÁCTICA NYX: Cortar parámetros de Firebase para detectar la extensión real
-                if(src.match(/\.png$/i)) imgEl.src = imgEl.src.replace(/\.png/i, '.webp');
-                else if(src.match(/\.webp$/i)) imgEl.src = imgEl.src.replace(/\.webp/i, '.png');
-                else imgEl.src = 'https://via.placeholder.com/400x300?text=SIN+IMAGEN';
-            } else imgEl.src = 'https://via.placeholder.com/400x300?text=SIN+IMAGEN';
+                imgEl.src = 'https://via.placeholder.com/400x300?text=SIN+IMAGEN';
+            }
         };
 
         window.renderProductos = function() {
@@ -356,12 +371,13 @@
             if(!window.productos || window.productos.length === 0) return;
             grid.innerHTML = window.productos.map(p => {
                 const isSold = p.vendido === true;
-                // TÁCTICA NYX: Jalar la ÚLTIMA foto para que las fotos nuevas se conviertan en portada en chinga
-                const imgSrc = (p.img && p.img.length > 0) ? p.img[p.img.length - 1] : 'https://via.placeholder.com/400x300?text=CARGANDO...'; 
+                // TÁCTICA NYX: Mostramos la primera imagen del array. Si no hay, placeholder. Sin crossorigin para evitar bloqueos de Firebase.
+                const imgSrc = (p.img && p.img.length > 0) ? p.img[0] : 'https://via.placeholder.com/400x300?text=CARGANDO...'; 
                 return `
                 <div class="bg-white rounded-2xl shadow-lg ${!isSold ? 'hover:shadow-2xl cursor-pointer group' : 'opacity-70 grayscale'} transition-all duration-300 flex flex-col overflow-hidden" ${!isSold ? `onclick="window.openProductDetails('${p.id}')"` : ''}>
                     <div class="h-56 bg-gray-50 relative overflow-hidden border-b">
                         <span class="absolute top-4 left-4 bg-nyx/90 text-white text-[10px] px-3 py-1.5 rounded font-black z-10 shadow-md uppercase">${p.categoria}</span>
+                        ${p.img && p.img.length > 1 ? `<span class="absolute top-4 right-4 bg-nyx/70 text-white text-[10px] px-2 py-1 rounded font-bold z-10"><i class="fas fa-images mr-1"></i>${p.img.length}</span>` : ''}
                         <img src="${imgSrc}" onerror="window.imgFallback(this)" class="w-full h-full object-cover relative z-0 mix-blend-multiply transition-transform group-hover:scale-105">
                         ${isSold ? `<div class="absolute inset-0 bg-black/60 flex items-center justify-center z-20"><span class="bg-red-600 text-white font-black px-6 py-2 transform -rotate-12 border-4 border-red-800 uppercase tracking-widest">VENDIDO</span></div>` : ''}
                     </div>
@@ -479,7 +495,7 @@
                         </div>
                         <div class="mt-4 flex gap-2 overflow-x-auto pb-2">
                             ${p.img.map((url, i) => `
-                                <div class="relative w-16 h-16 rounded border overflow-hidden">
+                                <div class="relative w-16 h-16 rounded border overflow-hidden flex-shrink-0">
                                     <img src="${url}" class="w-full h-full object-cover">
                                     <button onclick="window.removeImageFromProduct('${p.id}', ${i})" class="absolute top-0 right-0 bg-red-600 text-white w-5 h-5 flex items-center justify-center text-[10px]"><i class="fas fa-trash"></i></button>
                                 </div>
@@ -603,7 +619,7 @@
             reader.readAsText(jf);
         };
 
-        // KRAKEN TÁCTICA: GENERADOR DE PDF RECONSTRUIDO AL 100
+        // KRAKEN TÁCTICA: GENERADOR DE PDF RECONSTRUIDO
         window.exportToPDF = function() {
             window.closeModals();
             const btn = document.getElementById('btn-export-pdf');
@@ -621,11 +637,11 @@
 
             window.productos.forEach(p => {
                 const isSold = p.vendido === true;
-                const coverImg = (p.img && p.img.length > 0) ? p.img[p.img.length - 1] : '';
+                const coverImg = (p.img && p.img.length > 0) ? p.img[0] : '';
                 htmlContent += `
                     <div style="display: flex; gap: 20px; border-bottom: 1px solid #eee; padding: 15px 0; page-break-inside: avoid; align-items: center; ${isSold ? 'opacity: 0.6;' : ''}">
                         <div style="width: 150px; height: 120px; background: #f9f9f9; border-radius: 8px; overflow: hidden; flex-shrink: 0; position: relative;">
-                            <img src="${coverImg}" style="width: 100%; height: 100%; object-fit: cover;">
+                            <img src="${coverImg}" style="width: 100%; height: 100%; object-fit: cover;" crossorigin="anonymous">
                             ${isSold ? '<div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(-15deg); background-color: #dc2626; color: white; padding: 5px 10px; font-weight: 900; font-size: 14px; border: 2px solid #7f1d1d; text-transform: uppercase;">VENDIDO</div>' : ''}
                         </div>
                         <div style="flex: 1;">
@@ -641,13 +657,13 @@
                 `;
             });
 
-            htmlContent += `</div><p style="text-align: center; font-size: 10px; color: #aaa; margin-top: 20px;">SISTEMA NYX CORE • WHATSAPP: ${numTelefono}</p></div>`;
+            htmlContent += `</div><p style="text-align: center; font-size: 10px; color: #aaa; margin-top: 20px;">SISTEMA NYX CORE V11 • WHATSAPP: ${numTelefono}</p></div>`;
 
             const opt = {
                 margin: [10, 0, 10, 0],
                 filename: 'Catalogo_KRAKEN.pdf',
                 image: { type: 'jpeg', quality: 0.98 },
-                html2canvas: { scale: 2, useCORS: true, scrollY: 0 },
+                html2canvas: { scale: 2, useCORS: true, allowTaint: true, scrollY: 0 },
                 jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
             };
 
@@ -656,13 +672,14 @@
                     btn.innerHTML = original;
                 }).catch(e => {
                     console.error(e);
-                    alert("Error al generar PDF.");
+                    alert("Error al generar PDF. Asegúrate de estar en una computadora.");
                     btn.innerHTML = original;
                 });
             }, 500);
         };
     </script>
 
+    <!-- MOTOR FIREBASE -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js";
         import { getFirestore, collection, onSnapshot, doc, updateDoc, setDoc, getDocs } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js";
@@ -702,7 +719,9 @@
             btn.disabled = true;
             try {
                 for(let p of window.productos) {
-                    const n = document.getElementById(`adm-name-${p.id}`).value;
+                    const nInput = document.getElementById(`adm-name-${p.id}`);
+                    if(!nInput) continue;
+                    const n = nInput.value;
                     const i = parseInt(document.getElementById(`adm-indiv-${p.id}`).value);
                     const pq = parseInt(document.getElementById(`adm-paquete-${p.id}`).value);
                     const d = document.getElementById(`adm-desc-${p.id}`).value;
@@ -731,7 +750,7 @@
                 await uploadBytes(sRef, f);
                 newUrls.push(await getDownloadURL(sRef));
             }
-            await updateDoc(doc(db, "productos", pid), { img: [...p.img, ...newUrls] });
+            await updateDoc(doc(db, "productos", pid), { img: [...(p.img || []), ...newUrls] });
             alert("Fotos añadidas.");
             window.renderAdminForm();
         };
@@ -739,7 +758,9 @@
         window.uploadNewProduct = async function() {
             const btn = document.getElementById('btn-upload'); btn.disabled = true;
             try {
+                const code = document.getElementById('new-code').value;
                 const name = document.getElementById('new-nombre').value;
+                if(!code || !name) throw new Error("Falta ID y Nombre.");
                 const fileInput = document.getElementById('new-file');
                 const urls = [];
                 for(let f of fileInput.files) {
@@ -749,11 +770,11 @@
                 }
                 const nid = 'prod_' + Date.now();
                 await setDoc(doc(db, "productos", nid), {
-                    id: nid, codeId: document.getElementById('new-code').value,
-                    categoria: document.getElementById('new-cat').value, nombre: name,
+                    id: nid, codeId: code,
+                    categoria: document.getElementById('new-cat').value || 'General', nombre: name,
                     pIndiv: parseInt(document.getElementById('new-indiv').value) || 0,
                     pPaquete: parseInt(document.getElementById('new-paquete').value) || 0,
-                    desc: document.getElementById('new-desc').value, img: urls, vendido: false
+                    desc: document.getElementById('new-desc').value, img: urls, vendido: false, timestamp: Date.now()
                 });
                 alert("Publicado.");
                 window.switchAdminTab('editar');
@@ -761,6 +782,7 @@
         };
 
         window.executeBulkUpload = async function() {
+            if(window.bulkPendingItems.length === 0) return;
             const bar = document.getElementById('bulk-progress-bar');
             const fill = document.getElementById('bulk-progress-fill');
             bar.classList.remove('hidden');
@@ -779,8 +801,8 @@
                 }
                 const nid = 'prod_bulk_' + Date.now() + count;
                 await setDoc(doc(db, "productos", nid), {
-                    id: nid, codeId: item.codeId, categoria: item.categoria, nombre: item.nombre,
-                    pIndiv: item.pIndiv, pPaquete: item.pPaquete, desc: item.desc, img: urls, vendido: false
+                    id: nid, codeId: item.codeId || `${Date.now()}`.slice(-4), categoria: item.categoria || 'General', nombre: item.nombre,
+                    pIndiv: parseInt(item.pIndiv) || 0, pPaquete: parseInt(item.pPaquete) || 0, desc: item.desc || '', img: urls, vendido: false, timestamp: Date.now() + count
                 });
                 count++;
                 fill.style.width = (count / window.bulkPendingItems.length * 100) + '%';
