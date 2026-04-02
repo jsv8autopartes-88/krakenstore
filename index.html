@@ -362,8 +362,11 @@
         window.imgFallback = function(imgEl) {
             if (!imgEl.dataset.retried) {
                 imgEl.dataset.retried = "true";
-                imgEl.src = 'https://via.placeholder.com/400x300?text=SIN+IMAGEN';
-            }
+                let src = imgEl.src.split('?')[0]; 
+                if(src.match(/\.png$/i)) imgEl.src = imgEl.src.replace(/\.png/i, '.webp');
+                else if(src.match(/\.webp$/i)) imgEl.src = imgEl.src.replace(/\.webp/i, '.png');
+                else imgEl.src = 'https://via.placeholder.com/400x300?text=SIN+IMAGEN';
+            } else imgEl.src = 'https://via.placeholder.com/400x300?text=SIN+IMAGEN';
         };
 
         window.renderProductos = function() {
@@ -371,13 +374,11 @@
             if(!window.productos || window.productos.length === 0) return;
             grid.innerHTML = window.productos.map(p => {
                 const isSold = p.vendido === true;
-                // TÁCTICA NYX: Mostramos la primera imagen del array. Si no hay, placeholder. Sin crossorigin para evitar bloqueos de Firebase.
-                const imgSrc = (p.img && p.img.length > 0) ? p.img[0] : 'https://via.placeholder.com/400x300?text=CARGANDO...'; 
+                const imgSrc = (p.img && p.img.length > 0) ? p.img[p.img.length - 1] : 'https://via.placeholder.com/400x300?text=CARGANDO...'; 
                 return `
                 <div class="bg-white rounded-2xl shadow-lg ${!isSold ? 'hover:shadow-2xl cursor-pointer group' : 'opacity-70 grayscale'} transition-all duration-300 flex flex-col overflow-hidden" ${!isSold ? `onclick="window.openProductDetails('${p.id}')"` : ''}>
                     <div class="h-56 bg-gray-50 relative overflow-hidden border-b">
                         <span class="absolute top-4 left-4 bg-nyx/90 text-white text-[10px] px-3 py-1.5 rounded font-black z-10 shadow-md uppercase">${p.categoria}</span>
-                        ${p.img && p.img.length > 1 ? `<span class="absolute top-4 right-4 bg-nyx/70 text-white text-[10px] px-2 py-1 rounded font-bold z-10"><i class="fas fa-images mr-1"></i>${p.img.length}</span>` : ''}
                         <img src="${imgSrc}" onerror="window.imgFallback(this)" class="w-full h-full object-cover relative z-0 mix-blend-multiply transition-transform group-hover:scale-105">
                         ${isSold ? `<div class="absolute inset-0 bg-black/60 flex items-center justify-center z-20"><span class="bg-red-600 text-white font-black px-6 py-2 transform -rotate-12 border-4 border-red-800 uppercase tracking-widest">VENDIDO</span></div>` : ''}
                     </div>
@@ -505,6 +506,9 @@
                             <input type="file" id="add-img-file-${p.id}" multiple class="text-[10px]">
                             <button onclick="window.addImagesToProduct('${p.id}')" class="bg-accent text-white px-3 py-1 rounded text-[10px] uppercase font-black">Añadir Fotos</button>
                         </div>
+                        <div class="mt-4 pt-4 border-t border-red-100">
+                            <button onclick="window.deleteProduct('${p.id}')" class="w-full bg-red-50 hover:bg-red-600 text-red-600 hover:text-white font-black py-2 rounded text-xs uppercase transition border border-red-200 shadow-sm"><i class="fas fa-trash-alt mr-2"></i> Eliminar Registro Permanentemente</button>
+                        </div>
                     </div>
                 </div>`).join('');
         };
@@ -594,7 +598,6 @@
             window.open(`https://wa.me/${numTelefono}?text=${encodeURIComponent(msg)}`);
         };
 
-        // UI CARGA MASIVA
         window.previewBulkItems = function() {
             const jf = document.getElementById('bulk-json').files[0];
             const imgs = document.getElementById('bulk-images').files;
@@ -619,7 +622,6 @@
             reader.readAsText(jf);
         };
 
-        // KRAKEN TÁCTICA: GENERADOR DE PDF RECONSTRUIDO
         window.exportToPDF = function() {
             window.closeModals();
             const btn = document.getElementById('btn-export-pdf');
@@ -682,7 +684,7 @@
     <!-- MOTOR FIREBASE -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js";
-        import { getFirestore, collection, onSnapshot, doc, updateDoc, setDoc, getDocs } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js";
+        import { getFirestore, collection, onSnapshot, doc, updateDoc, setDoc, getDocs, deleteDoc } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js";
         import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-storage.js";
         import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-auth.js";
 
@@ -753,6 +755,17 @@
             await updateDoc(doc(db, "productos", pid), { img: [...(p.img || []), ...newUrls] });
             alert("Fotos añadidas.");
             window.renderAdminForm();
+        };
+
+        // KRAKEN TÁCTICA: Botón de autodestrucción
+        window.deleteProduct = async function(pid) {
+            if(!confirm("ALERTA NYX: ¿Estás seguro de querer pulverizar este fierro de la base de datos? No hay vuelta atrás.")) return;
+            try {
+                await deleteDoc(doc(db, "productos", pid));
+                alert("Fierro eliminado del servidor.");
+                window.productos = window.productos.filter(x => x.id !== pid);
+                window.renderAdminForm();
+            } catch(e) { alert("Error al eliminar: " + e.message); }
         };
 
         window.uploadNewProduct = async function() {
