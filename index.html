@@ -4,11 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Catálogo KRAKEN - Cloud UI V9</title>
-    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- FontAwesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <!-- html2pdf Library -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     
     <script>
@@ -80,7 +77,6 @@
 </head>
 <body class="bg-gray-50 text-gray-900 font-sans antialiased relative selection:bg-accent selection:text-white">
 
-    <!-- Navbar -->
     <nav class="glass-nav text-white p-4 sticky top-0 z-50 shadow-lg border-b border-gray-800 flex justify-between items-center transition-all wood-texture">
         <div>
             <h1 class="text-2xl font-black tracking-widest cursor-pointer hover:text-accent transition" onclick="window.scrollTo(0,0)">KRAKEN <span class="text-accent text-lg">LIQUIDACIÓN</span></h1>
@@ -103,7 +99,6 @@
         </div>
     </nav>
 
-    <!-- Header Promocional -->
     <header class="bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-nyxLight via-nyx to-black text-white p-8 md:p-12 text-center border-b-4 border-accent relative overflow-hidden shadow-2xl">
         <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/wood-pattern.png')] opacity-40 mix-blend-overlay"></div>
         <div class="relative z-10 max-w-3xl mx-auto">
@@ -116,20 +111,15 @@
         </div>
     </header>
 
-    <!-- Main Content -->
     <main class="max-w-[90rem] mx-auto p-4 md:p-8 mb-12 min-h-[50vh]">
         <div id="loading-spinner" class="flex flex-col items-center justify-center mt-20">
             <div class="nyx-spinner mb-4"></div>
             <p class="text-sm font-black text-gray-400 uppercase tracking-widest">Conectando con Servidores Google...</p>
         </div>
         <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 md:gap-8 hidden">
-            <!-- Renderizado por JS -->
-        </div>
+            </div>
     </main>
 
-    <!-- ================= MODALS UI ================= -->
-
-    <!-- Modal: Detalles del Producto -->
     <div id="modal-details" class="fixed inset-0 bg-nyx/90 backdrop-blur-sm hidden z-50 items-center justify-center p-4">
         <div class="bg-white rounded-2xl shadow-2xl w-full max-w-5xl max-h-[90vh] overflow-y-auto flex flex-col md:flex-row relative modal-enter border border-gray-200">
             <button onclick="window.closeModals()" class="absolute top-4 right-4 bg-nyx hover:bg-accent text-white rounded-full w-10 h-10 flex items-center justify-center transition z-20 shadow-lg group"><i class="fas fa-times text-xl group-hover:scale-110 transition-transform"></i></button>
@@ -171,7 +161,6 @@
         </div>
     </div>
 
-    <!-- Modals Consultas -->
     <div id="modal-preguntar" class="fixed inset-0 bg-nyx/90 backdrop-blur-sm hidden z-50 items-center justify-center p-4">
         <div class="bg-white rounded-2xl shadow-2xl w-full max-w-md overflow-hidden flex flex-col modal-enter border border-gray-200">
             <div class="bg-nyx text-white p-5 flex justify-between items-center wood-texture">
@@ -222,32 +211,24 @@
         </div>
     </div>
 
-    <!-- ================= MODAL ADMIN CLOUD PRO V9 ================= -->
     <div id="modal-admin" class="fixed inset-0 bg-black/95 backdrop-blur-md hidden z-[60] items-center justify-center p-2 md:p-4">
         <div class="bg-white rounded-2xl shadow-2xl w-full max-w-6xl max-h-[95vh] h-[95vh] overflow-hidden flex flex-col border border-gray-700 modal-enter">
-            <!-- Header Admin -->
             <div class="bg-nyx text-white p-4 flex justify-between items-center shadow-md wood-texture shrink-0">
-                <h3 class="font-black uppercase tracking-widest text-white text-sm md:text-base"><i class="fas fa-cloud text-accent mr-2"></i> CLOUD ADMIN V9</h3>
+                <h3 class="font-black uppercase tracking-widest text-white text-sm md:text-base"><i class="fas fa-cloud text-accent mr-2"></i> CLOUD ADMIN V10</h3>
                 <div class="flex items-center">
                     <span class="text-[10px] bg-green-500/20 text-green-400 border border-green-500 px-2 py-1 rounded shadow-inner tracking-widest uppercase font-black mr-4 hidden md:inline-block"><i class="fas fa-wifi mr-1"></i>Sincronizado</span>
                     <button onclick="window.closeModals()" class="text-gray-400 hover:text-white text-xl w-8 h-8 flex items-center justify-center bg-gray-800 rounded-full">&times;</button>
                 </div>
             </div>
             
-            <!-- TABS NAVEGACIÓN -->
             <div class="flex border-b border-gray-200 bg-gray-50 shrink-0 overflow-x-auto">
                 <button id="tab-btn-editar" onclick="window.switchAdminTab('editar')" class="px-6 py-3 text-xs md:text-sm font-black uppercase text-accent border-b-2 border-accent transition-colors whitespace-nowrap"><i class="fas fa-boxes mr-2"></i>Inventario</button>
                 <button id="tab-btn-nuevo" onclick="window.switchAdminTab('nuevo')" class="px-6 py-3 text-xs md:text-sm font-black uppercase text-gray-400 border-b-2 border-transparent transition-colors whitespace-nowrap"><i class="fas fa-plus-circle mr-2"></i>Nuevo Fierro</button>
                 <button id="tab-btn-masiva" onclick="window.switchAdminTab('masiva')" class="px-6 py-3 text-xs md:text-sm font-black uppercase text-gray-400 border-b-2 border-transparent transition-colors whitespace-nowrap"><i class="fas fa-truck-loading mr-2"></i>Carga Masiva</button>
             </div>
 
-            <!-- CONTENEDOR SCROLL -->
             <div class="flex-1 overflow-y-auto bg-gray-100 p-2 md:p-4 relative">
-                
-                <!-- TAB 1: EDITAR (ACORDEÓN) -->
                 <div id="admin-tab-editar" class="space-y-2"></div>
-
-                <!-- TAB 2: NUEVO FIERRO -->
                 <div id="admin-tab-nuevo" class="hidden max-w-2xl mx-auto bg-white p-6 rounded-xl border border-gray-200 shadow-sm mt-4">
                     <h4 class="font-black uppercase text-sm tracking-widest text-nyx mb-4 border-b border-gray-100 pb-2"><i class="fas fa-cloud-upload-alt text-accent mr-2"></i>Publicador Individual</h4>
                     <div class="space-y-4">
@@ -280,117 +261,76 @@
                             <textarea id="new-desc" rows="3" placeholder="Detalles, condiciones..." class="w-full p-3 rounded-lg bg-gray-50 border border-gray-300 text-sm font-bold outline-none focus:border-accent resize-none"></textarea>
                         </div>
                         <div class="bg-gray-50 p-4 rounded-lg border-2 border-dashed border-gray-300 text-center">
-                            <label class="block text-[10px] font-black text-gray-500 uppercase tracking-widest mb-2"><i class="fas fa-camera mr-1"></i> Imágenes (Puedes elegir varias)</label>
-                            <input type="file" id="new-file" accept="image/*" multiple class="text-xs w-full file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-black file:bg-nyx file:text-white hover:file:bg-accent cursor-pointer">
+                            <label class="block text-[10px] font-black text-gray-500 uppercase tracking-widest mb-2"><i class="fas fa-camera mr-1"></i> Imágenes</label>
+                            <input type="file" id="new-file" accept="image/*" multiple class="text-xs w-full">
                         </div>
-                        <button onclick="window.uploadNewProduct()" id="btn-upload" class="w-full bg-accent hover:bg-purple-600 text-white font-black py-4 rounded-lg text-xs uppercase tracking-widest transition shadow-lg mt-4 flex items-center justify-center"><i class="fas fa-cloud-upload-alt text-xl mr-2"></i> Publicar en Catálogo</button>
+                        <button onclick="window.uploadNewProduct()" id="btn-upload" class="w-full bg-accent text-white font-black py-4 rounded-lg uppercase shadow-lg">Publicar en Catálogo</button>
                     </div>
                 </div>
-
-                <!-- TAB 3: CARGA MASIVA (NUEVO) -->
                 <div id="admin-tab-masiva" class="hidden max-w-4xl mx-auto mt-4">
-                    
-                    <div class="bg-nyx text-white p-6 rounded-t-xl border-b-4 border-accent shadow-md wood-texture relative overflow-hidden">
-                        <div class="relative z-10">
-                            <h4 class="font-black uppercase text-lg tracking-widest mb-2"><i class="fas fa-truck-loading text-accent mr-2"></i>Inyector de Carga Masiva</h4>
-                            <p class="text-xs text-gray-400 font-mono">1. Carga el archivo .JSON. <br>2. Selecciona la carpeta o las fotos correspondientes en lote.<br>3. Previsualiza e inyecta al núcleo de Firebase.</p>
-                        </div>
+                    <div class="bg-nyx text-white p-6 rounded-t-xl border-b-4 border-accent shadow-md wood-texture">
+                        <h4 class="font-black uppercase text-lg tracking-widest mb-2"><i class="fas fa-truck-loading text-accent mr-2"></i>Inyector Masivo</h4>
                     </div>
-
                     <div class="bg-white p-6 rounded-b-xl border border-gray-200 shadow-sm space-y-6">
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <!-- Step 1: JSON -->
-                            <div class="bg-gray-50 p-4 rounded-lg border border-gray-200">
-                                <label class="block text-xs font-black text-nyx uppercase tracking-widest mb-3"><span class="bg-nyx text-white px-2 py-0.5 rounded-md mr-2">1</span>Archivo de Datos (.JSON)</label>
-                                <input type="file" id="bulk-json" accept=".json" class="text-xs w-full file:mr-3 file:py-2 file:px-4 file:rounded file:border-0 file:font-black file:bg-gray-200 file:text-nyx hover:file:bg-gray-300 cursor-pointer border border-gray-300 rounded p-1">
+                            <div class="bg-gray-50 p-4 rounded-lg">
+                                <label class="block text-xs font-black text-nyx uppercase tracking-widest mb-3">1. Archivo .JSON</label>
+                                <input type="file" id="bulk-json" accept=".json" class="text-xs w-full">
                             </div>
-                            
-                            <!-- Step 2: Imágenes -->
-                            <div class="bg-gray-50 p-4 rounded-lg border border-gray-200">
-                                <label class="block text-xs font-black text-nyx uppercase tracking-widest mb-3"><span class="bg-nyx text-white px-2 py-0.5 rounded-md mr-2">2</span>Carpeta de Fotos (Lote)</label>
-                                <input type="file" id="bulk-images" accept="image/*" multiple class="text-xs w-full file:mr-3 file:py-2 file:px-4 file:rounded file:border-0 file:font-black file:bg-gray-200 file:text-nyx hover:file:bg-gray-300 cursor-pointer border border-gray-300 rounded p-1">
-                                <p class="text-[9px] text-gray-500 mt-2 font-bold uppercase tracking-wider"><i class="fas fa-exclamation-triangle text-pending mr-1"></i> Selecciona todas las fotos referenciadas a la vez.</p>
+                            <div class="bg-gray-50 p-4 rounded-lg">
+                                <label class="block text-xs font-black text-nyx uppercase tracking-widest mb-3">2. Carpeta de Fotos</label>
+                                <input type="file" id="bulk-images" accept="image/*" multiple class="text-xs w-full">
                             </div>
                         </div>
-
-                        <button onclick="window.previewBulkItems()" class="w-full bg-nyxLight hover:bg-nyx text-white font-black py-3 rounded-lg text-xs uppercase tracking-widest transition shadow flex items-center justify-center border border-gray-700"><i class="fas fa-eye mr-2 text-lg"></i> Analizar y Previsualizar Matriz</button>
-
-                        <!-- Preview Area -->
+                        <button onclick="window.previewBulkItems()" class="w-full bg-nyxLight text-white font-black py-3 rounded-lg uppercase">Analizar Matriz</button>
                         <div id="bulk-preview-area" class="hidden">
-                            <h5 class="font-black text-sm uppercase tracking-widest text-nyx mb-3 border-b border-gray-200 pb-2">Vista Previa del Lote: <span id="bulk-count" class="text-accent ml-2">0 Fierros</span></h5>
-                            <div id="bulk-list" class="space-y-2 max-h-64 overflow-y-auto bg-gray-50 p-2 rounded border border-gray-200">
-                                <!-- JS inyecta lista aqui -->
+                            <div id="bulk-list" class="space-y-2 max-h-64 overflow-y-auto bg-gray-50 p-2 rounded"></div>
+                            <button id="btn-bulk-execute" onclick="window.executeBulkUpload()" class="w-full bg-red-600 text-white font-black py-4 rounded-lg mt-4 uppercase shadow-xl">Inyectar a la Nube</button>
+                            <div id="bulk-progress-bar" class="hidden w-full bg-gray-200 rounded-full h-4 mt-3">
+                                <div id="bulk-progress-fill" class="bg-accent h-4 rounded-full" style="width: 0%"></div>
                             </div>
-                            <button id="btn-bulk-execute" onclick="window.executeBulkUpload()" class="w-full bg-red-600 hover:bg-red-700 text-white font-black py-4 rounded-lg text-sm uppercase tracking-widest transition shadow-xl mt-4 flex items-center justify-center"><i class="fas fa-fire mr-2 text-xl"></i> Inyectar a la Nube (Firebase)</button>
-                            <div id="bulk-progress-bar" class="hidden w-full bg-gray-200 rounded-full h-4 mt-3 overflow-hidden">
-                                <div id="bulk-progress-fill" class="bg-accent h-4 rounded-full transition-all duration-300" style="width: 0%"></div>
-                            </div>
-                            <p id="bulk-status-text" class="text-center text-xs font-bold text-gray-500 mt-2 uppercase tracking-widest hidden">Procesando...</p>
                         </div>
                     </div>
                 </div>
-
             </div>
 
-            <!-- FOOTER ADMIN -->
             <div id="admin-footer-editar" class="p-4 bg-white border-t border-gray-200 shrink-0">
-                <button id="btn-save-admin" onclick="window.saveAdminChanges()" class="w-full bg-nyx hover:bg-accent text-white font-black py-4 rounded-xl uppercase tracking-widest transition shadow-lg flex justify-center items-center text-sm">
-                    <i class="fas fa-sync-alt mr-2 text-xl"></i> Guardar Cambios Locales en Nube
+                <button id="btn-save-admin" onclick="window.saveAdminChanges()" class="w-full bg-nyx hover:bg-accent text-white font-black py-4 rounded-xl uppercase transition shadow-lg flex justify-center items-center text-sm">
+                    <i class="fas fa-sync-alt mr-2"></i> Guardar Cambios Locales en Nube
                 </button>
             </div>
         </div>
     </div>
 
-    <!-- Modal: Auth Blindado -->
     <div id="modal-auth" class="fixed inset-0 bg-nyx/95 backdrop-blur-md hidden z-[70] items-center justify-center p-4">
-        <div class="bg-white p-8 rounded-2xl shadow-2xl w-full max-w-sm border-t-4 border-accent text-center modal-enter">
-            <h3 class="font-black uppercase mb-6 tracking-widest text-nyx text-lg"><i class="fas fa-lock mr-2 text-accent"></i> Acceso Arquitecto</h3>
-            <input type="password" id="admin-pwd" class="w-full border-2 border-gray-200 bg-gray-50 p-4 rounded-xl text-center tracking-[0.5em] font-black outline-none focus:border-accent mb-6 text-nyx text-xl transition" placeholder="••••••••">
+        <div class="bg-white p-8 rounded-2xl shadow-2xl w-full max-w-sm border-t-4 border-accent text-center">
+            <h3 class="font-black uppercase mb-6 tracking-widest text-nyx text-lg">Acceso Arquitecto</h3>
+            <input type="password" id="admin-pwd" class="w-full border-2 border-gray-200 p-4 rounded-xl text-center font-black outline-none focus:border-accent mb-6" placeholder="••••••••">
             <div class="flex gap-3">
-                <button onclick="window.closeAuthModal()" class="w-1/3 bg-gray-200 hover:bg-gray-300 text-gray-700 font-black rounded-xl text-xs uppercase tracking-wider transition">Cerrar</button>
-                <button onclick="window.verifyAdmin()" class="w-2/3 bg-nyx hover:bg-accent text-white font-black py-4 rounded-xl uppercase tracking-widest transition shadow-lg text-xs">Desbloquear</button>
+                <button onclick="window.closeAuthModal()" class="w-1/3 bg-gray-200 text-gray-700 font-black rounded-xl text-xs uppercase">Cerrar</button>
+                <button onclick="window.verifyAdmin()" class="w-2/3 bg-nyx text-white font-black py-4 rounded-xl uppercase shadow-lg text-xs">Desbloquear</button>
             </div>
         </div>
     </div>
 
-    <!-- Sidebar Carrito -->
     <div id="cart-sidebar" class="fixed inset-y-0 right-0 w-full md:w-[420px] bg-white/95 backdrop-blur-xl shadow-2xl transform translate-x-full transition-transform duration-300 ease-in-out z-50 flex flex-col border-l border-gray-200">
-        <div class="p-5 bg-nyx text-white flex justify-between items-center shadow-lg z-10 border-b-4 border-accent wood-texture">
+        <div class="p-5 bg-nyx text-white flex justify-between items-center border-b-4 border-accent wood-texture">
             <h2 class="text-xl font-black uppercase tracking-widest"><i class="fas fa-clipboard-list text-accent mr-2"></i> Panel de Tratos</h2>
-            <button onclick="window.toggleCart()" class="text-gray-400 hover:text-white text-2xl transition bg-gray-800 w-8 h-8 rounded-full flex items-center justify-center">&times;</button>
+            <button onclick="window.toggleCart()" class="text-gray-400 text-2xl bg-gray-800 w-8 h-8 rounded-full">&times;</button>
         </div>
         <div id="cart-items" class="flex-1 overflow-y-auto p-5 space-y-4 bg-gray-50/50"></div>
-        <div class="p-6 bg-white border-t border-gray-200 shadow-[0_-10px_20px_-5px_rgba(0,0,0,0.05)]">
-            <div class="flex gap-2 mb-5">
-                <input type="text" id="coupon-code" placeholder="CÓDIGO (Ej. CODE02)" class="flex-1 border-2 border-gray-200 p-3 text-xs font-black rounded-xl outline-none focus:border-nyx uppercase bg-gray-50 tracking-widest transition">
-                <button onclick="window.applyCoupon()" class="bg-nyx text-white px-5 py-3 rounded-xl hover:bg-accent transition font-bold shadow-md"><i class="fas fa-unlock"></i></button>
-            </div>
-            <div class="space-y-2 mb-5">
-                <div class="flex justify-between text-gray-500 text-sm font-bold uppercase tracking-wider">
-                    <span>Subtotal</span><span id="cart-subtotal" class="font-black text-gray-800">$0.00</span>
-                </div>
-                <div class="flex justify-between text-accent font-black text-sm uppercase tracking-wider hidden bg-accent/10 p-2 rounded-lg border border-accent/20" id="discount-row">
-                    <span>Ahorro Paquete</span><span id="cart-discount">-$0.00</span>
-                </div>
-                <div class="flex justify-between text-pending font-black text-sm uppercase tracking-wider hidden bg-yellow-50 p-2 rounded-lg border border-yellow-200" id="pending-row">
-                    <span>En Revisión</span><span id="cart-pending">$0.00</span>
-                </div>
-                <div class="flex justify-between text-3xl font-black text-nyx pt-4 mt-2 border-t-2 border-gray-100">
-                    <span class="tracking-widest">TOTAL</span><span id="cart-total" class="text-accent">$0.00</span>
+        <div class="p-6 bg-white border-t border-gray-200">
+            <div id="cart-totals-area" class="space-y-2 mb-5">
+                <div class="flex justify-between font-black text-nyx pt-4 border-t-2 border-gray-100">
+                    <span>TOTAL</span><span id="cart-total" class="text-accent text-2xl">$0.00</span>
                 </div>
             </div>
-            <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Logística de Entrega</label>
-            <select id="delivery-method" class="w-full border-2 border-gray-200 p-4 text-xs font-black rounded-xl outline-none bg-gray-50 mb-4 text-nyx uppercase focus:border-nyx cursor-pointer transition">
-                <option value="RECOGER EN BODEGA (TORREON)">Recoger en Bodega (Torreón)</option>
-                <option value="FLETE LOCAL (NO INCLUIDO)">Flete Local (Se cotiza extra)</option>
-            </select>
-            <button onclick="window.checkoutWhatsApp()" class="w-full bg-[#25D366] hover:bg-[#128C7E] text-white font-black py-4 rounded-xl shadow-lg hover:shadow-xl transition uppercase tracking-widest flex justify-center items-center text-sm"><i class="fab fa-whatsapp text-2xl mr-3"></i> Cerrar Trato</button>
+            <button onclick="window.checkoutWhatsApp()" class="w-full bg-[#25D366] text-white font-black py-4 rounded-xl shadow-lg uppercase tracking-widest flex justify-center items-center text-sm"><i class="fab fa-whatsapp text-2xl mr-3"></i> Cerrar Trato</button>
         </div>
     </div>
 
     <div id="overlay" onclick="window.closeModals(); window.toggleCart(false)" class="fixed inset-0 bg-nyx/80 backdrop-blur-sm hidden z-40 transition-all duration-300"></div>
 
-    <!-- MOTOR DE INTERFAZ -->
     <script>
         const numTelefono = "528711119800"; 
         window.productos = [];
@@ -398,18 +338,17 @@
         window.activeProductId = null;
         window.currentSliderImages = [];
         window.currentSlideIndex = 0;
-        
-        // Variables para la carga masiva
         window.bulkPendingItems = [];
         window.bulkImageFiles = [];
 
         window.imgFallback = function(imgEl) {
             if (!imgEl.dataset.retried) {
                 imgEl.dataset.retried = "true";
-                if(imgEl.src.includes('.png')) imgEl.src = imgEl.src.replace(/\.png$/i, '.webp');
-                else if(imgEl.src.includes('.webp')) imgEl.src = imgEl.src.replace(/\.webp$/i, '.png');
-                else imgEl.src = 'https://via.placeholder.com/400x300?text=KRAKEN+PENDIENTE';
-            } else imgEl.src = 'https://via.placeholder.com/400x300?text=KRAKEN+PENDIENTE';
+                let src = imgEl.src.split('?')[0]; // TÁCTICA NYX: Cortar parámetros de Firebase para detectar la extensión real
+                if(src.match(/\.png$/i)) imgEl.src = imgEl.src.replace(/\.png/i, '.webp');
+                else if(src.match(/\.webp$/i)) imgEl.src = imgEl.src.replace(/\.webp/i, '.png');
+                else imgEl.src = 'https://via.placeholder.com/400x300?text=SIN+IMAGEN';
+            } else imgEl.src = 'https://via.placeholder.com/400x300?text=SIN+IMAGEN';
         };
 
         window.renderProductos = function() {
@@ -417,160 +356,27 @@
             if(!window.productos || window.productos.length === 0) return;
             grid.innerHTML = window.productos.map(p => {
                 const isSold = p.vendido === true;
-                const isPos = p.id === 'pv-full';
-                const imgSrc = p.img && p.img.length > 0 ? p.img[0] : ''; 
+                // TÁCTICA NYX: Jalar la ÚLTIMA foto para que las fotos nuevas se conviertan en portada en chinga
+                const imgSrc = (p.img && p.img.length > 0) ? p.img[p.img.length - 1] : 'https://via.placeholder.com/400x300?text=CARGANDO...'; 
                 return `
-                <div class="bg-white rounded-2xl shadow-lg ${!isSold ? 'hover:shadow-2xl cursor-pointer group hover:-translate-y-1' : 'opacity-70 grayscale border-red-200'} transition-all duration-300 flex flex-col border border-gray-100 overflow-hidden" ${!isSold ? `onclick="window.openProductDetails('${p.id}')"` : ''}>
-                    <div class="h-56 bg-gray-50 relative flex items-center justify-center overflow-hidden border-b border-gray-100">
-                        ${isPos ? `<div class="absolute inset-0 flex items-center justify-center z-0 overflow-hidden pointer-events-none"><span class="text-accent/10 font-black text-6xl transform -rotate-12 uppercase select-none">KRAKEN</span></div>` : ''}
-                        <span class="absolute top-4 left-4 bg-nyx/90 backdrop-blur-md text-white text-[10px] px-3 py-1.5 rounded-lg font-black uppercase z-10 shadow-md">${p.categoria}</span>
-                        ${p.img && p.img.length > 1 ? `<span class="absolute top-4 right-4 bg-nyx/70 text-white text-[10px] px-2 py-1 rounded font-bold z-10"><i class="fas fa-images mr-1"></i>${p.img.length}</span>` : ''}
-                        <img src="${imgSrc}" onerror="window.imgFallback(this)" class="w-full h-full object-cover transform ${!isSold ? 'group-hover:scale-110 transition-transform duration-700 ease-out' : ''} relative z-10 mix-blend-multiply" crossorigin="anonymous">
-                        ${isSold ? `<div class="absolute inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-20"><span class="bg-red-600 text-white font-black px-8 py-3 rounded-lg transform -rotate-12 shadow-2xl text-2xl border-4 border-red-800 tracking-widest uppercase">VENDIDO</span></div>` : ''}
+                <div class="bg-white rounded-2xl shadow-lg ${!isSold ? 'hover:shadow-2xl cursor-pointer group' : 'opacity-70 grayscale'} transition-all duration-300 flex flex-col overflow-hidden" ${!isSold ? `onclick="window.openProductDetails('${p.id}')"` : ''}>
+                    <div class="h-56 bg-gray-50 relative overflow-hidden border-b">
+                        <span class="absolute top-4 left-4 bg-nyx/90 text-white text-[10px] px-3 py-1.5 rounded font-black z-10 shadow-md uppercase">${p.categoria}</span>
+                        <img src="${imgSrc}" onerror="window.imgFallback(this)" class="w-full h-full object-cover relative z-0 mix-blend-multiply transition-transform group-hover:scale-105">
+                        ${isSold ? `<div class="absolute inset-0 bg-black/60 flex items-center justify-center z-20"><span class="bg-red-600 text-white font-black px-6 py-2 transform -rotate-12 border-4 border-red-800 uppercase tracking-widest">VENDIDO</span></div>` : ''}
                     </div>
-                    <div class="p-5 flex-1 flex flex-col justify-between bg-white">
+                    <div class="p-5 flex-1 flex flex-col justify-between">
                         <div>
-                            <h3 class="font-black text-nyx leading-tight mb-2 text-xl tracking-tight ${isSold ? 'text-gray-500 line-through' : ''}">${p.nombre}</h3>
-                            <p class="text-sm text-gray-500 line-clamp-2 mb-5 font-medium">${p.desc}</p>
+                            <h3 class="font-black text-nyx leading-tight mb-2 text-lg uppercase">${p.nombre}</h3>
+                            <p class="text-xs text-gray-500 line-clamp-2">${p.desc}</p>
                         </div>
-                        <div class="flex justify-between items-end border-t border-gray-100 pt-4 mt-auto">
-                            <span class="text-[10px] ${isSold ? 'text-red-500' : 'text-gray-400'} font-black uppercase tracking-widest bg-gray-50 px-2 py-1 rounded-md">${isSold ? 'Agotado' : 'Precio Base'}</span>
-                            <span class="font-black text-2xl text-nyx ${isSold ? 'line-through text-red-500 opacity-50' : ''}">$${p.pIndiv.toLocaleString()}</span>
-                        </div>
-                    </div>
-                </div>
-            `}).join('');
-        };
-
-        window.switchAdminTab = function(tab) {
-            const btnEditar = document.getElementById('tab-btn-editar');
-            const btnNuevo = document.getElementById('tab-btn-nuevo');
-            const btnMasiva = document.getElementById('tab-btn-masiva');
-            
-            const secEditar = document.getElementById('admin-tab-editar');
-            const secNuevo = document.getElementById('admin-tab-nuevo');
-            const secMasiva = document.getElementById('admin-tab-masiva');
-            const footEditar = document.getElementById('admin-footer-editar');
-
-            // Reset all
-            [btnEditar, btnNuevo, btnMasiva].forEach(b => {
-                b.classList.replace('text-accent', 'text-gray-400');
-                b.classList.replace('border-accent', 'border-transparent');
-            });
-            [secEditar, secNuevo, secMasiva, footEditar].forEach(s => s.classList.add('hidden'));
-
-            if(tab === 'editar') {
-                btnEditar.classList.replace('text-gray-400', 'text-accent');
-                btnEditar.classList.replace('border-transparent', 'border-accent');
-                secEditar.classList.remove('hidden');
-                footEditar.classList.remove('hidden');
-                window.renderAdminForm();
-            } else if (tab === 'nuevo') {
-                btnNuevo.classList.replace('text-gray-400', 'text-accent');
-                btnNuevo.classList.replace('border-transparent', 'border-accent');
-                secNuevo.classList.remove('hidden');
-            } else if (tab === 'masiva') {
-                btnMasiva.classList.replace('text-gray-400', 'text-accent');
-                btnMasiva.classList.replace('border-transparent', 'border-accent');
-                secMasiva.classList.remove('hidden');
-            }
-        };
-
-        window.toggleAccordion = function(id) {
-            const el = document.getElementById(id);
-            if(el.classList.contains('hidden')) {
-                document.querySelectorAll('.admin-accordion-content').forEach(x => x.classList.add('hidden'));
-                el.classList.remove('hidden');
-            } else {
-                el.classList.add('hidden');
-            }
-        };
-
-        window.renderAdminForm = function() {
-            const container = document.getElementById('admin-tab-editar');
-            container.innerHTML = window.productos.map((p) => {
-                const isSold = p.vendido;
-                const imgsHtml = (p.img && p.img.length > 0) ? p.img.map((url, i) => `
-                    <div class="relative w-16 h-16 md:w-20 md:h-20 flex-shrink-0 group rounded-lg overflow-hidden border border-gray-300">
-                        <img src="${url}" class="w-full h-full object-cover" onerror="window.imgFallback(this)">
-                        <div class="absolute inset-0 bg-black/60 hidden group-hover:flex items-center justify-center gap-2 transition-all">
-                            <button onclick="window.removeImageFromProduct('${p.id}', ${i})" class="text-white hover:text-red-400 p-1" title="Eliminar"><i class="fas fa-trash"></i></button>
+                        <div class="flex justify-between items-end border-t pt-4 mt-auto">
+                            <span class="text-[10px] font-black uppercase text-gray-400">Precio Base</span>
+                            <span class="font-black text-xl text-nyx">$${p.pIndiv.toLocaleString()}</span>
                         </div>
                     </div>
-                `).join('') : '<p class="text-xs text-gray-400 p-2">Sin imágenes</p>';
-
-                return `
-                <div class="bg-white rounded-xl border ${isSold ? 'border-red-300' : 'border-gray-200'} overflow-hidden shadow-sm hover:shadow-md transition">
-                    <div class="p-4 ${isSold ? 'bg-red-50' : 'bg-gray-50 hover:bg-gray-100'} flex justify-between items-center cursor-pointer select-none" onclick="window.toggleAccordion('edit-item-${p.id}')">
-                        <div class="flex items-center gap-3 overflow-hidden">
-                            <span class="bg-nyx text-white text-[10px] px-2 py-1 rounded font-black tracking-widest shrink-0">ID: ${p.codeId}</span>
-                            <span class="font-black text-sm text-nyx truncate uppercase">${p.nombre}</span>
-                        </div>
-                        <div class="flex items-center gap-3 shrink-0">
-                            <span class="text-[10px] font-black uppercase tracking-widest ${isSold ? 'text-red-600 bg-red-100 px-2 py-1 rounded' : 'text-gray-400'}">${isSold ? 'Vendido' : 'Activo'}</span>
-                            <i class="fas fa-chevron-down text-gray-400"></i>
-                        </div>
-                    </div>
-                    <div id="edit-item-${p.id}" class="admin-accordion-content hidden p-4 border-t border-gray-200 bg-white">
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                            <div>
-                                <label class="block text-[10px] uppercase font-black text-gray-500 tracking-widest mb-1">Nombre</label>
-                                <input type="text" id="adm-name-${p.id}" value="${p.nombre}" class="w-full border border-gray-300 p-2 text-sm rounded focus:border-accent outline-none font-bold text-nyx">
-                            </div>
-                            <div class="grid grid-cols-2 gap-2">
-                                <div>
-                                    <label class="block text-[10px] uppercase font-black text-gray-500 tracking-widest mb-1">Precio ($)</label>
-                                    <input type="number" id="adm-indiv-${p.id}" value="${p.pIndiv}" class="w-full border border-gray-300 p-2 text-sm rounded focus:border-accent outline-none font-bold text-nyx">
-                                </div>
-                                <div>
-                                    <label class="block text-[10px] uppercase font-black text-gray-500 tracking-widest mb-1">Paquete ($)</label>
-                                    <input type="number" id="adm-paquete-${p.id}" value="${p.pPaquete}" class="w-full border border-gray-300 p-2 text-sm rounded focus:border-accent outline-none font-bold text-accent">
-                                </div>
-                            </div>
-                            <div class="md:col-span-2">
-                                <label class="block text-[10px] uppercase font-black text-gray-500 tracking-widest mb-1">Descripción</label>
-                                <input type="text" id="adm-desc-${p.id}" value="${p.desc}" class="w-full border border-gray-300 p-2 text-sm rounded focus:border-accent outline-none font-medium text-gray-700">
-                            </div>
-                            <div class="md:col-span-2 flex items-center gap-3 bg-gray-50 p-3 rounded border border-gray-200">
-                                <input type="checkbox" id="adm-vendido-${p.id}" ${p.vendido ? 'checked' : ''} class="w-5 h-5 accent-red-600">
-                                <label class="text-xs uppercase font-black text-gray-700 tracking-widest">Marcar como Vendido / Agotado</label>
-                            </div>
-                        </div>
-                        <div class="border-t border-dashed border-gray-300 pt-4 mt-4">
-                            <label class="block text-[10px] uppercase font-black text-accent tracking-widest mb-2"><i class="fas fa-camera mr-1"></i> Galería del Producto</label>
-                            <div class="flex gap-3 overflow-x-auto pb-2">
-                                ${imgsHtml}
-                            </div>
-                            <div class="mt-3 flex flex-col md:flex-row items-start md:items-center gap-2">
-                                <input type="file" id="add-img-file-${p.id}" accept="image/*" multiple class="text-[10px] file:mr-2 file:py-1 file:px-2 file:rounded file:border-0 file:bg-gray-200 file:font-black w-full md:w-auto">
-                                <button onclick="window.addImagesToProduct('${p.id}')" class="bg-accent text-white px-3 py-1.5 rounded text-[10px] font-black uppercase tracking-wider hover:bg-purple-600 transition w-full md:w-auto"><i class="fas fa-plus mr-1"></i> Añadir Foto(s)</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            `}).join('');
-        };
-
-        window.updateSliderUI = function() {
-            const imgEl = document.getElementById('detail-img');
-            imgEl.removeAttribute('data-retried'); 
-            imgEl.src = window.currentSliderImages[window.currentSlideIndex];
-            const dotsContainer = document.getElementById('slider-dots');
-            if (window.currentSliderImages.length > 1) {
-                dotsContainer.innerHTML = window.currentSliderImages.map((_, i) => `<div class="w-2 h-2 rounded-full transition-colors ${i === window.currentSlideIndex ? 'bg-accent' : 'bg-white/50'}"></div>`).join('');
-            }
-        };
-
-        window.nextSlide = function() {
-            if(window.currentSliderImages.length <= 1) return;
-            window.currentSlideIndex = (window.currentSlideIndex + 1) % window.currentSliderImages.length;
-            window.updateSliderUI();
-        };
-
-        window.prevSlide = function() {
-            if(window.currentSliderImages.length <= 1) return;
-            window.currentSlideIndex = (window.currentSlideIndex - 1 + window.currentSliderImages.length) % window.currentSliderImages.length;
-            window.updateSliderUI();
+                </div>`;
+            }).join('');
         };
 
         window.openProductDetails = function(id) {
@@ -584,18 +390,11 @@
             const btnNext = document.getElementById('slider-next');
             const dots = document.getElementById('slider-dots');
             
-            if (window.currentSliderImages.length > 1) {
-                btnPrev.classList.remove('hidden'); btnNext.classList.remove('hidden'); dots.classList.remove('hidden');
-            } else {
-                btnPrev.classList.add('hidden'); btnNext.classList.add('hidden'); dots.classList.add('hidden');
-            }
+            if (window.currentSliderImages.length > 1) { btnPrev.classList.remove('hidden'); btnNext.classList.remove('hidden'); dots.classList.remove('hidden'); }
+            else { btnPrev.classList.add('hidden'); btnNext.classList.add('hidden'); dots.classList.add('hidden'); }
             
             window.updateSliderUI();
-            
-            if (p.id === 'pv-full') document.getElementById('detail-watermark').classList.remove('hidden');
-            else document.getElementById('detail-watermark').classList.add('hidden');
-
-            document.getElementById('detail-category').innerText = `${p.categoria} (ID: ${p.codeId})`;
+            document.getElementById('detail-category').innerText = p.categoria;
             document.getElementById('detail-name').innerText = p.nombre;
             document.getElementById('detail-desc').innerText = p.desc;
             document.getElementById('detail-indiv').innerText = `$${p.pIndiv.toLocaleString()}`;
@@ -605,235 +404,270 @@
             document.getElementById('btn-detail-offer').onclick = () => window.openOffer(id);
             document.getElementById('btn-detail-add').onclick = (e) => {
                 window.addToCart(id);
-                window.toastEffect(e.currentTarget, '<i class="fas fa-check mr-2"></i> AÑADIDO', 'bg-green-500');
-                setTimeout(() => { window.closeModals(); window.toggleCart(true); }, 500);
+                setTimeout(() => { window.closeModals(); window.toggleCart(true); }, 300);
             };
 
-            document.getElementById('modal-details').classList.remove('hidden');
             document.getElementById('modal-details').classList.add('modal-active');
             document.getElementById('overlay').classList.remove('hidden');
         };
 
+        window.updateSliderUI = function() {
+            const imgEl = document.getElementById('detail-img');
+            imgEl.removeAttribute('data-retried'); 
+            imgEl.src = window.currentSliderImages[window.currentSlideIndex];
+            const dots = document.getElementById('slider-dots');
+            if (window.currentSliderImages.length > 1) {
+                dots.innerHTML = window.currentSliderImages.map((_, i) => `<div class="w-2 h-2 rounded-full ${i === window.currentSlideIndex ? 'bg-accent' : 'bg-white/50'}"></div>`).join('');
+            }
+        };
+
+        window.nextSlide = function() { window.currentSlideIndex = (window.currentSlideIndex + 1) % window.currentSliderImages.length; window.updateSliderUI(); };
+        window.prevSlide = function() { window.currentSlideIndex = (window.currentSlideIndex - 1 + window.currentSliderImages.length) % window.currentSliderImages.length; window.updateSliderUI(); };
+
         window.closeModals = function() {
-            document.querySelectorAll('.modal-active').forEach(el => {
-                el.classList.remove('modal-active'); el.classList.add('hidden');
-            });
+            document.querySelectorAll('.modal-active').forEach(el => { el.classList.remove('modal-active'); el.classList.add('hidden'); });
             document.getElementById('overlay').classList.add('hidden');
         };
 
-        window.openAdmin = function() {
-            window.closeModals();
-            document.getElementById('admin-pwd').value = '';
-            document.getElementById('modal-auth').classList.remove('hidden');
-            document.getElementById('modal-auth').classList.add('modal-active');
+        window.openAdmin = function() { window.closeModals(); document.getElementById('admin-pwd').value = ''; document.getElementById('modal-auth').classList.remove('hidden'); document.getElementById('modal-auth').classList.add('modal-active'); };
+        window.verifyAdmin = function() { if(document.getElementById('admin-pwd').value === "KRAKEN26") { window.closeAuthModal(); window.switchAdminTab('editar'); document.getElementById('modal-admin').classList.remove('hidden'); document.getElementById('modal-admin').classList.add('modal-active'); document.getElementById('overlay').classList.remove('hidden'); } else alert("Acceso denegado."); };
+        window.closeAuthModal = function() { document.getElementById('modal-auth').classList.add('hidden'); document.getElementById('modal-auth').classList.remove('modal-active'); };
+        
+        window.switchAdminTab = function(tab) {
+            ['editar', 'nuevo', 'masiva'].forEach(t => {
+                document.getElementById(`tab-btn-${t}`).classList.replace('text-accent', 'text-gray-400');
+                document.getElementById(`tab-btn-${t}`).classList.replace('border-accent', 'border-transparent');
+                document.getElementById(`admin-tab-${t}`).classList.add('hidden');
+            });
+            document.getElementById(`tab-btn-${tab}`).classList.replace('text-gray-400', 'text-accent');
+            document.getElementById(`tab-btn-${tab}`).classList.replace('border-transparent', 'border-accent');
+            document.getElementById(`admin-tab-${tab}`).classList.remove('hidden');
+            if(tab === 'editar') window.renderAdminForm();
+            document.getElementById('admin-footer-editar').style.display = (tab === 'editar') ? 'block' : 'none';
         };
 
-        window.verifyAdmin = function() {
-            if(document.getElementById('admin-pwd').value === "KRAKEN26") {
-                window.closeAuthModal();
-                window.switchAdminTab('editar');
-                document.getElementById('modal-admin').classList.remove('hidden');
-                document.getElementById('modal-admin').classList.add('modal-active');
-                document.getElementById('overlay').classList.remove('hidden');
-            } else alert("Acceso denegado.");
+        window.toggleAccordion = function(id) {
+            const el = document.getElementById(id);
+            const isHidden = el.classList.contains('hidden');
+            document.querySelectorAll('.admin-accordion-content').forEach(x => x.classList.add('hidden'));
+            if(isHidden) el.classList.remove('hidden');
         };
 
-        window.closeAuthModal = function() {
-            document.getElementById('modal-auth').classList.add('hidden');
-            document.getElementById('modal-auth').classList.remove('modal-active');
+        window.renderAdminForm = function() {
+            const container = document.getElementById('admin-tab-editar');
+            container.innerHTML = window.productos.map((p) => `
+                <div class="bg-white rounded-xl border border-gray-200 overflow-hidden shadow-sm">
+                    <div class="p-4 bg-gray-50 flex justify-between items-center cursor-pointer" onclick="window.toggleAccordion('edit-item-${p.id}')">
+                        <div class="flex items-center gap-3">
+                            <span class="bg-nyx text-white text-[10px] px-2 py-1 rounded font-black uppercase">ID: ${p.codeId}</span>
+                            <span class="font-black text-sm uppercase">${p.nombre}</span>
+                        </div>
+                        <i class="fas fa-chevron-down text-gray-400"></i>
+                    </div>
+                    <div id="edit-item-${p.id}" class="admin-accordion-content hidden p-4 border-t bg-white">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <input type="text" id="adm-name-${p.id}" value="${p.nombre}" class="border p-2 rounded text-sm font-bold uppercase">
+                            <div class="grid grid-cols-2 gap-2">
+                                <input type="number" id="adm-indiv-${p.id}" value="${p.pIndiv}" class="border p-2 rounded text-sm font-black">
+                                <input type="number" id="adm-paquete-${p.id}" value="${p.pPaquete}" class="border p-2 rounded text-sm font-black text-accent">
+                            </div>
+                            <input type="text" id="adm-desc-${p.id}" value="${p.desc}" class="border p-2 rounded text-sm md:col-span-2">
+                            <div class="flex items-center gap-2 md:col-span-2 bg-gray-100 p-2 rounded">
+                                <input type="checkbox" id="adm-vendido-${p.id}" ${p.vendido ? 'checked' : ''}>
+                                <label class="text-xs font-black uppercase">Marcar como Vendido</label>
+                            </div>
+                        </div>
+                        <div class="mt-4 flex gap-2 overflow-x-auto pb-2">
+                            ${p.img.map((url, i) => `
+                                <div class="relative w-16 h-16 rounded border overflow-hidden">
+                                    <img src="${url}" class="w-full h-full object-cover">
+                                    <button onclick="window.removeImageFromProduct('${p.id}', ${i})" class="absolute top-0 right-0 bg-red-600 text-white w-5 h-5 flex items-center justify-center text-[10px]"><i class="fas fa-trash"></i></button>
+                                </div>
+                            `).join('')}
+                        </div>
+                        <div class="mt-2 flex items-center gap-2">
+                            <input type="file" id="add-img-file-${p.id}" multiple class="text-[10px]">
+                            <button onclick="window.addImagesToProduct('${p.id}')" class="bg-accent text-white px-3 py-1 rounded text-[10px] uppercase font-black">Añadir Fotos</button>
+                        </div>
+                    </div>
+                </div>`).join('');
         };
 
-        window.toggleCart = function(forceState) {
-            const sidebar = document.getElementById('cart-sidebar');
+        window.toggleCart = function(force) {
+            const el = document.getElementById('cart-sidebar');
             const overlay = document.getElementById('overlay');
-            const hasModalActive = document.querySelector('.modal-active') !== null;
-            if (forceState === false) { sidebar.classList.add('translate-x-full'); if (!hasModalActive) overlay.classList.add('hidden'); } 
-            else if (forceState === true) { sidebar.classList.remove('translate-x-full'); overlay.classList.remove('hidden'); } 
-            else { sidebar.classList.toggle('translate-x-full'); if (sidebar.classList.contains('translate-x-full')) { if (!hasModalActive) overlay.classList.add('hidden'); } else overlay.classList.remove('hidden'); }
+            if(force === true) el.classList.remove('translate-x-full');
+            else if(force === false) el.classList.add('translate-x-full');
+            else el.classList.toggle('translate-x-full');
+            if(!el.classList.contains('translate-x-full')) overlay.classList.remove('hidden');
+            else if(document.querySelectorAll('.modal-active').length === 0) overlay.classList.add('hidden');
         };
 
-        // Carrito logic
-        window.addToCart = function(id, status = 'active', offerPrice = 0) {
+        window.addToCart = function(id, status = 'active', offer = 0) {
             const p = window.productos.find(x => x.id === id);
-            if (!window.cart[id] || status === 'pending') window.cart[id] = { ...p, qty: 1, status: status, customPrice: offerPrice };
-            else window.cart[id].qty++;
+            window.cart[id] = { ...p, qty: (window.cart[id]?.qty || 0) + 1, status, offer };
             window.updateCartUI();
         };
-        window.updateQty = function(id, delta) {
-            if (!window.cart[id]) return; window.cart[id].qty += delta;
-            if (window.cart[id].qty <= 0) delete window.cart[id]; window.updateCartUI();
-        };
-        window.removePending = function(id) { delete window.cart[id]; window.updateCartUI(); };
+
         window.updateCartUI = function() {
             const container = document.getElementById('cart-items');
             const items = Object.values(window.cart);
-            const activeItems = items.filter(i => i.status === 'active');
-            const totalActiveQty = activeItems.reduce((sum, item) => sum + item.qty, 0);
-            const aplicaPaquete = totalActiveQty >= 2;
-            let subtotal = 0, totalAprobado = 0, totalPendiente = 0;
+            let total = 0;
+            const activaDescuento = items.reduce((s, i) => s + i.qty, 0) >= 2;
 
-            container.innerHTML = items.length === 0 ? '<div class="text-center text-gray-400 mt-10">Cotización Vacía</div>' : items.map(item => {
-                const currentProductInfo = window.productos.find(p => p.id === item.id) || item;
-                if (item.status === 'pending') {
-                    totalPendiente += item.customPrice * item.qty;
-                    return `<div class="bg-yellow-50 p-4 rounded-xl mb-2 text-sm border border-yellow-200 shadow-sm"><span class="font-black text-pending uppercase text-[10px] block mb-1">En Revisión</span><div class="flex justify-between items-center"><span class="font-bold text-gray-800">${currentProductInfo.nombre}</span><span class="font-black text-pending">$${item.customPrice}</span></div><button onclick="window.removePending('${item.id}')" class="text-red-500 text-xs font-bold mt-2 uppercase">Quitar</button></div>`;
-                } else {
-                    const precioAplicado = item.customPrice > 0 ? item.customPrice : (aplicaPaquete ? currentProductInfo.pPaquete : currentProductInfo.pIndiv);
-                    if (item.customPrice === 0) subtotal += currentProductInfo.pIndiv * item.qty;
-                    else subtotal += precioAplicado * item.qty; 
-                    totalAprobado += precioAplicado * item.qty;
-                    return `<div class="bg-white p-4 rounded-xl border border-gray-200 mb-2 flex justify-between items-center text-sm shadow-sm">
-                        <div class="flex flex-col"><span class="font-bold text-nyx uppercase">${currentProductInfo.nombre}</span><span class="text-xs text-gray-500">$${precioAplicado.toLocaleString()} c/u</span></div>
-                        <div class="flex items-center gap-2 bg-gray-50 p-1 rounded-lg border border-gray-200"><button onclick="window.updateQty('${item.id}', -1)" class="w-6 h-6 bg-white rounded flex items-center justify-center font-black">-</button><span class="font-black w-4 text-center">${item.qty}</span><button onclick="window.updateQty('${item.id}', 1)" class="w-6 h-6 bg-white rounded flex items-center justify-center font-black">+</button></div>
-                    </div>`;
-                }
+            container.innerHTML = items.length === 0 ? '<p class="text-center text-gray-400 mt-10 uppercase font-black text-xs">Cotización Vacía</p>' : items.map(item => {
+                const precio = activaDescuento ? item.pPaquete : item.pIndiv;
+                total += precio * item.qty;
+                return `
+                <div class="bg-white p-4 rounded-xl shadow-sm border flex justify-between items-center">
+                    <div>
+                        <p class="font-black text-xs uppercase">${item.nombre}</p>
+                        <p class="text-[10px] text-accent">$${precio.toLocaleString()} c/u</p>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <button onclick="window.updateQty('${item.id}', -1)" class="w-6 h-6 bg-gray-100 rounded">-</button>
+                        <span class="font-black text-xs">${item.qty}</span>
+                        <button onclick="window.updateQty('${item.id}', 1)" class="w-6 h-6 bg-gray-100 rounded">+</button>
+                    </div>
+                </div>`;
             }).join('');
-
-            const ahorro = subtotal - totalAprobado;
             document.getElementById('cart-count').innerText = items.length;
-            document.getElementById('cart-subtotal').innerText = `$${subtotal.toLocaleString()}`;
-            if (ahorro > 0) { document.getElementById('discount-row').classList.remove('hidden'); document.getElementById('cart-discount').innerText = `-$${ahorro.toLocaleString()}`; } 
-            else document.getElementById('discount-row').classList.add('hidden');
-            if (totalPendiente > 0) { document.getElementById('pending-row').classList.remove('hidden'); document.getElementById('cart-pending').innerText = `$${totalPendiente.toLocaleString()}`; } 
-            else document.getElementById('pending-row').classList.add('hidden');
-            document.getElementById('cart-total').innerText = `$${totalAprobado.toLocaleString()}`;
+            document.getElementById('cart-total').innerText = `$${total.toLocaleString()}`;
         };
 
-        window.toastEffect = function(btn, text, colorClass) {
-            const originalText = btn.innerHTML;
-            const originalColor = Array.from(btn.classList).find(c => c.startsWith('bg-'));
-            btn.innerHTML = text;
-            if(originalColor) btn.classList.replace(originalColor, colorClass);
-            else btn.classList.add(colorClass);
-            setTimeout(() => { btn.innerHTML = originalText; if(originalColor) btn.classList.replace(colorClass, originalColor); else btn.classList.remove(colorClass); }, 800);
-        };
+        window.updateQty = function(id, d) { if(window.cart[id]) { window.cart[id].qty += d; if(window.cart[id].qty <= 0) delete window.cart[id]; window.updateCartUI(); } };
 
         window.openQuestion = function(id) {
-            window.closeModals(); window.activeProductId = id;
             const p = window.productos.find(x => x.id === id);
-            document.getElementById('question-target-name').innerText = p.nombre; document.getElementById('question-text').value = '';
-            document.getElementById('modal-preguntar').classList.remove('hidden'); document.getElementById('modal-preguntar').classList.add('modal-active'); document.getElementById('overlay').classList.remove('hidden');
+            document.getElementById('question-target-name').innerText = p.nombre;
+            document.getElementById('modal-preguntar').classList.remove('hidden');
+            document.getElementById('modal-preguntar').classList.add('modal-active');
         };
-        window.appendQuestion = function(text) { const ta = document.getElementById('question-text'); ta.value = ta.value ? ta.value + '\n' + text : text; };
+
+        window.appendQuestion = function(t) { document.getElementById('question-text').value += t + "\n"; };
+
         window.sendQuestion = function() {
             const p = window.productos.find(x => x.id === window.activeProductId);
-            const text = document.getElementById('question-text').value.trim();
-            if(!text) return;
-            window.open(`https://wa.me/${numTelefono}?text=${encodeURIComponent(`*CONSULTA DE EQUIPO:*\nProducto: ${p.nombre}\n\nPregunta: ${text}`)}`, '_blank');
-            window.closeModals();
+            const msg = `CONSULTA KRAKEN: ${p.nombre}\n${document.getElementById('question-text').value}`;
+            window.open(`https://wa.me/${numTelefono}?text=${encodeURIComponent(msg)}`);
         };
 
         window.openOffer = function(id) {
-            window.closeModals(); window.activeProductId = id;
             const p = window.productos.find(x => x.id === id);
-            document.getElementById('offer-target-name').innerText = p.nombre; document.getElementById('offer-target-price').innerText = `$${p.pIndiv.toLocaleString()}`; document.getElementById('offer-input').value = '0';
-            document.getElementById('modal-oferta').classList.remove('hidden'); document.getElementById('modal-oferta').classList.add('modal-active'); document.getElementById('overlay').classList.remove('hidden');
+            document.getElementById('offer-target-name').innerText = p.nombre;
+            document.getElementById('offer-target-price').innerText = `$${p.pIndiv}`;
+            document.getElementById('offer-input').value = '0';
+            document.getElementById('modal-oferta').classList.remove('hidden');
+            document.getElementById('modal-oferta').classList.add('modal-active');
         };
-        window.padInput = function(num) { const inp = document.getElementById('offer-input'); if(inp.value === '0') inp.value = num; else if(inp.value.length < 8) inp.value += num; };
+
+        window.padInput = function(n) { let v = document.getElementById('offer-input'); v.value = v.value === '0' ? n : v.value + n; };
         window.padClear = function() { document.getElementById('offer-input').value = '0'; };
-        window.padDel = function() { const inp = document.getElementById('offer-input'); inp.value = inp.value.length > 1 ? inp.value.slice(0, -1) : '0'; };
+        window.padDel = function() { let v = document.getElementById('offer-input'); v.value = v.value.length > 1 ? v.value.slice(0,-1) : '0'; };
+
         window.submitOffer = function() {
-            const val = parseInt(document.getElementById('offer-input').value);
-            if (val <= 0) return;
+            const v = document.getElementById('offer-input').value;
             const p = window.productos.find(x => x.id === window.activeProductId);
-            window.addToCart(p.id, 'pending', val);
-            window.open(`https://wa.me/${numTelefono}?text=${encodeURIComponent(`*NUEVA CONTRAOFERTA*\nProducto: ${p.nombre} (ID: ${p.codeId})\nPrecio de lista: $${p.pIndiv}\nMi Oferta: *$${val}*\n\n¿Me autorizas el código?`)}`, '_blank');
-            window.closeModals(); window.toggleCart(true);
+            const msg = `OFERTA KRAKEN: ${p.nombre}\nMI PRECIO: $${v}\n¿Autorizas código?`;
+            window.open(`https://wa.me/${numTelefono}?text=${encodeURIComponent(msg)}`);
         };
+
         window.checkoutWhatsApp = function() {
-            const items = Object.values(window.cart);
-            if (items.length === 0) return alert("SISTEMA NYX: Carrito vacío.");
-            const activeItems = items.filter(i => i.status === 'active');
-            const pendingItems = items.filter(i => i.status === 'pending');
-            if (activeItems.length === 0 && pendingItems.length > 0) return alert("SISTEMA NYX: Tienes ítems bloqueados. Solicita tu código al vendedor.");
-
-            const delivery = document.getElementById('delivery-method').value;
-            const aplicaPaquete = activeItems.reduce((sum, item) => sum + item.qty, 0) >= 2;
-            let totalAprobado = 0, subtotalCalc = 0;
-            let mensaje = `*CONFIRMACIÓN DE ORDEN (KRAKEN)*\n\n*CARRITO APROBADO:*\n`;
-
-            activeItems.forEach(item => {
-                const currentProductInfo = window.productos.find(p => p.id === item.id) || item;
-                const precio = item.customPrice > 0 ? item.customPrice : (aplicaPaquete ? currentProductInfo.pPaquete : currentProductInfo.pIndiv);
-                totalAprobado += precio * item.qty; subtotalCalc += item.customPrice === 0 ? (currentProductInfo.pIndiv * item.qty) : (precio * item.qty);
-                let etiqueta = item.customPrice > 0 ? '[PACTADO]' : (aplicaPaquete && currentProductInfo.pIndiv !== currentProductInfo.pPaquete ? '[PAQUETE]' : '');
-                mensaje += `- ${item.qty}X ${currentProductInfo.nombre} $${(precio * item.qty).toLocaleString()} ${etiqueta}\n`;
-            });
-            const ahorro = subtotalCalc - totalAprobado;
-            mensaje += `\n*RESUMEN:*\n`;
-            if (ahorro > 0) mensaje += `AHORRO: -$${ahorro.toLocaleString()}\n`;
-            mensaje += `*TOTAL A PAGAR: $${totalAprobado.toLocaleString()} MXN*\nENTREGA: ${delivery}\n`;
-
-            if (pendingItems.length > 0) {
-                mensaje += `\n*ÍTEMS PENDIENTES:*\n`;
-                pendingItems.forEach(item => { const currentProductInfo = window.productos.find(p => p.id === item.id) || item; mensaje += `- ${currentProductInfo.nombre} (Oferta: $${item.customPrice})\n`; });
-            }
-            window.open(`https://wa.me/${numTelefono}?text=${encodeURIComponent(mensaje.toUpperCase())}`, '_blank');
+            let msg = "PEDIDO KRAKEN:\n";
+            Object.values(window.cart).forEach(i => msg += `- ${i.qty}x ${i.nombre}\n`);
+            window.open(`https://wa.me/${numTelefono}?text=${encodeURIComponent(msg)}`);
         };
 
-        window.exportToPDF = function() { alert("Para habilitar PDF sin trabas móviles, se recomienda acceder de escritorio."); };
-        
-        // --- LOGICA DE UI CARGA MASIVA ---
+        // UI CARGA MASIVA
         window.previewBulkItems = function() {
-            const jsonInput = document.getElementById('bulk-json');
-            const imgInput = document.getElementById('bulk-images');
-            
-            if(!jsonInput.files[0]) return alert("SISTEMA NYX: Necesitas subir el archivo .JSON crudo primero.");
-            
-            const file = jsonInput.files[0];
+            const jf = document.getElementById('bulk-json').files[0];
+            const imgs = document.getElementById('bulk-images').files;
+            if(!jf) return alert("Sube el JSON.");
             const reader = new FileReader();
-            
-            reader.onload = function(e) {
+            reader.onload = (e) => {
                 try {
                     const data = JSON.parse(e.target.result);
-                    if(!Array.isArray(data)) throw new Error("El JSON no es un arreglo válido.");
-                    
                     window.bulkPendingItems = data;
-                    window.bulkImageFiles = imgInput.files ? Array.from(imgInput.files) : [];
-                    
-                    const previewList = document.getElementById('bulk-list');
-                    previewList.innerHTML = data.map((item, index) => {
-                        // Buscar si las fotos solicitadas existen en el lote subido
-                        let matchedCount = 0;
-                        if(item.imgNames && Array.isArray(item.imgNames)) {
-                            item.imgNames.forEach(imgName => {
-                                if(window.bulkImageFiles.some(f => f.name === imgName)) matchedCount++;
-                            });
-                        }
-                        
-                        const fotoStatus = item.imgNames ? 
-                            (matchedCount === item.imgNames.length ? `<span class="text-green-500"><i class="fas fa-check-circle"></i> Fotos listas (${matchedCount})</span>` : `<span class="text-red-500"><i class="fas fa-times-circle"></i> Faltan fotos (${matchedCount}/${item.imgNames.length})</span>`) 
-                            : `<span class="text-gray-400">Sin fotos</span>`;
-
-                        return `
-                        <div class="bg-white p-3 rounded shadow-sm border border-gray-200 flex justify-between items-center">
-                            <div>
-                                <div class="font-black text-xs text-nyx uppercase">${item.codeId} | ${item.nombre}</div>
-                                <div class="text-[10px] text-gray-500">$${item.pIndiv} / $${item.pPaquete}</div>
-                            </div>
-                            <div class="text-[10px] font-bold text-right">
-                                ${fotoStatus}
-                            </div>
+                    window.bulkImageFiles = Array.from(imgs);
+                    const list = document.getElementById('bulk-list');
+                    list.innerHTML = data.map(item => {
+                        const matched = item.imgNames ? item.imgNames.filter(n => window.bulkImageFiles.some(f => f.name === n)).length : 0;
+                        return `<div class="p-2 border-b text-[10px] uppercase font-black flex justify-between">
+                            <span>${item.codeId} | ${item.nombre}</span>
+                            <span class="${matched > 0 ? 'text-green-600' : 'text-red-600'}">${matched}/${item.imgNames?.length || 0} FOTOS</span>
                         </div>`;
                     }).join('');
-
-                    document.getElementById('bulk-count').innerText = `${data.length} Fierros`;
                     document.getElementById('bulk-preview-area').classList.remove('hidden');
-
-                } catch(err) {
-                    alert("SISTEMA NYX: Cagadero detectado en el archivo JSON. Formato inválido. " + err.message);
-                }
+                } catch(err) { alert("JSON Inválido."); }
             };
-            reader.readAsText(file);
+            reader.readAsText(jf);
+        };
+
+        // KRAKEN TÁCTICA: GENERADOR DE PDF RECONSTRUIDO AL 100
+        window.exportToPDF = function() {
+            window.closeModals();
+            const btn = document.getElementById('btn-export-pdf');
+            const original = btn.innerHTML;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin md:mr-2 text-red-500"></i> <span class="hidden md:inline font-bold">Procesando...</span>';
+
+            let htmlContent = `
+                <div style="font-family: Arial, sans-serif; padding: 40px; background: #fff; width: 800px; margin: 0 auto;">
+                    <div style="background: #0f172a; color: white; padding: 20px; text-align: center; border-radius: 10px 10px 0 0;">
+                        <h1 style="margin:0; letter-spacing: 4px;">KRAKEN LIQUIDACIÓN</h1>
+                        <p style="margin:5px 0; font-size: 12px; opacity: 0.7;">CATÁLOGO DE ACTIVOS GASTRONÓMICOS • TORREÓN</p>
+                    </div>
+                    <div style="padding: 20px; border: 1px solid #eee; border-top: none;">
+            `;
+
+            window.productos.forEach(p => {
+                const isSold = p.vendido === true;
+                const coverImg = (p.img && p.img.length > 0) ? p.img[p.img.length - 1] : '';
+                htmlContent += `
+                    <div style="display: flex; gap: 20px; border-bottom: 1px solid #eee; padding: 15px 0; page-break-inside: avoid; align-items: center; ${isSold ? 'opacity: 0.6;' : ''}">
+                        <div style="width: 150px; height: 120px; background: #f9f9f9; border-radius: 8px; overflow: hidden; flex-shrink: 0; position: relative;">
+                            <img src="${coverImg}" style="width: 100%; height: 100%; object-fit: cover;">
+                            ${isSold ? '<div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(-15deg); background-color: #dc2626; color: white; padding: 5px 10px; font-weight: 900; font-size: 14px; border: 2px solid #7f1d1d; text-transform: uppercase;">VENDIDO</div>' : ''}
+                        </div>
+                        <div style="flex: 1;">
+                            <span style="font-size: 9px; font-weight: bold; color: ${isSold ? '#dc2626' : '#7c3aed'}; background: ${isSold ? '#fef2f2' : '#f3e8ff'}; padding: 2px 6px; border-radius: 4px;">ID: ${p.codeId} | ${p.categoria}</span>
+                            <h3 style="margin: 5px 0; text-transform: uppercase; font-size: 16px; color: #0f172a; ${isSold ? 'text-decoration: line-through;' : ''}">${p.nombre}</h3>
+                            <p style="font-size: 11px; color: #666; margin: 0;">${p.desc}</p>
+                            <div style="margin-top: 10px;">
+                                <span style="font-size: 18px; font-weight: 900; color: ${isSold ? '#dc2626' : '#0f172a'};">${isSold ? 'AGOTADO' : '$' + p.pIndiv.toLocaleString()}</span>
+                                ${!isSold ? `<span style="font-size: 11px; color: #7c3aed; margin-left: 15px; font-weight: bold;">PAQUETE (2+): $${p.pPaquete.toLocaleString()}</span>` : ''}
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+
+            htmlContent += `</div><p style="text-align: center; font-size: 10px; color: #aaa; margin-top: 20px;">SISTEMA NYX CORE • WHATSAPP: ${numTelefono}</p></div>`;
+
+            const opt = {
+                margin: [10, 0, 10, 0],
+                filename: 'Catalogo_KRAKEN.pdf',
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { scale: 2, useCORS: true, scrollY: 0 },
+                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+            };
+
+            setTimeout(() => {
+                html2pdf().set(opt).from(htmlContent).save().then(() => {
+                    btn.innerHTML = original;
+                }).catch(e => {
+                    console.error(e);
+                    alert("Error al generar PDF.");
+                    btn.innerHTML = original;
+                });
+            }, 500);
         };
     </script>
 
-    <!-- MOTOR CLOUD FIREBASE V11 -->
     <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getFirestore, collection, onSnapshot, doc, updateDoc, setDoc, getDocs } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
-        import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-storage.js";
-        import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js";
+        import { getFirestore, collection, onSnapshot, doc, updateDoc, setDoc, getDocs } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js";
+        import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-storage.js";
+        import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-auth.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyDSrigkVk1Jd3Y_t1iCuXkIpWXtysmwBCQ",
@@ -844,196 +678,117 @@
             appId: "1:984413462221:web:c5dac8510b95834f401384"
         };
 
-        try {
-            const app = initializeApp(firebaseConfig);
-            const db = getFirestore(app);
-            const storage = getStorage(app);
-            const auth = getAuth(app);
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        const storage = getStorage(app);
+        const auth = getAuth(app);
 
-            signInAnonymously(auth).catch(e => console.error(e));
+        signInAnonymously(auth).catch(e => console.error(e));
 
-            onAuthStateChanged(auth, async (user) => {
-                if (user) {
-                    try {
-                        const snap = await getDocs(collection(db, "productos"));
-                        if (snap.empty) {
-                            for(const p of window.productos) await setDoc(doc(db, "productos", p.id), p);
-                        }
-                    } catch (e) {}
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                onSnapshot(collection(db, "productos"), (snapshot) => {
+                    window.productos = snapshot.docs.map(d => ({id: d.id, ...d.data()}));
+                    window.productos.sort((a,b) => parseInt(a.codeId) - parseInt(b.codeId));
+                    document.getElementById('loading-spinner').classList.add('hidden');
+                    document.getElementById('product-grid').classList.remove('hidden');
+                    window.renderProductos();
+                });
+            }
+        });
 
-                    onSnapshot(collection(db, "productos"), (snapshot) => {
-                        window.productos = snapshot.docs.map(d => ({id: d.id, ...d.data()}));
-                        window.productos.sort((a,b) => parseInt(a.codeId) - parseInt(b.codeId));
-                        
-                        document.getElementById('loading-spinner').classList.add('hidden');
-                        document.getElementById('product-grid').classList.remove('hidden');
-                        window.renderProductos();
-                    });
+        window.saveAdminChanges = async function() {
+            const btn = document.getElementById('btn-save-admin');
+            btn.disabled = true;
+            try {
+                for(let p of window.productos) {
+                    const n = document.getElementById(`adm-name-${p.id}`).value;
+                    const i = parseInt(document.getElementById(`adm-indiv-${p.id}`).value);
+                    const pq = parseInt(document.getElementById(`adm-paquete-${p.id}`).value);
+                    const d = document.getElementById(`adm-desc-${p.id}`).value;
+                    const v = document.getElementById(`adm-vendido-${p.id}`).checked;
+                    await updateDoc(doc(db, "productos", p.id), { nombre: n, pIndiv: i, pPaquete: pq, desc: d, vendido: v });
                 }
-            });
+                alert("Cambios sincronizados.");
+                window.renderAdminForm();
+            } catch(e) { alert("Error: " + e.message); } finally { btn.disabled = false; }
+        };
 
-            window.saveAdminChanges = async function() {
-                const btn = document.getElementById('btn-save-admin');
-                const orig = btn.innerHTML;
-                btn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Sincronizando...';
-                btn.disabled = true;
-                try {
-                    let updates = 0;
-                    const pendingUpdates = [];
-                    for(let i=0; i<window.productos.length; i++) {
-                        const p = window.productos[i];
-                        const nnInput = document.getElementById(`adm-name-${p.id}`);
-                        if(!nnInput) continue; 
-                        const nn = nnInput.value;
-                        const ni = parseInt(document.getElementById(`adm-indiv-${p.id}`).value) || 0;
-                        const np = parseInt(document.getElementById(`adm-paquete-${p.id}`).value) || 0;
-                        const nd = document.getElementById(`adm-desc-${p.id}`).value;
-                        const nv = document.getElementById(`adm-vendido-${p.id}`).checked;
+        window.removeImageFromProduct = async function(pid, idx) {
+            if(!confirm("¿Borrar foto?")) return;
+            const p = window.productos.find(x => x.id === pid);
+            const imgs = [...p.img]; imgs.splice(idx, 1);
+            await updateDoc(doc(db, "productos", pid), { img: imgs });
+            window.renderAdminForm();
+        };
 
-                        if(p.nombre !== nn || p.pIndiv !== ni || p.pPaquete !== np || p.desc !== nd || p.vendido !== nv) {
-                            pendingUpdates.push({ ref: doc(db, "productos", p.id), data: { nombre: nn, pIndiv: ni, pPaquete: np, desc: nd, vendido: nv } });
-                        }
-                    }
-                    for(const update of pendingUpdates) { await updateDoc(update.ref, update.data); updates++; }
-                    alert(updates > 0 ? `${updates} actualizados en la nube.` : "Sin cambios detectados.");
-                    if(updates > 0) window.renderAdminForm();
-                } catch(e) { alert("Error crítico: " + e.message); } 
-                finally { btn.innerHTML = orig; btn.disabled = false; }
-            };
+        window.addImagesToProduct = async function(pid) {
+            const input = document.getElementById(`add-img-file-${pid}`);
+            const p = window.productos.find(x => x.id === pid);
+            const newUrls = [];
+            for(let f of input.files) {
+                const sRef = ref(storage, `fotos/${Date.now()}_${f.name}`);
+                await uploadBytes(sRef, f);
+                newUrls.push(await getDownloadURL(sRef));
+            }
+            await updateDoc(doc(db, "productos", pid), { img: [...p.img, ...newUrls] });
+            alert("Fotos añadidas.");
+            window.renderAdminForm();
+        };
 
-            window.removeImageFromProduct = async function(prodId, imgIndex) {
-                if(!confirm("¿Borrar foto permanentemente?")) return;
-                const p = window.productos.find(x => x.id === prodId);
-                const newImgArray = [...p.img]; newImgArray.splice(imgIndex, 1);
-                try { await updateDoc(doc(db, "productos", prodId), { img: newImgArray }); setTimeout(() => window.renderAdminForm(), 1000); } 
-                catch(e) { alert("Error borrando foto: " + e); }
-            };
-
-            window.addImagesToProduct = async function(prodId) {
-                const input = document.getElementById(`add-img-file-${prodId}`);
-                if(!input.files || input.files.length === 0) return alert("Selecciona fotos.");
-                const p = window.productos.find(x => x.id === prodId);
-                const newUrls = [];
-                try {
-                    for(let file of input.files) {
-                        const storageRef = ref(storage, 'productos/' + Date.now() + '_' + file.name);
-                        await uploadBytes(storageRef, file);
-                        newUrls.push(await getDownloadURL(storageRef));
-                    }
-                    await updateDoc(doc(db, "productos", prodId), { img: [...(p.img || []), ...newUrls] });
-                    input.value = ''; alert("Fotos inyectadas."); setTimeout(() => window.renderAdminForm(), 1000);
-                } catch(e) { alert("Error subiendo foto: " + e); }
-            };
-
-            window.uploadNewProduct = async function() {
-                const code = document.getElementById('new-code').value;
+        window.uploadNewProduct = async function() {
+            const btn = document.getElementById('btn-upload'); btn.disabled = true;
+            try {
                 const name = document.getElementById('new-nombre').value;
                 const fileInput = document.getElementById('new-file');
-                if(!code || !name) return alert("Falta ID y Nombre.");
-                const btn = document.getElementById('btn-upload');
-                const orig = btn.innerHTML; btn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Subiendo...'; btn.disabled = true;
-                try {
-                    const newUrls = [];
-                    if(fileInput.files && fileInput.files.length > 0) {
-                        for(let file of fileInput.files) {
-                            const storageRef = ref(storage, 'productos/' + Date.now() + '_' + file.name);
-                            await uploadBytes(storageRef, file); newUrls.push(await getDownloadURL(storageRef));
-                        }
-                    }
-                    const newId = 'prod_' + Date.now();
-                    await setDoc(doc(db, "productos", newId), {
-                        id: newId, codeId: code, categoria: document.getElementById('new-cat').value || 'General', nombre: name, 
-                        pIndiv: parseInt(document.getElementById('new-indiv').value) || 0, pPaquete: parseInt(document.getElementById('new-paquete').value) || 0, 
-                        desc: document.getElementById('new-desc').value, img: newUrls, vendido: false, timestamp: Date.now()
-                    });
-                    alert("Producto Nuevo Publicado.");
-                    document.getElementById('new-code').value = ''; document.getElementById('new-nombre').value = ''; fileInput.value = ''; window.switchAdminTab('editar'); 
-                } catch(e) { alert("Error: " + e.message); } 
-                finally { btn.innerHTML = orig; btn.disabled = false; }
-            };
-
-            // KRAKEN TÁCTICA: EJECUCIÓN DE CARGA MASIVA
-            window.executeBulkUpload = async function() {
-                if(window.bulkPendingItems.length === 0) return;
-                const btn = document.getElementById('btn-bulk-execute');
-                const bar = document.getElementById('bulk-progress-bar');
-                const fill = document.getElementById('bulk-progress-fill');
-                const status = document.getElementById('bulk-status-text');
-                
-                btn.disabled = true;
-                btn.classList.replace('bg-red-600', 'bg-gray-600');
-                bar.classList.remove('hidden');
-                status.classList.remove('hidden');
-
-                let successCount = 0;
-                const total = window.bulkPendingItems.length;
-
-                try {
-                    for(let i=0; i<total; i++) {
-                        const item = window.bulkPendingItems[i];
-                        status.innerText = `Subiendo item ${i+1} de ${total}: ${item.nombre}...`;
-                        
-                        let newUrls = [];
-                        
-                        // Emparejar y subir imágenes
-                        if(item.imgNames && Array.isArray(item.imgNames)) {
-                            for(let imgName of item.imgNames) {
-                                const file = window.bulkImageFiles.find(f => f.name === imgName);
-                                if(file) {
-                                    const storageRef = ref(storage, 'productos/bulk_' + Date.now() + '_' + file.name);
-                                    await uploadBytes(storageRef, file);
-                                    newUrls.push(await getDownloadURL(storageRef));
-                                }
-                            }
-                        }
-
-                        // Construir e inyectar documento a Firebase
-                        const newId = 'prod_bulk_' + Date.now() + '_' + i;
-                        await setDoc(doc(db, "productos", newId), {
-                            id: newId,
-                            codeId: item.codeId || `${Date.now()}`.slice(-4),
-                            categoria: item.categoria || 'General',
-                            nombre: item.nombre,
-                            pIndiv: parseInt(item.pIndiv) || 0,
-                            pPaquete: parseInt(item.pPaquete) || 0,
-                            desc: item.desc || '',
-                            img: newUrls,
-                            vendido: false,
-                            timestamp: Date.now() + i
-                        });
-
-                        successCount++;
-                        fill.style.width = `${(successCount / total) * 100}%`;
-                    }
-                    
-                    status.innerText = "¡INYECCIÓN MASIVA COMPLETADA!";
-                    status.classList.replace('text-gray-500', 'text-green-500');
-                    alert(`SISTEMA NYX: ${successCount} fierros subidos con éxito a la base de datos.`);
-                    
-                    // Limpiar UI
-                    document.getElementById('bulk-json').value = '';
-                    document.getElementById('bulk-images').value = '';
-                    document.getElementById('bulk-preview-area').classList.add('hidden');
-                    window.bulkPendingItems = [];
-                    window.bulkImageFiles = [];
-                    window.switchAdminTab('editar');
-
-                } catch(err) {
-                    console.error(err);
-                    alert("Falla crítica en inyección masiva: " + err.message);
-                } finally {
-                    btn.disabled = false;
-                    btn.classList.replace('bg-gray-600', 'bg-red-600');
-                    setTimeout(() => {
-                        bar.classList.add('hidden');
-                        status.classList.add('hidden');
-                        fill.style.width = '0%';
-                        status.classList.replace('text-green-500', 'text-gray-500');
-                    }, 3000);
+                const urls = [];
+                for(let f of fileInput.files) {
+                    const sRef = ref(storage, `fotos/${Date.now()}_${f.name}`);
+                    await uploadBytes(sRef, f);
+                    urls.push(await getDownloadURL(sRef));
                 }
-            };
+                const nid = 'prod_' + Date.now();
+                await setDoc(doc(db, "productos", nid), {
+                    id: nid, codeId: document.getElementById('new-code').value,
+                    categoria: document.getElementById('new-cat').value, nombre: name,
+                    pIndiv: parseInt(document.getElementById('new-indiv').value) || 0,
+                    pPaquete: parseInt(document.getElementById('new-paquete').value) || 0,
+                    desc: document.getElementById('new-desc').value, img: urls, vendido: false
+                });
+                alert("Publicado.");
+                window.switchAdminTab('editar');
+            } catch(e) { alert(e.message); } finally { btn.disabled = false; }
+        };
 
-        } catch (e) { console.error(e); }
+        window.executeBulkUpload = async function() {
+            const bar = document.getElementById('bulk-progress-bar');
+            const fill = document.getElementById('bulk-progress-fill');
+            bar.classList.remove('hidden');
+            let count = 0;
+            for(let item of window.bulkPendingItems) {
+                const urls = [];
+                if(item.imgNames) {
+                    for(let name of item.imgNames) {
+                        const f = window.bulkImageFiles.find(x => x.name === name);
+                        if(f) {
+                            const sRef = ref(storage, `bulk/${Date.now()}_${f.name}`);
+                            await uploadBytes(sRef, f);
+                            urls.push(await getDownloadURL(sRef));
+                        }
+                    }
+                }
+                const nid = 'prod_bulk_' + Date.now() + count;
+                await setDoc(doc(db, "productos", nid), {
+                    id: nid, codeId: item.codeId, categoria: item.categoria, nombre: item.nombre,
+                    pIndiv: item.pIndiv, pPaquete: item.pPaquete, desc: item.desc, img: urls, vendido: false
+                });
+                count++;
+                fill.style.width = (count / window.bulkPendingItems.length * 100) + '%';
+            }
+            alert("Inyección Masiva Completa.");
+            bar.classList.add('hidden');
+            window.switchAdminTab('editar');
+        };
     </script>
 </body>
 </html>
