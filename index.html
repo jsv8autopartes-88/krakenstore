@@ -363,7 +363,7 @@
         window.currentSliderImages = [];
         window.currentSlideIndex = 0;
 
-        // KRAKEN TACTICA: Base de datos corregida. Items separados, estantes limpios, precio de loza ajustado.
+        // KRAKEN TACTICA: Base de datos corregida y blindada.
         const defaultProductos = [
             { id: 'pv-full', codeId: '01', categoria: 'Gestión', nombre: 'Punto de Venta Nextep', desc: 'Sistema integral operativo. CPU, Monitor Touch, Impresoras. Licencia activa.', pIndiv: 11500, pPaquete: 10850, img: ['img/sistema_de_punto_de_venta.webp'], vendido: false, timestamp: Date.now() },
             { id: 'terminal-smart', codeId: '02', categoria: 'Gestión', nombre: 'Terminal Point Smart', desc: 'Mercado Pago. Alta velocidad de cobro, incluye base de carga.', pIndiv: 750, pPaquete: 650, img: ['img/terminal_mercado_pago_point_smart.webp'], vendido: false, timestamp: Date.now()+1 },
@@ -391,7 +391,6 @@
         window.imgFallback = function(imgEl) {
             if (!imgEl.dataset.retried) {
                 imgEl.dataset.retried = "true";
-                // Lógica dura: Si es webp intenta png, si es png intenta webp
                 if(imgEl.src.includes('.png')) imgEl.src = imgEl.src.replace(/\.png$/i, '.webp');
                 else if(imgEl.src.includes('.webp')) imgEl.src = imgEl.src.replace(/\.webp$/i, '.png');
                 else imgEl.src = 'https://via.placeholder.com/400x300?text=KRAKEN+PENDIENTE';
@@ -465,9 +464,10 @@
             }
         };
 
+        // KRAKEN TÁCTICA: IDs anclados a `p.id` en lugar de index, para evitar cruce de cables.
         window.renderAdminForm = function() {
             const container = document.getElementById('admin-tab-editar');
-            container.innerHTML = window.productos.map((p, index) => {
+            container.innerHTML = window.productos.map((p) => {
                 const isSold = p.vendido;
                 const imgsHtml = (p.img && p.img.length > 0) ? p.img.map((url, i) => `
                     <div class="relative w-16 h-16 md:w-20 md:h-20 flex-shrink-0 group rounded-lg overflow-hidden border border-gray-300">
@@ -481,7 +481,7 @@
 
                 return `
                 <div class="bg-white rounded-xl border ${isSold ? 'border-red-300' : 'border-gray-200'} overflow-hidden shadow-sm hover:shadow-md transition">
-                    <div class="p-4 ${isSold ? 'bg-red-50' : 'bg-gray-50 hover:bg-gray-100'} flex justify-between items-center cursor-pointer select-none" onclick="window.toggleAccordion('edit-item-${index}')">
+                    <div class="p-4 ${isSold ? 'bg-red-50' : 'bg-gray-50 hover:bg-gray-100'} flex justify-between items-center cursor-pointer select-none" onclick="window.toggleAccordion('edit-item-${p.id}')">
                         <div class="flex items-center gap-3 overflow-hidden">
                             <span class="bg-nyx text-white text-[10px] px-2 py-1 rounded font-black tracking-widest shrink-0">ID: ${p.codeId}</span>
                             <span class="font-black text-sm text-nyx truncate uppercase">${p.nombre}</span>
@@ -491,28 +491,28 @@
                             <i class="fas fa-chevron-down text-gray-400"></i>
                         </div>
                     </div>
-                    <div id="edit-item-${index}" class="admin-accordion-content hidden p-4 border-t border-gray-200 bg-white">
+                    <div id="edit-item-${p.id}" class="admin-accordion-content hidden p-4 border-t border-gray-200 bg-white">
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                             <div>
                                 <label class="block text-[10px] uppercase font-black text-gray-500 tracking-widest mb-1">Nombre</label>
-                                <input type="text" id="adm-name-${index}" value="${p.nombre}" class="w-full border border-gray-300 p-2 text-sm rounded focus:border-accent outline-none font-bold text-nyx">
+                                <input type="text" id="adm-name-${p.id}" value="${p.nombre}" class="w-full border border-gray-300 p-2 text-sm rounded focus:border-accent outline-none font-bold text-nyx">
                             </div>
                             <div class="grid grid-cols-2 gap-2">
                                 <div>
                                     <label class="block text-[10px] uppercase font-black text-gray-500 tracking-widest mb-1">Precio ($)</label>
-                                    <input type="number" id="adm-indiv-${index}" value="${p.pIndiv}" class="w-full border border-gray-300 p-2 text-sm rounded focus:border-accent outline-none font-bold text-nyx">
+                                    <input type="number" id="adm-indiv-${p.id}" value="${p.pIndiv}" class="w-full border border-gray-300 p-2 text-sm rounded focus:border-accent outline-none font-bold text-nyx">
                                 </div>
                                 <div>
                                     <label class="block text-[10px] uppercase font-black text-gray-500 tracking-widest mb-1">Paquete ($)</label>
-                                    <input type="number" id="adm-paquete-${index}" value="${p.pPaquete}" class="w-full border border-gray-300 p-2 text-sm rounded focus:border-accent outline-none font-bold text-accent">
+                                    <input type="number" id="adm-paquete-${p.id}" value="${p.pPaquete}" class="w-full border border-gray-300 p-2 text-sm rounded focus:border-accent outline-none font-bold text-accent">
                                 </div>
                             </div>
                             <div class="md:col-span-2">
                                 <label class="block text-[10px] uppercase font-black text-gray-500 tracking-widest mb-1">Descripción</label>
-                                <input type="text" id="adm-desc-${index}" value="${p.desc}" class="w-full border border-gray-300 p-2 text-sm rounded focus:border-accent outline-none font-medium text-gray-700">
+                                <input type="text" id="adm-desc-${p.id}" value="${p.desc}" class="w-full border border-gray-300 p-2 text-sm rounded focus:border-accent outline-none font-medium text-gray-700">
                             </div>
                             <div class="md:col-span-2 flex items-center gap-3 bg-gray-50 p-3 rounded border border-gray-200">
-                                <input type="checkbox" id="adm-vendido-${index}" ${p.vendido ? 'checked' : ''} class="w-5 h-5 accent-red-600">
+                                <input type="checkbox" id="adm-vendido-${p.id}" ${p.vendido ? 'checked' : ''} class="w-5 h-5 accent-red-600">
                                 <label class="text-xs uppercase font-black text-gray-700 tracking-widest">Marcar como Vendido / Agotado</label>
                             </div>
                         </div>
@@ -738,52 +738,78 @@
                     onSnapshot(collection(db, "productos"), (snapshot) => {
                         window.productos = snapshot.docs.map(d => ({id: d.id, ...d.data()}));
                         window.productos.sort((a,b) => parseInt(a.codeId) - parseInt(b.codeId));
+                        
                         document.getElementById('loading-spinner').classList.add('hidden');
                         document.getElementById('product-grid').classList.remove('hidden');
+                        
                         window.renderProductos();
-                        if(document.getElementById('modal-admin').classList.contains('modal-active') && !document.getElementById('admin-tab-editar').classList.contains('hidden')) {
-                            window.renderAdminForm();
-                        }
+                        
+                        // KRAKEN TÁCTICA: Ya NO recargamos el form del Admin automáticamente para evitar que se te borre lo que estás escribiendo.
                     });
                 }
             });
 
+            // Guardar Cambios (Buffer y Push seguro)
             window.saveAdminChanges = async function() {
                 const btn = document.getElementById('btn-save-admin');
                 const orig = btn.innerHTML;
                 btn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Sincronizando...';
+                btn.disabled = true;
                 try {
                     let updates = 0;
+                    const pendingUpdates = [];
+
+                    // 1. Recoger datos primero (usando p.id para que sea exacto)
                     for(let i=0; i<window.productos.length; i++) {
                         const p = window.productos[i];
-                        const nn = document.getElementById(`adm-name-${i}`).value;
-                        const ni = parseInt(document.getElementById(`adm-indiv-${i}`).value) || 0;
-                        const np = parseInt(document.getElementById(`adm-paquete-${i}`).value) || 0;
-                        const nd = document.getElementById(`adm-desc-${i}`).value;
-                        const nv = document.getElementById(`adm-vendido-${i}`).checked;
+                        const nnInput = document.getElementById(`adm-name-${p.id}`);
+                        if(!nnInput) continue; // Por si el acordeón no renderizó este en específico
+
+                        const nn = nnInput.value;
+                        const ni = parseInt(document.getElementById(`adm-indiv-${p.id}`).value) || 0;
+                        const np = parseInt(document.getElementById(`adm-paquete-${p.id}`).value) || 0;
+                        const nd = document.getElementById(`adm-desc-${p.id}`).value;
+                        const nv = document.getElementById(`adm-vendido-${p.id}`).checked;
 
                         if(p.nombre !== nn || p.pIndiv !== ni || p.pPaquete !== np || p.desc !== nd || p.vendido !== nv) {
-                            await updateDoc(doc(db, "productos", p.id), { nombre: nn, pIndiv: ni, pPaquete: np, desc: nd, vendido: nv });
-                            updates++;
+                            pendingUpdates.push({
+                                ref: doc(db, "productos", p.id),
+                                data: { nombre: nn, pIndiv: ni, pPaquete: np, desc: nd, vendido: nv }
+                            });
                         }
                     }
-                    alert(updates > 0 ? `${updates} actualizados en la nube.` : "Sin cambios.");
-                } catch(e) { alert("Error: " + e.message); } 
-                finally { btn.innerHTML = orig; }
+
+                    // 2. Disparar todo a Google
+                    for(const update of pendingUpdates) {
+                        await updateDoc(update.ref, update.data);
+                        updates++;
+                    }
+
+                    alert(updates > 0 ? `${updates} actualizados en la nube de forma segura.` : "Sin cambios detectados.");
+                    
+                    // 3. Ya que se guardó todo, refrescamos el panel para limpiar la memoria visual
+                    if(updates > 0) window.renderAdminForm();
+
+                } catch(e) { alert("Error crítico: " + e.message); } 
+                finally { btn.innerHTML = orig; btn.disabled = false; }
             };
 
             window.removeImageFromProduct = async function(prodId, imgIndex) {
-                if(!confirm("¿Borrar foto de Firebase?")) return;
+                if(!confirm("¿Borrar foto de Firebase permanentemente?")) return;
                 const p = window.productos.find(x => x.id === prodId);
                 const newImgArray = [...p.img];
                 newImgArray.splice(imgIndex, 1);
-                try { await updateDoc(doc(db, "productos", prodId), { img: newImgArray }); } 
+                try { 
+                    await updateDoc(doc(db, "productos", prodId), { img: newImgArray });
+                    // Recargar el form de forma local para reflejar que se borró
+                    setTimeout(() => window.renderAdminForm(), 1000);
+                } 
                 catch(e) { alert("Error borrando foto: " + e); }
             };
 
             window.addImagesToProduct = async function(prodId) {
                 const input = document.getElementById(`add-img-file-${prodId}`);
-                if(!input.files || input.files.length === 0) return alert("Selecciona fotos.");
+                if(!input.files || input.files.length === 0) return alert("Selecciona fotos de tu galería.");
                 const p = window.productos.find(x => x.id === prodId);
                 const newUrls = [];
                 try {
@@ -795,6 +821,8 @@
                     }
                     await updateDoc(doc(db, "productos", prodId), { img: [...(p.img || []), ...newUrls] });
                     input.value = '';
+                    alert("Fotos inyectadas en la nube correctamente.");
+                    setTimeout(() => window.renderAdminForm(), 1000);
                 } catch(e) { alert("Error subiendo foto: " + e); }
             };
 
@@ -803,11 +831,11 @@
                 const name = document.getElementById('new-nombre').value;
                 const fileInput = document.getElementById('new-file');
                 
-                if(!code || !name) return alert("Falta ID y Nombre.");
+                if(!code || !name) return alert("Falta ID y Nombre en el formulario.");
 
                 const btn = document.getElementById('btn-upload');
                 const orig = btn.innerHTML;
-                btn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Subiendo...';
+                btn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Subiendo fierro a la nube...';
                 btn.disabled = true;
 
                 try {
@@ -828,7 +856,7 @@
                         img: newUrls, vendido: false, timestamp: Date.now()
                     });
                     
-                    alert("Producto Nuevo Publicado.");
+                    alert("Producto Nuevo Publicado. Ya aparece en el catálogo.");
                     document.getElementById('new-code').value = ''; document.getElementById('new-nombre').value = ''; fileInput.value = '';
                     window.switchAdminTab('editar'); 
                 } catch(e) { alert("Error: " + e.message); } 
